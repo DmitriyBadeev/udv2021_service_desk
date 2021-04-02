@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDesk.Api", "ServiceDesk.Api\ServiceDesk.Api.csproj", "{C213727B-EA24-4F26-AAD9-0FF852E7F712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDesk.Core", "ServiceDesk.Core\ServiceDesk.Core.csproj", "{9BBB6C9A-A94B-4D84-BB99-B3C1B146758A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceDesk.Infrastructure", "ServiceDesk.Infrastructure\ServiceDesk.Infrastructure.csproj", "{4E0467F4-BE9D-4810-94A6-342394AA386D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C213727B-EA24-4F26-AAD9-0FF852E7F712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C213727B-EA24-4F26-AAD9-0FF852E7F712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C213727B-EA24-4F26-AAD9-0FF852E7F712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C213727B-EA24-4F26-AAD9-0FF852E7F712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BBB6C9A-A94B-4D84-BB99-B3C1B146758A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BBB6C9A-A94B-4D84-BB99-B3C1B146758A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BBB6C9A-A94B-4D84-BB99-B3C1B146758A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BBB6C9A-A94B-4D84-BB99-B3C1B146758A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E0467F4-BE9D-4810-94A6-342394AA386D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E0467F4-BE9D-4810-94A6-342394AA386D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E0467F4-BE9D-4810-94A6-342394AA386D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E0467F4-BE9D-4810-94A6-342394AA386D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

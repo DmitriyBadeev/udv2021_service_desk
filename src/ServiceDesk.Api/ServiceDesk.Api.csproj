@@ -8,6 +8,7 @@
       <PackageReference Include="HotChocolate.AspNetCore" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
+      <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
       <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
     </ItemGroup>
 

@@ -1,0 +1,12 @@
+schema: http://api.u0911529.plsk.regruhosting.ru/graphql
+documents: ./src/**/*.graphql
+generates:
+    ./src/types.tsx:
+        config:
+            withHooks: true
+            withComponent: false
+            withHOC: false
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-react-apollo

@@ -13,9 +13,11 @@ namespace ServiceDesk.Identity.Services
 {
     public class SeedService : ISeedDataService
     {
-        const string DEVELOPER_ROLE = "Представитель разработчика";
-        const string CUSTOMER_ROLE = "Представитель заказчика";
-        const string OWNER_ROLE = "Владелец личного кабинета";
+        const string DEVELOPER_ROLE = "DEVELOPER";
+        const string CUSTOMER_ROLE = "CUSTOMER";
+        const string OWNER_ROLE = "OWNER";
+
+        private const string GOD_USER_NAME = "GodUser";
         
         private readonly ILogger<SeedService> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -98,36 +100,62 @@ namespace ServiceDesk.Identity.Services
                 _configurationDbContext.SaveChanges();
             }
             
+            AddRoles();
+            AddGodUser(email, password);
+
+            _logger.LogInformation("Database has seeded successfully");
+        }
+
+        private void AddGodUser(string email, string password)
+        {
             var user = _userManager.FindByEmailAsync(email).GetAwaiter().GetResult();
-            
+
             if (user == null)
             {
                 _logger.LogInformation("Creating user");
-                
+
                 var userEntity = new ApplicationUser
                 {
                     Email = email,
-                    UserName = "GodUser",
+                    UserName = GOD_USER_NAME,
                     EmailConfirmed = true,
                     LastName = "Главный",
                     FirstName = "Администратор",
                     Patronymic = "Системы",
                     RegisterDate = DateTime.Now
                 };
-                
-                var result = _userManager.CreateAsync(userEntity, password).GetAwaiter().GetResult();
 
-                if (result.Succeeded)
+                var creatingUserResult = _userManager.CreateAsync(userEntity, password).GetAwaiter().GetResult();
+
+                var createdUser = _userManager.FindByNameAsync(GOD_USER_NAME).GetAwaiter().GetResult();
+                var addingRoleResult = _userManager.AddToRoleAsync(createdUser, DEVELOPER_ROLE).GetAwaiter().GetResult();
+
+                if (creatingUserResult.Succeeded)
                 {
                     _logger.LogInformation("User created");
+                }
+                else
+                {
+                    _logger.LogCritical("User hasn't been created");
+                }
+
+                if (addingRoleResult.Succeeded)
+                {
+                    _logger.LogInformation("User role added");
+                }
+                else
+                {
+                    _logger.LogCritical("User role hasn't been added");
                 }
             }
             else
             {
                 _logger.LogInformation("User already created");
             }
+        }
 
-            
+        private void AddRoles()
+        {
             var isDeveloperRoleExist = _roleManager.RoleExistsAsync(DEVELOPER_ROLE).GetAwaiter().GetResult();
 
             if (!isDeveloperRoleExist)
@@ -151,8 +179,6 @@ namespace ServiceDesk.Identity.Services
             {
                 _logger.LogInformation("Roles already created");
             }
-            
-            _logger.LogInformation("Database has seeded successfully");
         }
     }
 }

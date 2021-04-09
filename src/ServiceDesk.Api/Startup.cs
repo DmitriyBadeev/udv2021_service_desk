@@ -7,6 +7,7 @@ using HotChocolate.Execution;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServiceDesk.Api.Queries;
@@ -16,6 +17,13 @@ namespace ServiceDesk.Api
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -35,6 +43,8 @@ namespace ServiceDesk.Api
                     options.ApiName = "ServiceDesk.Api";
                     options.RequireHttpsMetadata = false;
                 });
+
+            new DependencyInstaller(Configuration).Install(services);
         }
         
         private static HttpRequestInterceptorDelegate AuthenticationInterceptor()

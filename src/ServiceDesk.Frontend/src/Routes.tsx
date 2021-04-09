@@ -7,7 +7,6 @@ import {
     Redirect,
 } from "react-router-dom"
 
-import ServiceDesk from "pages/ServiceDesk"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
 import Loading from "components/loading/Loading"
@@ -15,12 +14,22 @@ import Enter from "pages/auth/Enter"
 import AuthComplete from "pages/auth/AuthComplete"
 import Signout from "pages/auth/Signout"
 
+import ServiceDesk from "pages/ServiceDesk"
+import Cabinets from "pages/Cabinets"
+import Profile from "pages/Profile"
+
 const Routes: React.FC = () => {
     return (
         <ScrollToTop>
             <Switch>
                 <PrivateRoute exact path="/">
                     <ServiceDesk />
+                </PrivateRoute>
+                <PrivateRoute exact path="/cabinets">
+                    <Cabinets />
+                </PrivateRoute>
+                <PrivateRoute exact path="/profile">
+                    <Profile />
                 </PrivateRoute>
                 <Route exact path="/enter">
                     <Enter />

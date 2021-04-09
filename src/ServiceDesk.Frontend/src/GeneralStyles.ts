@@ -55,6 +55,10 @@ export const FlexCenter = styled.div`
     justify-content: center;
 `
 
+export const Flex = styled.div`
+    display: flex;
+`
+
 function chooseColor(
     props: ThemedStyledProps<
         TextProps & {

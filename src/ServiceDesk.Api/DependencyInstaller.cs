@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using ServiceDesk.Infrastructure;
+
+namespace ServiceDesk.Api
+{
+    public class DependencyInstaller
+    {
+        private IConfiguration configuration;
+
+        public DependencyInstaller(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public void Install(IServiceCollection services)
+        {
+            services.AddDbContext<ServiceDeskDbContext>(x => 
+                x.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        }
+    }
+}

@@ -34,10 +34,14 @@ namespace ServiceDesk.Identity
                     { 
                         "http://localhost:3000", 
                         "http://localhost:3001",
+                        "http://u0911529.plsk.regruhosting.ru",
+                        "https://desk.badeev.info"
                     },
                     PostLogoutRedirectUris = new List<string> 
                     {
-                        "http://localhost:3000/signout"
+                        "http://localhost:3000/signout",
+                        "http://u0911529.plsk.regruhosting.ru/signout",
+                        "https://desk.badeev.info/signout"
                     },
                     RedirectUris = redirects,
                     AllowedScopes = 

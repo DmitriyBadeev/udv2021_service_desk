@@ -38,7 +38,7 @@ namespace ServiceDesk.Identity
                     config.Password.RequireLowercase = false;
                     config.Password.RequireNonAlphanumeric = false;
                     config.Password.RequireUppercase = false;
-                    config.Password.RequiredLength = 6;
+                    config.Password.RequiredLength = 5;
                     config.User.RequireUniqueEmail = true;
                     config.User.AllowedUserNameCharacters = 
                         config.User.AllowedUserNameCharacters.Insert(0, "абвгдеёжзийклмнопрстуфхцчшщъыьэюя АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ");

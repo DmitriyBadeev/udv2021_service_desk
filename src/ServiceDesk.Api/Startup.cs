@@ -31,9 +31,8 @@ namespace ServiceDesk.Api
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
-                    options.Authority = "http://identity.u0911529.plsk.regruhosting.ru";
+                    options.Authority = "https://identity-desk.badeev.info";
                     options.ApiName = "ServiceDesk.Api";
-                    options.RequireHttpsMetadata = false;
                 });
         }
         

@@ -49,6 +49,12 @@ const Header: React.FC = () => {
         }
     }, [data, query, error, authService])
 
+    const exit = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault()
+
+        authService.signout()
+    }
+
     return (
         <HeaderContainer>
             <Flex>
@@ -61,7 +67,9 @@ const Header: React.FC = () => {
                         <MenuLink to="/profile">ФИО пользователя</MenuLink>
                     </MenuItem>
                     <MenuItem>
-                        <MenuLink to="/">Выход</MenuLink>
+                        <MenuLink to="/" onClick={exit}>
+                            Выход
+                        </MenuLink>
                     </MenuItem>
                 </MenuContainer>
             </Flex>

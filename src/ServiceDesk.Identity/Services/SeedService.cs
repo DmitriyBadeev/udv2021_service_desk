@@ -152,6 +152,29 @@ namespace ServiceDesk.Identity.Services
             {
                 _logger.LogInformation("User already created");
             }
+
+            var customerEmail = "ivanov@mail.ru";
+            var customerUser = _userManager.FindByEmailAsync(customerEmail).GetAwaiter().GetResult();
+
+            if (customerUser == null)
+            {
+                var userCustomerEntity = new ApplicationUser
+                {
+                    Email = customerEmail,
+                    UserName = "ivanov",
+                    EmailConfirmed = true,
+                    LastName = "Иванов",
+                    FirstName = "Иван",
+                    Patronymic = "Иванович",
+                    RegisterDate = DateTime.Now
+                };
+
+                _userManager.CreateAsync(userCustomerEntity, password).GetAwaiter().GetResult();
+
+                var createdCustomerUser = _userManager.FindByNameAsync("ivanov").GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(createdCustomerUser, CUSTOMER_ROLE).GetAwaiter().GetResult();
+            }
+            
         }
 
         private void AddRoles()

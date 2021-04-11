@@ -35,6 +35,7 @@ namespace ServiceDesk.Identity.Services
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
             
             // Adding custom claims
+            claims.Add(new Claim("user_id", userId ?? string.Empty));
             claims.Add(new Claim("first_name", user.FirstName ?? string.Empty));
             claims.Add(new Claim("last_name", user.LastName ?? string.Empty));
             claims.Add(new Claim("patronymic", user.Patronymic ?? string.Empty));

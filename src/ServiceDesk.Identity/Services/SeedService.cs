@@ -11,14 +11,17 @@ using ServiceDesk.Identity.Models;
 
 namespace ServiceDesk.Identity.Services
 {
+    public static class SeedConfig
+    {
+        public const string DEVELOPER_ROLE = "DEVELOPER";
+        public const string CUSTOMER_ROLE = "CUSTOMER";
+        public const string OWNER_ROLE = "OWNER";
+        
+        public const string GOD_USER_NAME = "GodUser";
+    }
+    
     public class SeedService : ISeedDataService
     {
-        const string DEVELOPER_ROLE = "DEVELOPER";
-        const string CUSTOMER_ROLE = "CUSTOMER";
-        const string OWNER_ROLE = "OWNER";
-
-        private const string GOD_USER_NAME = "GodUser";
-        
         private readonly ILogger<SeedService> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -69,13 +72,13 @@ namespace ServiceDesk.Identity.Services
             var email = _configuration["email"];
             var password = _configuration["password"];
             
-            var financeClientId = _configuration["clientId"];
-            var financeRedirects = _configuration.GetSection("redirect_uris").Get<List<string>>();
-            var apiFinance = _configuration["api"];
+            var clientId = _configuration["clientId"];
+            var redirects = _configuration.GetSection("redirect_uris").Get<List<string>>();
+            var api = _configuration["api"];
             
             if (!_configurationDbContext.Clients.Any())
             {
-                foreach (var client in Config.GetSpaClient(financeClientId, financeRedirects, apiFinance))
+                foreach (var client in Config.GetSpaClient(clientId, redirects, api))
                 {
                     _configurationDbContext.Clients.Add(client.ToEntity());
                 }
@@ -93,7 +96,7 @@ namespace ServiceDesk.Identity.Services
             
             if (!_configurationDbContext.ApiResources.Any())
             {
-                foreach (var resource in Config.GetApiResources(apiFinance))
+                foreach (var resource in Config.GetApiResources(api))
                 {
                     _configurationDbContext.ApiResources.Add(resource.ToEntity());
                 }
@@ -117,7 +120,7 @@ namespace ServiceDesk.Identity.Services
                 var userEntity = new ApplicationUser
                 {
                     Email = email,
-                    UserName = GOD_USER_NAME,
+                    UserName = SeedConfig.GOD_USER_NAME,
                     EmailConfirmed = true,
                     LastName = "Главный",
                     FirstName = "Администратор",
@@ -127,8 +130,8 @@ namespace ServiceDesk.Identity.Services
 
                 var creatingUserResult = _userManager.CreateAsync(userEntity, password).GetAwaiter().GetResult();
 
-                var createdUser = _userManager.FindByNameAsync(GOD_USER_NAME).GetAwaiter().GetResult();
-                var addingRoleResult = _userManager.AddToRoleAsync(createdUser, DEVELOPER_ROLE).GetAwaiter().GetResult();
+                var createdUser = _userManager.FindByNameAsync(SeedConfig.GOD_USER_NAME).GetAwaiter().GetResult();
+                var addingRoleResult = _userManager.AddToRoleAsync(createdUser, SeedConfig.DEVELOPER_ROLE).GetAwaiter().GetResult();
 
                 if (creatingUserResult.Succeeded)
                 {
@@ -172,22 +175,22 @@ namespace ServiceDesk.Identity.Services
                 _userManager.CreateAsync(userCustomerEntity, password).GetAwaiter().GetResult();
 
                 var createdCustomerUser = _userManager.FindByNameAsync("ivanov").GetAwaiter().GetResult();
-                _userManager.AddToRoleAsync(createdCustomerUser, CUSTOMER_ROLE).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(createdCustomerUser, SeedConfig.CUSTOMER_ROLE).GetAwaiter().GetResult();
             }
             
         }
 
         private void AddRoles()
         {
-            var isDeveloperRoleExist = _roleManager.RoleExistsAsync(DEVELOPER_ROLE).GetAwaiter().GetResult();
+            var isDeveloperRoleExist = _roleManager.RoleExistsAsync(SeedConfig.DEVELOPER_ROLE).GetAwaiter().GetResult();
 
             if (!isDeveloperRoleExist)
             {
                 _logger.LogInformation("Creating roles");
 
-                var developerRole = new IdentityRole(DEVELOPER_ROLE);
-                var customerRole = new IdentityRole(CUSTOMER_ROLE);
-                var ownerRole = new IdentityRole(OWNER_ROLE);
+                var developerRole = new IdentityRole(SeedConfig.DEVELOPER_ROLE);
+                var customerRole = new IdentityRole(SeedConfig.CUSTOMER_ROLE);
+                var ownerRole = new IdentityRole(SeedConfig.OWNER_ROLE);
 
                 var result1 = _roleManager.CreateAsync(developerRole).GetAwaiter().GetResult();
                 var result2 = _roleManager.CreateAsync(customerRole).GetAwaiter().GetResult();

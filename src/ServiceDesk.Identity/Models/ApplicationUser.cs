@@ -16,5 +16,7 @@ namespace ServiceDesk.Identity.Models
         public DateTime BanDate { get; set; }
         
         public DateTime RegisterDate { get; set; }
+
+        public ClientUser ClientUser { get; set; }
     }
 }

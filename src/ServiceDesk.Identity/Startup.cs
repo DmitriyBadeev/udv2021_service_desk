@@ -80,6 +80,7 @@ namespace ServiceDesk.Identity
             app.UseDeveloperExceptionPage();
             
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }

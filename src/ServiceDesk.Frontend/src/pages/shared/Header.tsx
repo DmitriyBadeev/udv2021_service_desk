@@ -1,7 +1,8 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
+import { observer } from "mobx-react"
 
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import useStore from "store/useStore"
 import { useSecretLazyQuery } from "types"
 import Logo from "components/logo/Logo"
@@ -25,8 +26,8 @@ const MenuContainer = styled.div`
     display: flex;
 `
 
-const Header: React.FC = () => {
-    const location = useLocation()
+const Header: React.FC = observer(() => {
+    //const location = useLocation()
     const { authService } = useStore()
 
     const [query, { data, error }] = useSecretLazyQuery({
@@ -55,6 +56,18 @@ const Header: React.FC = () => {
         authService.signout()
     }
 
+    const user = authService.user
+
+    const lastName = user?.profile.last_name
+    const firstName = user?.profile.first_name
+    const patronymic = user?.profile.patronymic
+
+    let fullName = "Loading..."
+
+    if (lastName && firstName && patronymic) {
+        fullName = `${lastName} ${firstName} ${patronymic}`
+    }
+
     return (
         <HeaderContainer>
             <Flex>
@@ -64,7 +77,7 @@ const Header: React.FC = () => {
             <Flex>
                 <MenuContainer>
                     <MenuItem>
-                        <MenuLink to="/profile">ФИО пользователя</MenuLink>
+                        <MenuLink to="/profile">{fullName}</MenuLink>
                     </MenuItem>
                     <MenuItem>
                         <MenuLink to="/" onClick={exit}>
@@ -75,7 +88,7 @@ const Header: React.FC = () => {
             </Flex>
         </HeaderContainer>
     )
-}
+})
 
 const getMenu = () => {
     return <DeveloperMenu />
@@ -133,8 +146,17 @@ const DeveloperMenu = () => {
     )
 }
 
-const CustomerMenu = () => {
-    return <></>
-}
+// const CustomerMenu = () => {
+//     return (
+//         <>
+//             <MenuItem>
+//                 <MenuLink to="/">Обращения</MenuLink>
+//             </MenuItem>
+//             <MenuItem>
+//                 <MenuLink to="/cabinets">Личный кабинет</MenuLink>
+//             </MenuItem>
+//         </>
+//     )
+// }
 
 export default Header

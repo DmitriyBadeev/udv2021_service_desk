@@ -1,4 +1,4 @@
-schema: http://api.u0911529.plsk.regruhosting.ru/graphql
+schema: https://api-desk.badeev.info/graphql
 documents: ./src/**/*.graphql
 generates:
     ./src/types.tsx:

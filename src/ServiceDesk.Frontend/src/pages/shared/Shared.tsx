@@ -8,7 +8,7 @@ const MainLayout = styled.div`
 `
 
 const ContentPage = styled.div`
-    padding: 80px 60px 60px 60px;
+    padding: 100px 60px 60px 60px;
     background: ${(props) => props.theme.grey6};
     min-height: 100vh;
 `

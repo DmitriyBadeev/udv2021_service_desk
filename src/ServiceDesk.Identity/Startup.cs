@@ -56,6 +56,7 @@ namespace ServiceDesk.Identity
                 .AddIdentityServer()
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddSigningCredential(rsa.GetKey())
+                .AddProfileService<ProfileService>()
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b =>

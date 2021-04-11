@@ -15,7 +15,7 @@ import "./index.css"
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 32 }} spin />)
 
 const client = new ApolloClient({
-    uri: "http://api.u0911529.plsk.regruhosting.ru/graphql?",
+    uri: "https://api-desk.badeev.info/graphql?",
     request: (operation) => {
         const token = window.localStorage.getItem("token")
         operation.setContext({

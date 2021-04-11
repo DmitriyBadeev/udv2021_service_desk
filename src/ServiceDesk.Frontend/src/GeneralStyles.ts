@@ -23,29 +23,23 @@ export const Text = styled(AntText)<TextProps & { $large?: boolean }>`
     text-align: ${(props) => props.$align};
 `
 
+export const H1 = styled.h2<TextProps>`
+    font-size: 32px;
+    font-weight: 700;
+    color: ${chooseColor};
+    text-align: ${(props) => props.$align};
+`
+
 export const H2 = styled.h2<TextProps>`
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
-    color: ${(props) => props.theme.black};
-    font-family: "Open Sans", sans-serif;
     color: ${chooseColor};
     text-align: ${(props) => props.$align};
 `
 
 export const H3 = styled.h3<TextProps>`
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
-    color: ${(props) => props.theme.black};
-    font-family: "Open Sans", sans-serif;
-    color: ${chooseColor};
-    text-align: ${(props) => props.$align};
-`
-
-export const H4 = styled.h4<TextProps>`
-    font-size: 20px;
-    font-weight: 600;
-    color: ${(props) => props.theme.black};
-    font-family: "Open Sans", sans-serif;
     color: ${chooseColor};
     text-align: ${(props) => props.$align};
 `

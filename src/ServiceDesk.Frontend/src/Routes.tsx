@@ -16,6 +16,7 @@ import Signout from "pages/auth/Signout"
 
 import ServiceDesk from "pages/ServiceDesk"
 import Cabinets from "pages/Cabinets"
+import Cabinet from "pages/Cabinet"
 import Profile from "pages/Profile"
 
 const Routes: React.FC = () => {
@@ -27,6 +28,9 @@ const Routes: React.FC = () => {
                 </PrivateRoute>
                 <PrivateRoute exact path="/cabinets">
                     <Cabinets />
+                </PrivateRoute>
+                <PrivateRoute exact path="/cabinets/:id">
+                    <Cabinet />
                 </PrivateRoute>
                 <PrivateRoute exact path="/profile">
                     <Profile />

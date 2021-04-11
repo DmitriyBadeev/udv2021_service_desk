@@ -31,6 +31,9 @@ export type Queries = {
   __typename?: 'Queries';
   testQuery?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
+  developerMethod?: Maybe<Scalars['String']>;
+  customerMethod?: Maybe<Scalars['String']>;
+  secret?: Maybe<Scalars['String']>;
 };
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;

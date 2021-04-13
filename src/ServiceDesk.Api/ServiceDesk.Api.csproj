@@ -15,9 +15,12 @@
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
       <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
+      <PackageReference Include="Scrutor" Version="3.3.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Handlers\DirectorySystem\" />
+      <Folder Include="Handlers\RequestSystem\" />
       <Folder Include="Logs" />
     </ItemGroup>
 

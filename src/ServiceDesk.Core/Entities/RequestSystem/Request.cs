@@ -4,16 +4,17 @@ using System.Text;
 using ServiceDesk.Core.Entities.DirectorySystem;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Core.Enums;
+using ServiceDesk.Core.Interfaces.Common;
 
 namespace ServiceDesk.Core.Entities.RequestSystem
 {
-    public class Request
+    public class Request : IEntity
     {
         public int Id { get; set; }
         public string Theme { get; set; }
         public string Text { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ProcessingDate { get; set; }
+        public DateTime? ProcessingDate { get; set; }
         public string DeveloperRepresentativeId { get; set; }
         public RequestStatuses RequestStatus { get; set; }
         public ICollection<RequestAttachment> RequestAttachments { get; set; }

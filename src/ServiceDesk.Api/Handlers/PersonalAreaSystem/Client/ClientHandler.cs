@@ -2,30 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotChocolate;
 using ServiceDesk.Api.Builders.DtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
 using ServiceDesk.Core.Interfaces.Factories.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
 
-namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
+namespace ServiceDesk.Api.Handlers.PersonalAreaSystem.Client
 {
     public class ClientHandler : IClientHandler
     {
-        private readonly ServiceDeskDbContext context;
         private readonly IClientFactory<ClientData> clientFactory;
         private readonly IClientDtoBuilder clientDtoBuilder;
 
-        public ClientHandler(ServiceDeskDbContext context, 
-            IClientFactory<ClientData> clientFactory,
+        public ClientHandler(IClientFactory<ClientData> clientFactory,
             IClientDtoBuilder clientDtoBuilder)
         {
-            this.context = context;
             this.clientFactory = clientFactory;
             this.clientDtoBuilder = clientDtoBuilder;
         }
 
-        public ClientDto Create(ClientCreateDto clientCreateDto)
+        public ClientDto Create(ClientCreateDto clientCreateDto,
+            [Service] ServiceDeskDbContext context)
         {
             var clientData = new ClientData()
             {
@@ -42,7 +41,8 @@ namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
             return clientDto;
         }
 
-        public ClientDto Get(int clientId)
+        public ClientDto Get(int clientId,
+            [Service] ServiceDeskDbContext context)
         {
             var client = context.Clients.Find(clientId);
 
@@ -51,7 +51,7 @@ namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
             return clientDto;
         }
 
-        public IEnumerable<ClientListDto> GetAll()
+        public IEnumerable<ClientListDto> GetAll([Service] ServiceDeskDbContext context)
         {
             var clients = context.Clients.AsEnumerable();
 
@@ -60,7 +60,8 @@ namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
             return clientListDtos;
         }
 
-        public IEnumerable<ClientListDto> Page(int pageNumber, int count)
+        public IEnumerable<ClientListDto> Page(int pageNumber, int count,
+            [Service] ServiceDeskDbContext context)
         {
             var clients = context.Clients
                 .Skip(pageNumber * count)
@@ -72,7 +73,8 @@ namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
             return clientListDtos;
         }
 
-        public ClientDto Edit(int id, ClientCreateDto clientCreateDto)
+        public ClientDto Edit(int id, ClientCreateDto clientCreateDto,
+            [Service] ServiceDeskDbContext context)
         {
             var client = context.Clients.Find(id);
             client.Name = clientCreateDto.Name;
@@ -85,7 +87,8 @@ namespace ServiceDesk.Api.Handlers.PersonalAreaSystem
             return clientDto;
         }
 
-        public void Delete(int id)
+        public void Delete(int id,
+            [Service] ServiceDeskDbContext context)
         {
             var client = context.Clients.Find(id);
 

@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotChocolate;
 using HotChocolate.Types;
+using Microsoft.Extensions.DependencyInjection;
+using ServiceDesk.Api.Builders.DtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
-using ServiceDesk.Api.Handlers.PersonalAreaSystem;
+using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
+using ServiceDesk.Core.Interfaces.Factories.PersonalAreaSystem;
+using ServiceDesk.Infrastructure;
+using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
 
 namespace ServiceDesk.Api.Mutations
 {
@@ -18,11 +24,26 @@ namespace ServiceDesk.Api.Mutations
             this.clientHandler = clientHandler;
         }
 
-        public ClientDto Create(ClientCreateDto clientCreateDto)
+        public ClientDto CreateClient(ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
-            var clientDto = clientHandler.Create(clientCreateDto);
+            var client = clientHandler.Create(clientCreateDto, context);
 
-            return clientDto;
+            return client;
+        }
+
+        public ClientDto EditClient(int id, ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
+        {
+
+            var client = clientHandler.Edit(id, clientCreateDto, context);
+
+            return client;
+        }
+
+        public string DeleteClient(int id, [Service] ServiceDeskDbContext context)
+        {
+            clientHandler.Delete(id, context);
+
+            return "Ok";
         }
     }
 }

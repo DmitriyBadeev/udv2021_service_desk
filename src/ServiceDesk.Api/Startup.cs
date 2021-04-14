@@ -27,14 +27,16 @@ namespace ServiceDesk.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            
+
             services.AddGraphQLServer()
                 .AddAuthorization()
                 .AddHttpRequestInterceptor(AuthenticationInterceptor())
                 .AddQueryType(d => d.Name("Queries"))
                 .AddType<TestQueries>()
+                .AddType<ClientQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
-                .AddType<TestMutations>();
+                .AddType<TestMutations>()
+                .AddType<ClientMutations>();
             
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
@@ -67,7 +69,7 @@ namespace ServiceDesk.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseCors(b => b
                 .AllowAnyHeader()
                 .AllowAnyMethod()

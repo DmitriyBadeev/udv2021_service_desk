@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
+using ServiceDesk.Core.Interfaces.Common;
 
 namespace ServiceDesk.Core.Entities.DirectorySystem
 {
-    public class License
+    public class License : IEntity
     {
         public int Id { get; set; }
         public int Number { get; set; }

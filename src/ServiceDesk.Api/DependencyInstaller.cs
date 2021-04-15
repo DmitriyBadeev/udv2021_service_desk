@@ -22,6 +22,30 @@ namespace ServiceDesk.Api
         {
             services.AddDbContext<ServiceDeskDbContext>(x => 
                 x.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.Scan(scan => scan
+                .FromApplicationDependencies()
+                .AddClasses(classes => classes
+                    .InNamespaces("ServiceDesk.Infrastructure.Implementations.Factories")
+                    .Where(type => type.Name.EndsWith("Factory")))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                .FromApplicationDependencies()
+                .AddClasses(classes => classes
+                    .InNamespaces("ServiceDesk.Api.Builders.DtoBuilders")
+                    .Where(type => type.Name.EndsWith("DtoBuilder")))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
+
+            services.Scan(scan => scan
+                .FromApplicationDependencies()
+                .AddClasses(classes => classes
+                    .InNamespaces("ServiceDesk.Api.Handlers")
+                    .Where(type => type.Name.EndsWith("Handler")))
+                .AsImplementedInterfaces()
+                .WithTransientLifetime());
         }
     }
 }

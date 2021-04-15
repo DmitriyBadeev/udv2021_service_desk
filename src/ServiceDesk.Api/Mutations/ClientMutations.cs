@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotChocolate;
+﻿using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using Microsoft.Extensions.DependencyInjection;
-using ServiceDesk.Api.Builders.DtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
 using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
-using ServiceDesk.Core.Interfaces.Factories.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
-using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
 
 namespace ServiceDesk.Api.Mutations
 {
@@ -23,14 +16,16 @@ namespace ServiceDesk.Api.Mutations
         {
             this.clientHandler = clientHandler;
         }
-
+        
+        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
         public ClientDto CreateClient(ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
             var client = clientHandler.Create(clientCreateDto, context);
 
             return client;
         }
-
+        
+        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE})]
         public ClientDto EditClient(int id, ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
 
@@ -38,7 +33,8 @@ namespace ServiceDesk.Api.Mutations
 
             return client;
         }
-
+        
+        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
         public string DeleteClient(int id, [Service] ServiceDeskDbContext context)
         {
             clientHandler.Delete(id, context);

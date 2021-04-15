@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Security.Claims;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ServiceDesk.Identity.Models;
 using ServiceDesk.Identity.Services;
 
@@ -27,6 +29,15 @@ namespace ServiceDesk.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            services.AddSingleton<ICorsPolicyService>((container) => {
+                var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+                return new DefaultCorsPolicyService(logger) {
+                    AllowAll = true,
+                };
+            });
+
+            services.AddLocalApiAuthentication();
             services
                 .AddDbContext<ApplicationDbContext>(config =>
                 {
@@ -43,7 +54,8 @@ namespace ServiceDesk.Identity
                     config.User.AllowedUserNameCharacters = 
                         config.User.AllowedUserNameCharacters.Insert(0, "абвгдеёжзийклмнопрстуфхцчшщъыьэюя АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ");
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             
             var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(120));
             services.AddSingleton(provider => rsa);
@@ -78,6 +90,10 @@ namespace ServiceDesk.Identity
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
+            app.UseCors(config => config
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
             
             app.UseIdentityServer();
             app.UseAuthentication();

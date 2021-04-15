@@ -14,5 +14,6 @@ namespace ServiceDesk.Identity.Controllers.Profile.dto
         public bool IsBanned { get; set; }
         public DateTime BanDate { get; set; }
         public int? ClientId { get; set; }
+        public bool CanEdit { get; set; }
     }
 }

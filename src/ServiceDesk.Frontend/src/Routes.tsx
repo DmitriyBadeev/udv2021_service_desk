@@ -1,11 +1,5 @@
 import React, { useEffect } from "react"
-import {
-    useLocation,
-    Switch,
-    Route,
-    RouteProps,
-    Redirect,
-} from "react-router-dom"
+import { useLocation, Switch, Route, RouteProps, Redirect } from "react-router-dom"
 
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
@@ -18,6 +12,7 @@ import ServiceDesk from "pages/ServiceDesk"
 import Cabinets from "pages/Cabinets"
 import Cabinet from "pages/Cabinet"
 import Profile from "pages/Profile"
+import CustomerAppeals from "pages/CustomerAppeals"
 
 const Routes: React.FC = () => {
     return (
@@ -32,8 +27,11 @@ const Routes: React.FC = () => {
                 <PrivateRoute exact path="/cabinets/:id">
                     <Cabinet />
                 </PrivateRoute>
-                <PrivateRoute exact path="/profile">
+                <PrivateRoute exact path="/profile/:userId">
                     <Profile />
+                </PrivateRoute>
+                <PrivateRoute exact path="/customer-appeals">
+                    <CustomerAppeals />
                 </PrivateRoute>
                 <Route exact path="/enter">
                     <Enter />

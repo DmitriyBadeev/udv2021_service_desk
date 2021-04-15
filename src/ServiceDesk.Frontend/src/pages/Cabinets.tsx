@@ -1,6 +1,7 @@
 import { Button, Table } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
+import AddCustomer from "components/forms/AddCustomer"
 import FadePage from "components/fade/FadePage"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -80,15 +81,8 @@ const Cabinets: React.FC = () => {
     return (
         <FadePage>
             <Card>
-                <CardHeader
-                    title="Личные кабинеты заказчиков"
-                    buttonText="Добавить заказчика"
-                />
-                <Table
-                    size="middle"
-                    dataSource={dataSource}
-                    columns={columns}
-                />
+                <CardHeader title="Личные кабинеты заказчиков" Form={AddCustomer} />
+                <Table size="middle" dataSource={dataSource} columns={columns} />
             </Card>
         </FadePage>
     )

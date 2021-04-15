@@ -10,7 +10,8 @@ namespace ServiceDesk.Identity
         {
             return new List<ApiResource>
             {
-                new ApiResource(api)
+                new ApiResource(api),
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
             };
         }
 
@@ -48,6 +49,7 @@ namespace ServiceDesk.Identity
                     { 
                         IdentityServerConstants.StandardScopes.OpenId, 
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.LocalApi.ScopeName,
                         api
                     }
                 }

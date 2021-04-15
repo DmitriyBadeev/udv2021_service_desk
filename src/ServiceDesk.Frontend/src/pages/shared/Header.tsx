@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
 import { observer } from "mobx-react"
-
+import { DEVELOPER_ROLE, OWNER_ROLE, CUSTOMER_ROLE } from "helpers/roleHelper"
 import { Link } from "react-router-dom"
 import useStore from "store/useStore"
 import { useSecretLazyQuery } from "types"
@@ -24,6 +24,7 @@ const MenuContainer = styled.div`
     margin-left: 40px;
     height: 60px;
     display: flex;
+    align-items: center;
 `
 
 const Header: React.FC = observer(() => {
@@ -58,9 +59,11 @@ const Header: React.FC = observer(() => {
 
     const user = authService.user
 
+    const userId = user?.profile.user_id
     const lastName = user?.profile.last_name
     const firstName = user?.profile.first_name
     const patronymic = user?.profile.patronymic
+    const role = user?.profile.role
 
     let fullName = "Loading..."
 
@@ -72,12 +75,12 @@ const Header: React.FC = observer(() => {
         <HeaderContainer>
             <Flex>
                 <Logo />
-                <MenuContainer>{getMenu()}</MenuContainer>
+                <MenuContainer>{getMenu(role)}</MenuContainer>
             </Flex>
             <Flex>
                 <MenuContainer>
                     <MenuItem>
-                        <MenuLink to="/profile">{fullName}</MenuLink>
+                        <MenuLink to={`/profile/${userId}`}>{fullName}</MenuLink>
                     </MenuItem>
                     <MenuItem>
                         <MenuLink to="/" onClick={exit}>
@@ -90,15 +93,19 @@ const Header: React.FC = observer(() => {
     )
 })
 
-const getMenu = () => {
-    return <DeveloperMenu />
+const getMenu = (role: string) => {
+    if (role === DEVELOPER_ROLE) return <DeveloperMenu />
+
+    if (role === CUSTOMER_ROLE || role === OWNER_ROLE) return <CustomerMenu />
+
+    return "Loading..."
 }
 
 const MenuItem = styled.span`
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 0 15px;
+
     color: ${(props) => props.theme.white};
     position: relative;
     transition: all ${(props) => props.theme.baseTransition};
@@ -128,6 +135,7 @@ const MenuLink = styled(Link)`
     height: 100%;
     display: flex;
     align-items: center;
+    padding: 0 15px;
 `
 
 const DeveloperMenu = () => {
@@ -146,17 +154,17 @@ const DeveloperMenu = () => {
     )
 }
 
-// const CustomerMenu = () => {
-//     return (
-//         <>
-//             <MenuItem>
-//                 <MenuLink to="/">Обращения</MenuLink>
-//             </MenuItem>
-//             <MenuItem>
-//                 <MenuLink to="/cabinets">Личный кабинет</MenuLink>
-//             </MenuItem>
-//         </>
-//     )
-// }
+const CustomerMenu = () => {
+    return (
+        <>
+            <MenuItem>
+                <MenuLink to="/customer-appeals">Обращения</MenuLink>
+            </MenuItem>
+            <MenuItem>
+                <MenuLink to="/cabinets/1">Личный кабинет</MenuLink>
+            </MenuItem>
+        </>
+    )
+}
 
 export default Header

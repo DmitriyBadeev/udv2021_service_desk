@@ -1,35 +1,40 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
+import { BASE_IDENTITY_URL } from "store/Config"
 import axios from "axios"
 
-const useProfileData = () => {
+const useProfileData = (userId: string) => {
     const token = window.localStorage.getItem("token")
 
-    const identityApi = axios.create({
-        baseURL: "https://identity-desk.badeev.info",
-        headers: {
-            Authorization: token ? token : "",
-        },
-    })
-
-    const [data, setData] = useState({})
+    const [data, setData] = useState<any>({})
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
+    const reload = useCallback(() => {
         setLoading(true)
+
+        const identityApi = axios.create({
+            baseURL: BASE_IDENTITY_URL,
+            headers: {
+                Authorization: token ? token : "",
+            },
+        })
+
         identityApi
-            .get("/connect/userinfo")
+            .get("/profile", { params: { userId } })
             .then((res) => {
                 setData(res.data)
                 setLoading(false)
-                console.log(res)
             })
             .catch((error) => {
                 console.log(error)
                 setLoading(false)
             })
-    }, [identityApi])
+    }, [setLoading, setData, token, userId])
 
-    return { data, loading }
+    useEffect(() => {
+        reload()
+    }, [reload])
+
+    return { data, loading, reload }
 }
 
 export default useProfileData

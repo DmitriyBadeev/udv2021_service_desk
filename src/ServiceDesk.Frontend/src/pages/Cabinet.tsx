@@ -15,36 +15,23 @@ const Cabinet: React.FC = () => {
     return (
         <FadePage>
             <Card>
-                <CardHeader
-                    title="ООО «Компания заказчик»"
-                    buttonText="Редактировать"
-                />
+                <CardHeader title="ООО «Компания заказчик»" Form={() => <Button size="large">Редактировать</Button>} />
 
                 <Descriptions column={2} labelStyle={{ fontWeight: 600 }}>
-                    <Descriptions.Item label="Идентификатор">
-                        {id}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Статус">
-                        Активен
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Дата создания">
-                        21.04.2021
-                    </Descriptions.Item>
+                    <Descriptions.Item label="Идентификатор">{id}</Descriptions.Item>
+                    <Descriptions.Item label="Статус">Активен</Descriptions.Item>
+                    <Descriptions.Item label="Дата создания">21.04.2021</Descriptions.Item>
                 </Descriptions>
             </Card>
 
             <Card isSecondary>
                 <CardHeader
                     title="Представители заказчика"
-                    buttonText="Добавить"
+                    Form={() => <Button size="middle">Добавить</Button>}
                     size="small"
                 />
 
-                <Table
-                    size="middle"
-                    dataSource={dataSource}
-                    columns={columns}
-                />
+                <Table size="middle" dataSource={dataSource} columns={columns} />
             </Card>
         </FadePage>
     )

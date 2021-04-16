@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
+using ServiceDesk.Api.Dtos;
 using ServiceDesk.Api.Dtos.Client;
 
 namespace ServiceDesk.Api.Builders.DtoBuilders.Client
 {
-    public class ClientDtoBuilder : IClientDtoBuilder
+    public class ClientDtoBuilder : IClientDtoBuilder<ClientDto>
     {
         public ClientDto Build(Core.Entities.PersonalAreaSystem.Client client)
         {
@@ -20,20 +22,6 @@ namespace ServiceDesk.Api.Builders.DtoBuilders.Client
             };
 
             return clientDto;
-        }
-
-        public ClientListDto BuildListItem(Core.Entities.PersonalAreaSystem.Client client)
-        {
-            var clientListDto = new ClientListDto()
-            {
-                Id = client.Id,
-                CreationDate = client.CreationDate,
-                IsActive = client.IsActive,
-                LockDate = client.LockDate,
-                Name = client.Name
-            };
-
-            return clientListDto;
         }
     }
 }

@@ -1,0 +1,34 @@
+query getClient($id: Int!) {
+    client(clientId: $id) {
+        id
+        name
+        isActive
+        creationDate
+        lockDate
+    }
+}
+
+query getClients {
+    clients {
+        id
+        name
+        isActive
+        creationDate
+    }
+}
+
+mutation createClient($name: String!) {
+    createClient(clientCreateDto: { name: $name }) {
+        id
+    }
+}
+
+mutation editClient($id: Int!, $name: String!) {
+    editClient(id: $id, clientCreateDto: { name: $name }) {
+        id
+    }
+}
+
+mutation deleteClient($id: Int!) {
+    deleteClient(id: $id)
+}

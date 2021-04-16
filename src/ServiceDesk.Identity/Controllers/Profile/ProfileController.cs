@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -15,47 +14,44 @@ namespace ServiceDesk.Identity.Controllers.Profile
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ICustomerService _customerService;
 
         public ProfileController(UserManager<ApplicationUser> userManager, 
-            ApplicationDbContext applicationDbContext)
+            ICustomerService customerService)
         {
             _userManager = userManager;
-            _applicationDbContext = applicationDbContext;
+            _customerService = customerService;
         }
-
-        /// <summary>
-        /// Get user profile
-        /// </summary>
+        
         [HttpGet]
         public async Task<ActionResult> Index([FromQuery] string userId)
         {
             var authUserId = HttpContext.User.GetSubjectId();
             var authUser = await _userManager.FindByIdAsync(authUserId);
-            var authRole = await GetRole(authUser);
+            var authRole = await _customerService.GetRole(authUser);
             
             var user = await _userManager.FindByIdAsync(userId);
-            var role = await GetRole(user);
+            var role = await _customerService.GetRole(user);
             
-            var clientId = GetClientId(userId);
-            var clientAuthUserId = GetClientId(authUserId);
+            var clientId = _customerService.GetClientId(userId);
+            var clientAuthUserId = _customerService.GetClientId(authUserId);
 
-            var canEdit = CanEditProfile(authRole, role, clientAuthUserId,
+            var canEdit = _customerService.CanEditProfile(authRole, role, clientAuthUserId,
                 clientId, authUserId == userId);
             
             if (authRole == SeedConfig.DEVELOPER_ROLE)
             {
-                var userData = GetUserData(user, role, clientId, canEdit);
+                var userData = _customerService.GetUserData(user, role, clientId, canEdit);
                 return Ok(userData);
             }
             
             if (clientAuthUserId == clientId)
             {
-                var userData = GetUserData(user, role, clientId, canEdit);
+                var userData = _customerService.GetUserData(user, role, clientId, canEdit);
                 return Ok(userData);
             }
 
-            return Forbid();
+            return Unauthorized();
         }
 
         [HttpPost]
@@ -63,7 +59,7 @@ namespace ServiceDesk.Identity.Controllers.Profile
         {
             var authUserId = HttpContext.User.GetSubjectId();
             var authUser = await _userManager.FindByIdAsync(authUserId);
-            var authRole = await GetRole(authUser);
+            var authRole = await _customerService.GetRole(authUser);
 
             var editedUser = await _userManager.FindByIdAsync(editUserData.UserId);
 
@@ -72,12 +68,12 @@ namespace ServiceDesk.Identity.Controllers.Profile
                 return NotFound();
             }
             
-            var editedUserRole = await GetRole(editedUser);
+            var editedUserRole = await _customerService.GetRole(editedUser);
             
-            var authClientId = GetClientId(authUserId);
-            var editedClientId = GetClientId(editUserData.UserId);
+            var authClientId = _customerService.GetClientId(authUserId);
+            var editedClientId = _customerService.GetClientId(editUserData.UserId);
             
-            var canEdit = CanEditProfile(authRole, editedUserRole, authClientId,
+            var canEdit = _customerService.CanEditProfile(authRole, editedUserRole, authClientId,
                 editedClientId, authUserId == editUserData.UserId);
 
             if (canEdit)
@@ -102,7 +98,7 @@ namespace ServiceDesk.Identity.Controllers.Profile
                 return BadRequest(result.Errors);
             }
 
-            return Forbid();
+            return Unauthorized();
         }
 
         [HttpPost("/change-password")]
@@ -110,15 +106,15 @@ namespace ServiceDesk.Identity.Controllers.Profile
         {
             var authUserId = HttpContext.User.GetSubjectId();
             var authUser = await _userManager.FindByIdAsync(authUserId);
-            var authRole = await GetRole(authUser);
+            var authRole = await _customerService.GetRole(authUser);
 
             var editedUser = await _userManager.FindByIdAsync(data.UserId);
-            var editedUserRole = await GetRole(editedUser);
+            var editedUserRole = await _customerService.GetRole(editedUser);
             
-            var authClientId = GetClientId(authUserId);
-            var editedClientId = GetClientId(data.UserId);
+            var authClientId = _customerService.GetClientId(authUserId);
+            var editedClientId = _customerService.GetClientId(data.UserId);
             
-            var canEdit = CanEditProfile(authRole, editedUserRole, authClientId,
+            var canEdit = _customerService.CanEditProfile(authRole, editedUserRole, authClientId,
                 editedClientId, authUserId == data.UserId);
 
             if (canEdit)
@@ -133,56 +129,7 @@ namespace ServiceDesk.Identity.Controllers.Profile
                 return BadRequest(result.Errors);
             }
 
-            return Forbid();
-        }
-
-        private bool CanEditProfile(string authRole, string editedRole, int? authClientId, 
-            int? editedClientId, bool isMyProfile)
-        {
-            if (isMyProfile)
-                return true;
-            
-            if (authRole == SeedConfig.DEVELOPER_ROLE && editedRole == SeedConfig.DEVELOPER_ROLE) 
-                return false;
-
-            if (authRole == SeedConfig.DEVELOPER_ROLE)
-                return true;
-
-            if (authClientId == editedClientId && authRole == SeedConfig.OWNER_ROLE)
-                return true;
-
-            return false;
-        }
-        private async Task<string> GetRole(ApplicationUser authUser)
-        {
-            var roles = await _userManager.GetRolesAsync(authUser);
-            
-            return roles.FirstOrDefault();
-        }
-
-        private int? GetClientId(string userId)
-        {
-            return _applicationDbContext.ClientUsers
-                .FirstOrDefault(cu => cu.UserId == userId)?
-                .ClientId;
-        }
-        
-        private UserDataDto GetUserData(ApplicationUser user, string role, int? clientId, bool canEdit)
-        {
-            return new UserDataDto()
-            {
-                UserId = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Patronymic = user.Patronymic,
-                Email = user.Email,
-                Role = role,
-                IsBanned = user.IsBanned,
-                BanDate = user.BanDate,
-                RegisterDate = user.RegisterDate,
-                ClientId = clientId,
-                CanEdit = canEdit
-            };
+            return Unauthorized();
         }
     }
 }

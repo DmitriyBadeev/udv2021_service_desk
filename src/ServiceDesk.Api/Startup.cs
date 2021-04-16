@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServiceDesk.Api.Queries;
 using ServiceDesk.Api.Mutations;
+using ServiceDesk.Api.Services;
 
 namespace ServiceDesk.Api
 {
@@ -44,7 +45,8 @@ namespace ServiceDesk.Api
                     options.Authority = "https://identity-desk.badeev.info";
                     options.ApiName = "ServiceDesk.Api";
                 });
-
+            
+            services.AddScoped<ISeedDataService, SeedService>();
             new DependencyInstaller(Configuration).Install(services);
         }
         

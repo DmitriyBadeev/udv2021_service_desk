@@ -14,15 +14,15 @@ namespace ServiceDesk.Identity.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> _claimsFactory;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ICustomerService _customerService;
 
         public ProfileService(UserManager<ApplicationUser> userManager, 
             IUserClaimsPrincipalFactory<ApplicationUser> claimsFactory,
-            RoleManager<IdentityRole> roleManager)
+            ICustomerService customerService)
         {
             _userManager = userManager;
             _claimsFactory = claimsFactory;
-            _roleManager = roleManager;
+            _customerService = customerService;
         }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -30,7 +30,7 @@ namespace ServiceDesk.Identity.Services
             var userId = context.Subject.GetSubjectId();
             var user = await _userManager.FindByIdAsync(userId);
             var principal = await _claimsFactory.CreateAsync(user);
-            
+
             var claims = principal.Claims.ToList();
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
             
@@ -46,6 +46,9 @@ namespace ServiceDesk.Identity.Services
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
             claims.Add(new Claim("role", role ?? string.Empty));
+
+            var customerId = _customerService.GetClientId(user.Id).ToString();
+            claims.Add(new Claim("customer_id", customerId));
             
             context.IssuedClaims = claims;
         }

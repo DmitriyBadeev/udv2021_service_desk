@@ -10,11 +10,13 @@ type propTypes = {
     patronymic: string
     email: string
     userId: string
+    buttonType?: "primary" | "link"
     reload: () => void
 }
 
 const EditProfile: React.FC<propTypes> = ({
     buttonSize = "middle",
+    buttonType = "primary",
     name,
     lastName,
     patronymic,
@@ -50,7 +52,7 @@ const EditProfile: React.FC<propTypes> = ({
 
     return (
         <>
-            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize}>
+            <Button type={buttonType} onClick={() => setVisible(true)} size={buttonSize}>
                 <EditOutlined /> Редактировать профиль
             </Button>
             <Drawer

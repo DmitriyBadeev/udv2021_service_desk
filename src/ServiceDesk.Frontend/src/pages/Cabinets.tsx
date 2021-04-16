@@ -1,30 +1,38 @@
-import { Button, Table } from "antd"
+import { Button, Table, message, Popconfirm } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import AddCustomer from "components/forms/AddCustomer"
 import FadePage from "components/fade/FadePage"
 import React from "react"
 import { Link } from "react-router-dom"
+import { useGetClientsQuery, useDeleteClientMutation } from "types"
+import { Text } from "GeneralStyles"
+import { getNumericStringDate } from "helpers/dateHelpers"
+import EditCustomer from "components/forms/EditCustomer"
 
 const Cabinets: React.FC = () => {
-    const dataSource = [
-        {
-            key: "1",
-            id: "1",
-            name: "Уралвагонзавод",
-            isActive: "Активен",
-            creationDate: "21.04.2021",
-            countCostomers: 6,
-        },
-        {
-            key: "2",
-            id: "2",
-            name: "РосПил",
-            isActive: "Активен",
-            creationDate: "14.04.2021",
-            countCostomers: 10,
-        },
-    ]
+    const { loading, data, error, refetch } = useGetClientsQuery()
+    const [deleteQuery, { loading: deleteLoading }] = useDeleteClientMutation()
+    if (error) message.error(error.message)
+
+    const dataSource = data?.clients?.map((s, i) => {
+        return {
+            key: i,
+            ...s,
+        }
+    })
+
+    const deleteHandler = (id: number) => {
+        deleteQuery({ variables: { id } })
+            .then(() => {
+                message.success("Заказчик удален")
+                refetch()
+            })
+            .catch((error) => {
+                console.log(error)
+                message.error("Произошла ошибка")
+            })
+    }
 
     const columns = [
         {
@@ -44,16 +52,17 @@ const Cabinets: React.FC = () => {
             title: "Активность",
             dataIndex: "isActive",
             key: "isActive",
+            render: (_items: any, item: any) => {
+                return <Text>{item.isActive ? "Активен" : "Заблокирован"}</Text>
+            },
         },
         {
             title: "Дата создания",
             dataIndex: "creationDate",
             key: "creationDate",
-        },
-        {
-            title: "Кол-во представителей заказчика",
-            dataIndex: "countCostomers",
-            key: "countCostomers",
+            render: (_items: any, item: any) => {
+                return <Text>{getNumericStringDate(item.creationDate)}</Text>
+            },
         },
         {
             title: "Действия",
@@ -61,7 +70,15 @@ const Cabinets: React.FC = () => {
             colSpan: 2,
             width: 150,
             render: (_items: any, item: any) => {
-                return <Button type="link">Редактировать</Button>
+                return (
+                    <EditCustomer
+                        buttonSize="middle"
+                        id={item.id}
+                        name={item.name}
+                        type="link"
+                        reload={() => refetch()}
+                    />
+                )
             },
         },
         {
@@ -70,9 +87,11 @@ const Cabinets: React.FC = () => {
             width: 100,
             render: (_items: any, item: any) => {
                 return (
-                    <Button type="link" danger>
-                        Удалить
-                    </Button>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(item.id)}>
+                        <Button type="link" danger>
+                            Удалить
+                        </Button>
+                    </Popconfirm>
                 )
             },
         },
@@ -81,8 +100,11 @@ const Cabinets: React.FC = () => {
     return (
         <FadePage>
             <Card>
-                <CardHeader title="Личные кабинеты заказчиков" Form={AddCustomer} />
-                <Table size="middle" dataSource={dataSource} columns={columns} />
+                <CardHeader
+                    title="Личные кабинеты заказчиков"
+                    Form={() => <AddCustomer buttonSize="large" reload={() => refetch()} />}
+                />
+                <Table size="middle" dataSource={dataSource} columns={columns} loading={loading || deleteLoading} />
             </Card>
         </FadePage>
     )

@@ -60,6 +60,7 @@ namespace ServiceDesk.Identity
             var rsa = new RsaKeyService(_environment, TimeSpan.FromDays(120));
             services.AddSingleton(provider => rsa);
             services.AddScoped<ISeedDataService, SeedService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddMvc();
             
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;

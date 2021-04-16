@@ -13,16 +13,21 @@ import Cabinets from "pages/Cabinets"
 import Cabinet from "pages/Cabinet"
 import Profile from "pages/Profile"
 import CustomerAppeals from "pages/CustomerAppeals"
+import { DEVELOPER_ROLE } from "helpers/roleHelper"
 
 const Routes: React.FC = () => {
     return (
         <ScrollToTop>
             <Switch>
                 <PrivateRoute exact path="/">
-                    <ServiceDesk />
+                    <DeveloperRoute>
+                        <ServiceDesk />
+                    </DeveloperRoute>
                 </PrivateRoute>
                 <PrivateRoute exact path="/cabinets">
-                    <Cabinets />
+                    <DeveloperRoute>
+                        <Cabinets />
+                    </DeveloperRoute>
                 </PrivateRoute>
                 <PrivateRoute exact path="/cabinets/:id">
                     <Cabinet />
@@ -76,6 +81,34 @@ const PrivateRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
                     <Redirect
                         to={{
                             pathname: "/enter",
+                            state: { from: location },
+                        }}
+                    />
+                )
+            }
+        />
+    )
+})
+
+const DeveloperRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
+    const { authService } = useStore()
+
+    if (authService.isLoadingUser) {
+        return <Loading height="70vh" size="big" />
+    }
+
+    const userRole = authService.user?.profile.role
+
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                userRole === DEVELOPER_ROLE ? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/customer-appeals",
                             state: { from: location },
                         }}
                     />

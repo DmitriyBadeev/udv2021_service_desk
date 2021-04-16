@@ -56,10 +56,7 @@ const App: React.FC = observer(() => {
     return (
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
-                <ConfigProvider
-                    locale={ru_RU}
-                    csp={{ nonce: "udv_service_desk" }}
-                >
+                <ConfigProvider locale={ru_RU} csp={{ nonce: "udv_service_desk" }}>
                     <BrowserRouter>
                         <Shared>
                             <Routes />

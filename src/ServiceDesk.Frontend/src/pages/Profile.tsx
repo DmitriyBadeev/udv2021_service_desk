@@ -32,23 +32,26 @@ const Profile: React.FC = () => {
     const registerDate = data?.registerDate
     const isBanned = data?.isBanned
     const profileUserId = data?.userId
+    const canEdit = data?.canEdit || false
 
     return (
         <FadePage>
             <Card>
                 <CardHeader
                     title="Информация о пользователе"
-                    Form={() => (
-                        <EditProfile
-                            buttonSize="large"
-                            name={firstName}
-                            lastName={lastName}
-                            patronymic={patronymic}
-                            email={email}
-                            userId={profileUserId}
-                            reload={reload}
-                        />
-                    )}
+                    Form={() =>
+                        canEdit && (
+                            <EditProfile
+                                buttonSize="large"
+                                name={firstName}
+                                lastName={lastName}
+                                patronymic={patronymic}
+                                email={email}
+                                userId={profileUserId}
+                                reload={reload}
+                            />
+                        )
+                    }
                 />
 
                 <Descriptions column={2} labelStyle={{ fontWeight: 600 }}>
@@ -62,9 +65,7 @@ const Profile: React.FC = () => {
                     <Descriptions.Item label="Роль">{getRoleDisplayName(role)}</Descriptions.Item>
                     <Descriptions.Item label="Статус">{isBanned ? "Заблокирован" : "Активирован"}</Descriptions.Item>
                     <Descriptions.Item label="Пароль">
-                        <Space>
-                            **** <ChangePassword userId={profileUserId} />
-                        </Space>
+                        <Space>**** {canEdit && <ChangePassword userId={profileUserId} />}</Space>
                     </Descriptions.Item>
                 </Descriptions>
             </Card>

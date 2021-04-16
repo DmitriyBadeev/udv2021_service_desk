@@ -1,22 +1,25 @@
 import React, { useState } from "react"
 import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
-import { PlusOutlined } from "@ant-design/icons"
-import { useCreateClientMutation } from "types"
+import { EditOutlined } from "@ant-design/icons"
+import { useEditClientMutation } from "types"
 
 type propTypes = {
     buttonSize?: "large" | "middle"
     reload: () => void
+    id: number
+    name: string
+    type: "link" | "primary"
 }
 
-const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => {
+const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, name, type }) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
-    const [query, { loading }] = useCreateClientMutation()
+    const [query, { loading }] = useEditClientMutation()
 
     const onFinish = (data: any) => {
-        query({ variables: { name: data.name } })
+        query({ variables: { name: data.name, id } })
             .then(() => {
-                message.success("Заказчик успешно создан")
+                message.success("Заказчик успешно изменен")
                 reload()
                 setVisible(false)
             })
@@ -28,11 +31,11 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
 
     return (
         <>
-            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize}>
-                <PlusOutlined /> Добавить
+            <Button type={type} onClick={() => setVisible(true)} size={buttonSize}>
+                <EditOutlined /> Редактировать
             </Button>
             <Drawer
-                title="Добавление личного кабинета"
+                title="Редактирование личного кабинета заказчика"
                 width={720}
                 onClose={() => setVisible(false)}
                 visible={visible}
@@ -40,7 +43,7 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
                 footer={
                     <Space size="large" style={{ padding: "5px 15px" }}>
                         <Button onClick={() => form.submit()} type="primary" size="large" loading={loading}>
-                            Добавить
+                            Редактировать
                         </Button>
                         <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }} size="large">
                             Отмена
@@ -54,6 +57,7 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
                             <Form.Item
                                 name="name"
                                 label="Название организации"
+                                initialValue={name}
                                 rules={[{ required: true, message: "Введите название организации" }]}
                             >
                                 <Input size="large" placeholder="Название организации" />
@@ -66,4 +70,4 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
     )
 }
 
-export default AddCustomer
+export default EditCustomer

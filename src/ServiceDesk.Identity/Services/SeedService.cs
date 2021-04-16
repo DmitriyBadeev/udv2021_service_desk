@@ -16,7 +16,7 @@ namespace ServiceDesk.Identity.Services
         public const string DEVELOPER_ROLE = "DEVELOPER";
         public const string CUSTOMER_ROLE = "CUSTOMER";
         public const string OWNER_ROLE = "OWNER";
-        
+                                        
         public const string GOD_USER_NAME = "GodUser";
     }
     
@@ -176,6 +176,16 @@ namespace ServiceDesk.Identity.Services
 
                 var createdCustomerUser = _userManager.FindByNameAsync("ivanov").GetAwaiter().GetResult();
                 _userManager.AddToRoleAsync(createdCustomerUser, SeedConfig.CUSTOMER_ROLE).GetAwaiter().GetResult();
+
+                var clientUser = new ClientUser()
+                {
+                    User = createdCustomerUser, 
+                    ClientId = 1, 
+                    UserId = createdCustomerUser.Id
+                };
+                
+                _applicationDbContext.ClientUsers.Add(clientUser);
+                _applicationDbContext.SaveChanges();
             }
             
         }

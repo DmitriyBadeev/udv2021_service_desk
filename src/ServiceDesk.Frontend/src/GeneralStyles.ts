@@ -4,7 +4,7 @@ import { Typography } from "antd"
 const { Text: AntText } = Typography
 
 type TextProps = {
-    $color?: "primary" | "grey1" | "grey2" | "black" | "red" | "green"
+    $color?: "primary" | "grey1" | "grey2" | "grey3" | "grey4" | "grey5" | "grey6" | "black" | "red" | "green"
     $bold?: boolean
     $align?: "center" | "left" | "right"
 }
@@ -68,6 +68,14 @@ function chooseColor(
             return props.theme.grey1
         case "grey2":
             return props.theme.grey2
+        case "grey3":
+            return props.theme.grey3
+        case "grey4":
+            return props.theme.grey4
+        case "grey5":
+            return props.theme.grey5
+        case "grey6":
+            return props.theme.grey6
         case "black":
             return props.theme.black
         case "red":

@@ -16,11 +16,7 @@ const FadePage: React.FC = (props) => {
     }, [])
 
     return (
-        <CSSTransition
-            classNames="page-fade"
-            in={inProp}
-            timeout={{ enter: 300, exit: 300 }}
-        >
+        <CSSTransition classNames="page-fade" in={inProp} timeout={{ enter: 300, exit: 300 }}>
             <WrapperFade>{props.children}</WrapperFade>
         </CSSTransition>
     )

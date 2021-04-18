@@ -2,22 +2,20 @@ import { useState } from "react"
 import axios from "axios"
 import { BASE_IDENTITY_URL } from "store/Config"
 
-export type RegistrationCustomerUserData = {
+export type RegistrationDeveloperUserData = {
     Email: string
     LastName: string
     FirstName: string
     Patronymic: string
     Password: string
-    Role: string
-    ClientId: number
 }
 
-const useAddCustomerUser = () => {
+const useAddDeveloperUser = () => {
     const token = window.localStorage.getItem("token")
     const [loading, setLoading] = useState(false)
 
     const query = (
-        data: RegistrationCustomerUserData,
+        data: RegistrationDeveloperUserData,
         onSuccess: (res: any) => void,
         onError: (error: any) => void
     ) => {
@@ -31,7 +29,7 @@ const useAddCustomerUser = () => {
         })
 
         identityApi
-            .post("/registration/customer", data)
+            .post("/registration/developer", data)
             .then((res) => {
                 onSuccess(res)
                 setLoading(false)
@@ -46,4 +44,4 @@ const useAddCustomerUser = () => {
     return { query, loading }
 }
 
-export default useAddCustomerUser
+export default useAddDeveloperUser

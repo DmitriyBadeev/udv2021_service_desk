@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServiceDesk.Api.Dtos.Client
 {
-    public class ClientDto
+    public class ClientDto : IDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

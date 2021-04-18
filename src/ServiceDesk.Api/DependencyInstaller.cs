@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceDesk.Api.Handlers;
+using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api
@@ -35,7 +37,7 @@ namespace ServiceDesk.Api
                 .FromApplicationDependencies()
                 .AddClasses(classes => classes
                     .InNamespaces("ServiceDesk.Api.Builders.DtoBuilders")
-                    .Where(type => type.Name.EndsWith("DtoBuilder")))
+                    .Where(type => type.Name.Contains("Builder")))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
 

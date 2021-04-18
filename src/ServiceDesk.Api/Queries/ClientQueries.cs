@@ -2,8 +2,11 @@
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.AspNetCore.Authorization;
+using ServiceDesk.Api.Builders.DtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
+using ServiceDesk.Api.Handlers;
 using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
+using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Queries
@@ -13,34 +16,34 @@ namespace ServiceDesk.Api.Queries
     {
         private readonly IClientHandler clientHandler;
 
-        public ClientQueries(IClientHandler clientHandler)
+        public ClientQueries(IClientHandler genericHandler)
         {
-            this.clientHandler = clientHandler;
+            this.clientHandler = genericHandler;
         }
-        
-        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE})]
+
+        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public ClientDto GetClient(int clientId, [Service] ServiceDeskDbContext context)
         {
 
-            var client = clientHandler.Get(clientId, context);
+            var client = clientHandler.Get<ClientDtoBuilder, ClientDto>(clientId, context);
 
             return client;
         }
-        
-        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
-        public IEnumerable<ClientListDto> GetClients([Service] ServiceDeskDbContext context)
+
+        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        public IEnumerable<ClientDto> GetClients([Service] ServiceDeskDbContext context)
         {
 
-            var clients = clientHandler.GetAll(context);
+            var clients = clientHandler.GetAll<ClientDtoBuilder, ClientDto>(context);
 
             return clients;
         }
-        
-        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
-        public IEnumerable<ClientListDto> PageClients(int pageNumber, int count, [Service] ServiceDeskDbContext context)
+
+        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        public IEnumerable<ClientDto> PageClients(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
 
-            var clients = clientHandler.Page(pageNumber, count, context);
+            var clients = clientHandler.Page<ClientDtoBuilder, ClientDto>(pageNumber, count, context);
 
             return clients;
         }

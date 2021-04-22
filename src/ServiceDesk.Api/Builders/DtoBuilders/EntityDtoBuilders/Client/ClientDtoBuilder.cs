@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
-using ServiceDesk.Api.Dtos;
-using ServiceDesk.Api.Dtos.Client;
+﻿using ServiceDesk.Api.Dtos.Client;
 
-namespace ServiceDesk.Api.Builders.DtoBuilders.Client
+namespace ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client
 {
     public class ClientDtoBuilder : IClientDtoBuilder<ClientDto>
     {

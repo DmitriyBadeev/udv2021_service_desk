@@ -14,6 +14,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
       <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
       <PackageReference Include="Scrutor" Version="3.3.0" />
@@ -21,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="Handlers\DirectorySystem\" />
-      <Folder Include="Handlers\RequestSystem\" />
       <Folder Include="Logs" />
     </ItemGroup>
 

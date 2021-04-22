@@ -11,5 +11,8 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         public string Text { get; set; }
         public string AuthorId { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public Guid RequestId { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

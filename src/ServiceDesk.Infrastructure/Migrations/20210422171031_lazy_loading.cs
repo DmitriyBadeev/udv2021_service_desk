@@ -2,7 +2,7 @@
 
 namespace ServiceDesk.Infrastructure.Migrations
 {
-    public partial class client_identity : Migration
+    public partial class lazy_loading : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

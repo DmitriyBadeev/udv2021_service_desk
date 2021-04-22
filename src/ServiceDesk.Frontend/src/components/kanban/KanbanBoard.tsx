@@ -92,22 +92,20 @@ const HeaderColumn = styled.div`
 `
 
 const Column = styled.div<{ isDraggingOver: boolean }>`
-    background: ${(props) => (props.isDraggingOver ? props.theme.grey5 : props.theme.grey5)};
+    background: ${(props) => (props.isDraggingOver ? props.theme.inputShadowColor : props.theme.grey5)};
     border-radius: 2px;
     padding: 12px 7px;
     height: 600px;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: ${(props) => props.isDraggingOver && props.theme.inputShadowFocus};
 `
 
 const Card = styled.div<{ isDragging: boolean }>`
     background: ${(props) => (props.isDragging ? props.theme.white : props.theme.white)};
     border-radius: 3px;
     padding: 8px;
-    transition: all 0.3s;
     user-select: none;
-    margin-bottom: 6px;
+    margin: 0 0 6px 0;
     min-height: 80px;
 
     &:hover {
@@ -168,7 +166,6 @@ const KanbanBoard: React.FC = () => {
                                                                     <SmallText $color="grey3">
                                                                         #{item.Software}
                                                                     </SmallText>
-                                                                    <br />
 
                                                                     <Paragraph
                                                                         ellipsis={{

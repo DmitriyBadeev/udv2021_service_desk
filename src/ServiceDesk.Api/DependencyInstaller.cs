@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ServiceDesk.Api.Handlers;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
+using ServiceDesk.Infrastructure.EnumHelper;
 
 namespace ServiceDesk.Api
 {
@@ -22,8 +25,12 @@ namespace ServiceDesk.Api
 
         public void Install(IServiceCollection services)
         {
-            services.AddDbContext<ServiceDeskDbContext>(x => 
-                x.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ServiceDeskDbContext>(x => x
+                .UseLazyLoadingProxies()
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .LogTo(Console.WriteLine, LogLevel.Information));
+
+            services.AddTransient<IEnumHelper, EnumHelper>();
 
             services.Scan(scan => scan
                 .FromApplicationDependencies()

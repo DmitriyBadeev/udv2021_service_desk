@@ -15,9 +15,9 @@ namespace ServiceDesk.Core.Entities.DirectorySystem
         public int CountOfUsers { get; set; }
 
         public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public virtual Client Client { get; set; }
 
         public int SoftwareId { get; set; }
-        public Software Software { get; set; }
+        public virtual Software Software { get; set; }
     }
 }

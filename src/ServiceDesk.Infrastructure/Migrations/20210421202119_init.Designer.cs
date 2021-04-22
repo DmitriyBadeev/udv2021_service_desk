@@ -10,7 +10,7 @@ using ServiceDesk.Infrastructure;
 namespace ServiceDesk.Infrastructure.Migrations
 {
     [DbContext(typeof(ServiceDeskDbContext))]
-    [Migration("20210409193011_init")]
+    [Migration("20210421202119_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,7 +103,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LockDate")
+                    b.Property<DateTime?>("LockDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -142,8 +142,8 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RequestId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RequestId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -157,10 +157,9 @@ namespace ServiceDesk.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Request", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
@@ -171,7 +170,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<string>("DeveloperRepresentativeId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ProcessingDate")
+                    b.Property<DateTime?>("ProcessingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RequestStatus")
@@ -205,8 +204,8 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 

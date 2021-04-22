@@ -22,7 +22,7 @@ namespace ServiceDesk.Api.Handlers
             where TDto : class, IDto
         {
             var entity = CreateEntity<TFactory, TEntityData>(data);
-
+            
             var entities = context.Set<TEntity>();
             entities.Add(entity);
             context.SaveChanges();
@@ -59,6 +59,24 @@ namespace ServiceDesk.Api.Handlers
         }
 
         public TDto Get<TDtoBuilder, TDto>(int entityId, ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto
+        {
+            var entities = context.Set<TEntity>();
+
+            var entity = entities.Find(entityId);
+
+            if (entity != null)
+            {
+                var dto = CreateDto<TDtoBuilder, TDto>(entity);
+
+                return dto;
+            }
+
+            return null;
+        }
+
+        public TDto Get<TDtoBuilder, TDto>(Guid entityId, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
         {
@@ -127,6 +145,29 @@ namespace ServiceDesk.Api.Handlers
             return null;
         }
 
+        public TDto Edit<TDtoBuilder, TDto, TEntityData>(Guid entityId, TEntityData data, ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto
+            where TEntityData : class
+        {
+            var entities = context.Set<TEntity>();
+
+            var entity = entities.Find(entityId);
+            if (entity != null)
+            {
+                entity = EditByReflection(entity, data);
+
+                entities.Update(entity);
+                context.SaveChanges();
+
+                var dto = CreateDto<TDtoBuilder, TDto>(entity);
+
+                return dto;
+            }
+
+            return null;
+        }
+
         private TEntity EditByReflection<TEntityData>(TEntity entity, TEntityData data)
             where TEntityData : class
         {
@@ -146,6 +187,25 @@ namespace ServiceDesk.Api.Handlers
         }
 
         public void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess)
+        {
+            var entities = context.Set<TEntity>();
+
+            var entity = entities.Find(entityId);
+
+            if (entity != null)
+            {
+                entities.Remove(entity);
+                context.SaveChanges();
+
+                isSuccess = true;
+            }
+            else
+            {
+                isSuccess = false;
+            }
+        }
+
+        public void Delete(Guid entityId, ServiceDeskDbContext context, out bool isSuccess)
         {
             var entities = context.Set<TEntity>();
 

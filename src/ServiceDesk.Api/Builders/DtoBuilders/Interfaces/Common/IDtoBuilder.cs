@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ServiceDesk.Api.Dtos;
+using ServiceDesk.Core.Enums;
 using ServiceDesk.Core.Interfaces.Common;
 
 namespace ServiceDesk.Api.Builders.DtoBuilders.Interfaces

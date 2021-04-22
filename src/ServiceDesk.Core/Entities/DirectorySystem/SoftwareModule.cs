@@ -11,6 +11,6 @@ namespace ServiceDesk.Core.Entities.DirectorySystem
         public string Title { get; set; }
 
         public int SoftwareId { get; set; }
-        public Software Software { get; set; }
+        public virtual Software Software { get; set; }
     }
 }

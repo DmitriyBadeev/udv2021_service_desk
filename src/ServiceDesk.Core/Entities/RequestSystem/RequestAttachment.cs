@@ -10,7 +10,7 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         public int Id { get; set; }
         public string FilePath { get; set; }
 
-        public int RequestId { get; set; }
-        public Request Request { get; set; }
+        public Guid RequestId { get; set; }
+        public virtual Request Request { get; set; }
     }
 }

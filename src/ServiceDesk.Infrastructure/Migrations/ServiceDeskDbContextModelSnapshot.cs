@@ -140,8 +140,8 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RequestId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -155,10 +155,9 @@ namespace ServiceDesk.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Request", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
@@ -203,8 +202,8 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RequestId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -256,9 +255,13 @@ namespace ServiceDesk.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Comment", b =>
                 {
-                    b.HasOne("ServiceDesk.Core.Entities.RequestSystem.Request", null)
+                    b.HasOne("ServiceDesk.Core.Entities.RequestSystem.Request", "Request")
                         .WithMany("Comments")
-                        .HasForeignKey("RequestId");
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
                 });
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Request", b =>

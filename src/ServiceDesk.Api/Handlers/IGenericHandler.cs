@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ServiceDesk.Api.Builders.DtoBuilders.Implemetations.Common;
 using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
 using ServiceDesk.Api.Dtos;
 using ServiceDesk.Core.Interfaces.Common;
 using ServiceDesk.Core.Interfaces.Factories;
 using ServiceDesk.Infrastructure;
+using ServiceDesk.Infrastructure.Implementations.Factories;
 
 namespace ServiceDesk.Api.Handlers
 {
@@ -23,6 +25,10 @@ namespace ServiceDesk.Api.Handlers
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto;
 
+        public TDto Get<TDtoBuilder, TDto>(Guid entityId, ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto;
+
         public IEnumerable<TDto> GetAll<TDtoBuilder, TDto>(ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto;
@@ -36,6 +42,13 @@ namespace ServiceDesk.Api.Handlers
             where TDto : class, IDto
             where TEntityData : class;
 
+        public TDto Edit<TDtoBuilder, TDto, TEntityData>(Guid entityId, TEntityData data, ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto
+            where TEntityData : class;
+
         public void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess);
+
+        public void Delete(Guid entityId, ServiceDeskDbContext context, out bool isSuccess);
     }
 }

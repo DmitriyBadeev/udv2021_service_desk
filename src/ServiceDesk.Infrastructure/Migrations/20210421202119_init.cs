@@ -16,7 +16,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LockDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LockDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,12 +108,11 @@ namespace ServiceDesk.Infrastructure.Migrations
                 name: "Requests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Theme = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProcessingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeveloperRepresentativeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RequestStatus = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
@@ -145,7 +144,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AuthorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RequestId = table.Column<int>(type: "int", nullable: true)
+                    RequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -165,7 +164,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RequestId = table.Column<int>(type: "int", nullable: false)
+                    RequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

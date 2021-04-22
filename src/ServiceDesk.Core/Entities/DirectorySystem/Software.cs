@@ -10,6 +10,6 @@ namespace ServiceDesk.Core.Entities.DirectorySystem
         public int Id { get; set; }
         public string Title { get; set; }
 
-        public ICollection<SoftwareModule> SoftwareModules { get; set; }
+        public virtual ICollection<SoftwareModule> SoftwareModules { get; set; }
     }
 }

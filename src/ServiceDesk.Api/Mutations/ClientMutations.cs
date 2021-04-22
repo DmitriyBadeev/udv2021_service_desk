@@ -1,7 +1,7 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.Client;
+using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
 using ServiceDesk.Api.Dtos.Client;
 using ServiceDesk.Api.Handlers;

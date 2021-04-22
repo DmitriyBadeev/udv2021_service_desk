@@ -2,7 +2,7 @@
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.AspNetCore.Authorization;
-using ServiceDesk.Api.Builders.DtoBuilders.Client;
+using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
 using ServiceDesk.Api.Handlers;
 using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
@@ -16,9 +16,9 @@ namespace ServiceDesk.Api.Queries
     {
         private readonly IClientHandler clientHandler;
 
-        public ClientQueries(IClientHandler genericHandler)
+        public ClientQueries(IClientHandler clientHandler)
         {
-            this.clientHandler = genericHandler;
+            this.clientHandler = clientHandler;
         }
 
         //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ServiceDesk.Api.Builders.DtoBuilders.Implemetations.Common;
 using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
@@ -50,5 +51,10 @@ namespace ServiceDesk.Api.Handlers
         public void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess);
 
         public void Delete(Guid entityId, ServiceDeskDbContext context, out bool isSuccess);
+
+        public IEnumerable<TDto> Query<TDtoBuilder, TDto>(Expression<Func<TEntity, bool>> sample,
+            ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto;
     }
 }

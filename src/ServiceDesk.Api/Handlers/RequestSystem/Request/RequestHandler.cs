@@ -31,10 +31,10 @@ namespace ServiceDesk.Api.Handlers.RequestSystem.Request
             return boards;
         }
 
-        public List<RequestDto> Query(Expression<Func<Core.Entities.RequestSystem.Request, bool>> sample, 
+        public override IEnumerable<TDto> Query<TDtoBuilder, TDto>(Expression<Func<Core.Entities.RequestSystem.Request, bool>> sample, 
             ServiceDeskDbContext context)
         {
-            var dtoBuilder = dtoBuilderManager.GetDtoBuilder<RequestDtoBuilder, RequestDto>();
+            var dtoBuilder = dtoBuilderManager.GetDtoBuilder<TDtoBuilder, TDto>();
 
             var requests = context.Requests
                 .Where(sample)

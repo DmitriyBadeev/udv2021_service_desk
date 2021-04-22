@@ -36,10 +36,12 @@ namespace ServiceDesk.Api
                 .AddType<TestQueries>()
                 .AddType<ClientQueries>()
                 .AddType<RequestQueries>()
+                .AddType<CommentQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<TestMutations>()
                 .AddType<ClientMutations>()
-                .AddType<RequestMutations>();
+                .AddType<RequestMutations>()
+                .AddType<CommentMutations>();
             
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>

@@ -12,8 +12,5 @@ namespace ServiceDesk.Api.Handlers.RequestSystem.Request
     public interface IRequestHandler : IGenericHandler<Core.Entities.RequestSystem.Request>
     {
         public List<RequestBoardDto> RequestBoards([Service] ServiceDeskDbContext context);
-
-        public List<RequestDto> Query(Expression<Func<Core.Entities.RequestSystem.Request, bool>> sample,
-            ServiceDeskDbContext context);
     }
 }

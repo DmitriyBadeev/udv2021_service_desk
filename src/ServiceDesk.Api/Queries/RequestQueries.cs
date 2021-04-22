@@ -53,7 +53,8 @@ namespace ServiceDesk.Api.Queries
 
         public IEnumerable<RequestDto> GetClientRequests(int clientId, [Service] ServiceDeskDbContext context)
         {
-            var requests = requestHandler.Query(x => x.Author.ClientId == clientId, context);
+            var requests = requestHandler
+                .Query<RequestDtoBuilder, RequestDto>(x => x.Author.ClientId == clientId, context);
 
             return requests;
         }

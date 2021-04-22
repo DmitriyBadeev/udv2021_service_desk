@@ -9,6 +9,7 @@ namespace ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem
     {
         public string Text { get; set; }
         public string AuthorId { get; set; }
+        public Guid RequestId { get; set; }
     }
 
     public class CommentFactory : ICommentFactory<CommentData>
@@ -19,7 +20,8 @@ namespace ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem
             {
                 Text = data.Text,
                 AuthorId = data.AuthorId,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                RequestId = data.RequestId
             };
 
             return comment;

@@ -15,14 +15,14 @@ namespace ServiceDesk.Core.Enums
 
         [Description("В работе")]
         InWork,
-
+        
+        [Description("Переоткрытые")]
+        Reopening,
+        
         [Description("Отклоненные")]
         Rejecting,
 
         [Description("Закрытые")]
         Closing,
-
-        [Description("Переоткрытые")]
-        Reopening
     }
 }

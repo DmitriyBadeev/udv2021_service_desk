@@ -118,9 +118,9 @@ const KanbanBoard: React.FC = () => {
         if (columnId === "0") toNew({ variables: { id: appeal.id } })
         if (columnId === "1") toRegistration({ variables: { id: appeal.id } })
         if (columnId === "2") toWork({ variables: { id: appeal.id } })
-        if (columnId === "3") toReject({ variables: { id: appeal.id } })
-        if (columnId === "4") toClosing({ variables: { id: appeal.id } })
-        if (columnId === "5") toReopen({ variables: { id: appeal.id } })
+        if (columnId === "3") toReopen({ variables: { id: appeal.id } })
+        if (columnId === "4") toReject({ variables: { id: appeal.id } })
+        if (columnId === "5") toClosing({ variables: { id: appeal.id } })
     }
 
     return (

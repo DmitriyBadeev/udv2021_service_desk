@@ -27,5 +27,10 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }
+
+        public void ChangeStatus(RequestStatuses toStatus)
+        {
+            RequestStatus = toStatus;
+        }
     }
 }

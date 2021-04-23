@@ -17,9 +17,9 @@ namespace ServiceDesk.Api.Mutations
     {
         private readonly IClientHandler clientHandler;
 
-        public ClientMutations(IClientHandler genericHandler)
+        public ClientMutations(IClientHandler clientHandler)
         {
-            this.clientHandler = genericHandler;
+            this.clientHandler = clientHandler;
         }
         
         //[Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]

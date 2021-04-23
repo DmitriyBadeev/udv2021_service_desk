@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ServiceDesk.Api.Builders.DtoBuilders.Implemetations.Common;
 using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
@@ -15,7 +16,7 @@ namespace ServiceDesk.Api.Handlers
     public class GenericHandler<TEntity> : IGenericHandler<TEntity>
         where TEntity : class, IEntity
     {
-        public TDto Create<TFactory, TDtoBuilder, TEntityData, TDto>(TEntityData data, ServiceDeskDbContext context)
+        public virtual TDto Create<TFactory, TDtoBuilder, TEntityData, TDto>(TEntityData data, ServiceDeskDbContext context)
             where TFactory : class, IGenericFactory<TEntity, TEntityData>
             where TDtoBuilder: class, IDtoBuilder<TEntity, TDto>
             where TEntityData : class, IFactoryData
@@ -58,7 +59,7 @@ namespace ServiceDesk.Api.Handlers
             return dto;
         }
 
-        public TDto Get<TDtoBuilder, TDto>(int entityId, ServiceDeskDbContext context)
+        public virtual TDto Get<TDtoBuilder, TDto>(int entityId, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
         {
@@ -76,7 +77,7 @@ namespace ServiceDesk.Api.Handlers
             return null;
         }
 
-        public TDto Get<TDtoBuilder, TDto>(Guid entityId, ServiceDeskDbContext context)
+        public virtual TDto Get<TDtoBuilder, TDto>(Guid entityId, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
         {
@@ -94,7 +95,7 @@ namespace ServiceDesk.Api.Handlers
             return null;
         }
 
-        public IEnumerable<TDto> GetAll<TDtoBuilder, TDto>(ServiceDeskDbContext context)
+        public virtual IEnumerable<TDto> GetAll<TDtoBuilder, TDto>(ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
         {
@@ -107,7 +108,7 @@ namespace ServiceDesk.Api.Handlers
             return dtos;
         }
 
-        public IEnumerable<TDto> Page<TDtoBuilder, TDto>(int pageNumber, int count, ServiceDeskDbContext context)
+        public virtual IEnumerable<TDto> Page<TDtoBuilder, TDto>(int pageNumber, int count, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
         {
@@ -122,7 +123,7 @@ namespace ServiceDesk.Api.Handlers
             return dtos;
         }
 
-        public TDto Edit<TDtoBuilder, TDto, TEntityData>(int entityId, TEntityData data, ServiceDeskDbContext context)
+        public virtual TDto Edit<TDtoBuilder, TDto, TEntityData>(int entityId, TEntityData data, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
             where TEntityData : class
@@ -145,7 +146,7 @@ namespace ServiceDesk.Api.Handlers
             return null;
         }
 
-        public TDto Edit<TDtoBuilder, TDto, TEntityData>(Guid entityId, TEntityData data, ServiceDeskDbContext context)
+        public virtual TDto Edit<TDtoBuilder, TDto, TEntityData>(Guid entityId, TEntityData data, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
             where TDto : class, IDto
             where TEntityData : class
@@ -186,7 +187,7 @@ namespace ServiceDesk.Api.Handlers
             return entity;
         }
 
-        public void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess)
+        public virtual void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess)
         {
             var entities = context.Set<TEntity>();
 
@@ -205,7 +206,7 @@ namespace ServiceDesk.Api.Handlers
             }
         }
 
-        public void Delete(Guid entityId, ServiceDeskDbContext context, out bool isSuccess)
+        public virtual void Delete(Guid entityId, ServiceDeskDbContext context, out bool isSuccess)
         {
             var entities = context.Set<TEntity>();
 
@@ -222,6 +223,21 @@ namespace ServiceDesk.Api.Handlers
             {
                 isSuccess = false;
             }
+        }
+
+        public virtual IEnumerable<TDto> Query<TDtoBuilder, TDto>(Expression<Func<TEntity, bool>> sample,
+            ServiceDeskDbContext context)
+            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
+            where TDto : class, IDto
+        {
+            var entities = context
+                .Set<TEntity>()
+                .Where(sample)
+                .AsEnumerable();
+
+            var dtos = entities.Select(CreateDto<TDtoBuilder, TDto>);
+
+            return dtos;
         }
     }
 }

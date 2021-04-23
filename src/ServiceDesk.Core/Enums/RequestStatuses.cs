@@ -7,22 +7,22 @@ namespace ServiceDesk.Core.Enums
 {
     public enum RequestStatuses
     {
-        [Description("Новая")]
+        [Description("Новые")]
         New,
 
-        [Description("Регистрация")]
+        [Description("Зарегистрированные")]
         Registration,
 
         [Description("В работе")]
         InWork,
 
-        [Description("Отменена")]
+        [Description("Отклоненные")]
         Rejecting,
 
-        [Description("Закрыта")]
+        [Description("Закрытые")]
         Closing,
 
-        [Description("Переоткрыта")]
+        [Description("Переоткрытые")]
         Reopening
     }
 }

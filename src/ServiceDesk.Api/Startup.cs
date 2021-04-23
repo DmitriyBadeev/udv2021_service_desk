@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ServiceDesk.Api.Middleware;
 using ServiceDesk.Api.Queries;
 using ServiceDesk.Api.Mutations;
 using ServiceDesk.Api.Services;
@@ -84,8 +83,6 @@ namespace ServiceDesk.Api
             
             app.UseAuthentication();
 
-            app.UseMiddleware<ExceptionMiddleware>();
-            
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

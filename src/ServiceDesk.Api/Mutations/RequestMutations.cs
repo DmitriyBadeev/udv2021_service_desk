@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
+using ServiceDesk.Api.BackgroundTasks.Attributes;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request;
 using ServiceDesk.Api.Dtos.Client;

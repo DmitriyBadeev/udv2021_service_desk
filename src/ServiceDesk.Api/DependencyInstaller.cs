@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ServiceDesk.Api.BackgroundTasks.ErrorFilter;
 using ServiceDesk.Api.Handlers;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
@@ -31,6 +32,7 @@ namespace ServiceDesk.Api
                 .LogTo(Console.WriteLine, LogLevel.Information));
 
             services.AddTransient<IEnumHelper, EnumHelper>();
+            services.AddErrorFilter<GraphQlErrorFilter>();
 
             services.Scan(scan => scan
                 .FromApplicationDependencies()

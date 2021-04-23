@@ -22,7 +22,7 @@ namespace ServiceDesk.Api.Mutations
             this.clientHandler = clientHandler;
         }
         
-        //[Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
+        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
         public ClientDto CreateClient(ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
             var clientData = new ClientData()
@@ -38,7 +38,7 @@ namespace ServiceDesk.Api.Mutations
             return client;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE })]
         public ClientDto EditClient(int id, ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
             var client = clientHandler.Edit<ClientDtoBuilder, 
@@ -48,7 +48,7 @@ namespace ServiceDesk.Api.Mutations
             return client;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public string DeleteClient(int id, [Service] ServiceDeskDbContext context)
         {
             bool isSuccess;

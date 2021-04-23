@@ -11,7 +11,8 @@ namespace ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem
         public string Theme { get; set; }
         public string Text { get; set; }
         public string AuthorId { get; set; }
-        public int SoftwareModuleId { get; set; }
+        public int? SoftwareModuleId { get; set; }
+        public int ClientId { get; set; }
     }
 
     public class RequestFactory : IRequestFactory<RequestData>
@@ -25,7 +26,8 @@ namespace ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem
                 AuthorId = data.AuthorId,
                 SoftwareModuleId = data.SoftwareModuleId,
                 CreationDate = DateTime.Now,
-                RequestStatus = RequestStatuses.New
+                RequestStatus = RequestStatuses.New,
+                ClientId = data.ClientId
             };
 
             return request;

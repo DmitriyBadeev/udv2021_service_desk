@@ -1,0 +1,55 @@
+mutation createRequest($title: String!, $text: String!, $clientId: Int!) {
+    createRequest(
+        requestCreateDto: {
+            theme: $title
+            text: $text
+            developerRepresentativeId: null
+            softwareModuleId: null
+            clientId: $clientId
+        }
+    ) {
+        id
+    }
+}
+
+mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!) {
+    editRequest(
+        id: $id
+        requestCreateDto: {
+            theme: $theme
+            text: $text
+            clientId: $clientId
+            developerRepresentativeId: null
+            softwareModuleId: null
+        }
+    ) {
+        id
+    }
+}
+
+mutation deleteRequest($id: Uuid!) {
+    deleteRequest(id: $id)
+}
+
+query getCustomerRequests($customerId: Int!) {
+    clientRequests(clientId: $customerId) {
+        id
+        theme
+        text
+        requestStatus
+        software
+        creationDate
+    }
+}
+
+query requestBoards {
+    requestBoards {
+        name
+        items {
+            id
+            theme
+            software
+            authorId
+        }
+    }
+}

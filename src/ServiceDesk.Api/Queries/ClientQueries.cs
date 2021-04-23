@@ -4,9 +4,7 @@ using HotChocolate.Types;
 using HotChocolate.AspNetCore.Authorization;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Dtos.Client;
-using ServiceDesk.Api.Handlers;
 using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
-using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Queries
@@ -21,7 +19,7 @@ namespace ServiceDesk.Api.Queries
             this.clientHandler = clientHandler;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public ClientDto GetClient(int clientId, [Service] ServiceDeskDbContext context)
         {
 
@@ -30,7 +28,7 @@ namespace ServiceDesk.Api.Queries
             return client;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<ClientDto> GetClients([Service] ServiceDeskDbContext context)
         {
 
@@ -39,7 +37,7 @@ namespace ServiceDesk.Api.Queries
             return clients;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<ClientDto> PageClients(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
 

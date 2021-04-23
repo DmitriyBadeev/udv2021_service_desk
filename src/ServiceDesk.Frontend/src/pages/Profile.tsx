@@ -15,9 +15,6 @@ type paramsTypes = {
     userId: string
 }
 
-//8af1ddba-4170-4b3e-a5fe-3994e1d2f475      -   CUSTOMER
-//1def4892-489a-4309-beae-fde966ab47e9      -   DEVELOPER
-
 const Profile: React.FC = () => {
     const { userId } = useParams<paramsTypes>()
     const { data, loading, reload } = useProfileData(userId)

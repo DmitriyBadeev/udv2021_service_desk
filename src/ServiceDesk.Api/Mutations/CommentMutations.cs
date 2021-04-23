@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Comment;
@@ -25,12 +26,14 @@ namespace ServiceDesk.Api.Mutations
             this.commentHandler = commentHandler;
         }
         
-        public CommentDto CreateComment(CommentCreateDto commentCreateDto, [Service] ServiceDeskDbContext context)
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        public CommentDto CreateComment(CommentCreateDto commentCreateDto, 
+            [Service] ServiceDeskDbContext context, [CurrentUserIdGlobalState] string userId)
         {
             var commentData = new CommentData()
             {
                 Text = commentCreateDto.Text,
-                AuthorId = commentCreateDto.AuthorId,
+                AuthorId = userId,
                 RequestId = commentCreateDto.RequestId
             };
 
@@ -42,6 +45,7 @@ namespace ServiceDesk.Api.Mutations
             return comment;
         }
         
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public CommentDto EditComment(int id, CommentCreateDto commentCreateDto, [Service] ServiceDeskDbContext context)
         {
             var comment = commentHandler.Edit<CommentDtoBuilder,
@@ -51,6 +55,7 @@ namespace ServiceDesk.Api.Mutations
             return comment;
         }
         
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public string DeleteComment(int id, [Service] ServiceDeskDbContext context)
         {
             bool isSuccess;

@@ -87,7 +87,10 @@ const Cabinets: React.FC = () => {
             width: 100,
             render: (_items: any, item: any) => {
                 return (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => deleteHandler(item.id)}>
+                    <Popconfirm
+                        title="Вы уверены, что хотите удалить заказчика?"
+                        onConfirm={() => deleteHandler(item.id)}
+                    >
                         <Button type="link" danger>
                             Удалить
                         </Button>

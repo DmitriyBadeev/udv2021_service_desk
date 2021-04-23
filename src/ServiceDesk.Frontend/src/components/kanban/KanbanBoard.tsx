@@ -1,52 +1,54 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { v4 as uuid } from "uuid"
-import { Row, Col, Typography } from "antd"
+import { Row, Col, Typography, message } from "antd"
 import styled from "styled-components"
 import { SmallText } from "GeneralStyles"
 import { Link } from "react-router-dom"
+import { useRequestBoardsQuery } from "types"
+import UserName from "components/etc/UserName"
+import Loading from "components/loading/Loading"
 
 const { Paragraph } = Typography
 
-const columnsFromBackend = {
-    [uuid()]: {
-        name: "Новые",
-        items: [
-            { id: uuid(), theme: "Обращение №1", author: "Иванов И. И.", Software: "Название ПО" },
-            { id: uuid(), theme: "Обращение №2", author: "Иванов И. И.", Software: "Название ПО" },
-            { id: uuid(), theme: "Обращение №5", author: "Иванов И. И.", Software: "Название ПО" },
-        ],
-    },
-    [uuid()]: {
-        name: "Зарегистрированные",
-        items: [
-            {
-                id: uuid(),
-                theme: "Одно очень длинное обращение, которое, при всем желании, не помещается в карточку",
-                author: "Иванов И. И.",
-                Software: "Название ПО",
-            },
-            { id: uuid(), theme: "Обращение №7", author: "Иванов И. И.", Software: "Название ПО" },
-            { id: uuid(), theme: "Обращение №8", author: "Иванов И. И.", Software: "Название ПО" },
-        ],
-    },
-    [uuid()]: {
-        name: "В работе",
-        items: [{ id: uuid(), theme: "Обращение №3", author: "Иванов И. И.", Software: "Название ПО" }],
-    },
-    [uuid()]: {
-        name: "Переоткрытые",
-        items: [],
-    },
-    [uuid()]: {
-        name: "Отклоненные",
-        items: [],
-    },
-    [uuid()]: {
-        name: "Закрытые",
-        items: [{ id: uuid(), theme: "Обращение №9", author: "Иванов И. И.", Software: "Название ПО" }],
-    },
-}
+// const columnsFromBackend = {
+//     [uuid()]: {
+//         name: "Новые",
+//         items: [
+//             { id: uuid(), theme: "Обращение №1", author: "Иванов И. И.", Software: "Название ПО" },
+//             { id: uuid(), theme: "Обращение №2", author: "Иванов И. И.", Software: "Название ПО" },
+//             { id: uuid(), theme: "Обращение №5", author: "Иванов И. И.", Software: "Название ПО" },
+//         ],
+//     },
+//     [uuid()]: {
+//         name: "Зарегистрированные",
+//         items: [
+//             {
+//                 id: uuid(),
+//                 theme: "Одно очень длинное обращение, которое, при всем желании, не помещается в карточку",
+//                 author: "Иванов И. И.",
+//                 Software: "Название ПО",
+//             },
+//             { id: uuid(), theme: "Обращение №7", author: "Иванов И. И.", Software: "Название ПО" },
+//             { id: uuid(), theme: "Обращение №8", author: "Иванов И. И.", Software: "Название ПО" },
+//         ],
+//     },
+//     [uuid()]: {
+//         name: "В работе",
+//         items: [{ id: uuid(), theme: "Обращение №3", author: "Иванов И. И.", Software: "Название ПО" }],
+//     },
+//     [uuid()]: {
+//         name: "Переоткрытые",
+//         items: [],
+//     },
+//     [uuid()]: {
+//         name: "Отклоненные",
+//         items: [],
+//     },
+//     [uuid()]: {
+//         name: "Закрытые",
+//         items: [{ id: uuid(), theme: "Обращение №9", author: "Иванов И. И.", Software: "Название ПО" }],
+//     },
+// }
 
 const onDragEnd = (result: any, columns: any, setColumns: any) => {
     if (!result.destination) return
@@ -106,7 +108,6 @@ const Card = styled.div<{ isDragging: boolean }>`
     padding: 8px;
     user-select: none;
     margin: 0 0 6px 0;
-    min-height: 80px;
 
     &:hover {
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -126,18 +127,25 @@ const Number = styled.div`
 `
 
 const KanbanBoard: React.FC = () => {
-    const [columns, setColumns] = useState(columnsFromBackend)
-    console.log(columns)
+    const { data, loading, error, refetch } = useRequestBoardsQuery()
+    const [columns, setColumns] = useState(data?.requestBoards)
+
+    useEffect(() => {
+        setColumns(data?.requestBoards)
+    }, [data, setColumns])
+
+    if (loading) return <Loading />
+    if (error) message.error(error.message)
 
     return (
         <Row gutter={[12, 12]}>
             <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)}>
-                {Object.entries(columns).map(([columnId, column]) => {
+                {Object.entries(columns || {}).map(([columnId, column]) => {
                     return (
                         <Col span={4} key={columnId}>
                             <HeaderColumn>
                                 <SmallText $bold>
-                                    <Number>{column.items.length}</Number> {column.name}
+                                    <Number>{column?.items?.length || 0}</Number> {column?.name}
                                 </SmallText>
                             </HeaderColumn>
 
@@ -149,9 +157,9 @@ const KanbanBoard: React.FC = () => {
                                             ref={provided.innerRef}
                                             isDraggingOver={snapshot.isDraggingOver}
                                         >
-                                            {column.items.map((item, index) => {
+                                            {column?.items?.map((item, index) => {
                                                 return (
-                                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                                    <Draggable key={item?.id} draggableId={item?.id} index={index}>
                                                         {(provided, snapshot) => {
                                                             return (
                                                                 <Card
@@ -164,7 +172,7 @@ const KanbanBoard: React.FC = () => {
                                                                     }}
                                                                 >
                                                                     <SmallText $color="grey3">
-                                                                        #{item.Software}
+                                                                        {item?.software && `#${item?.software}`}
                                                                     </SmallText>
 
                                                                     <Paragraph
@@ -173,15 +181,15 @@ const KanbanBoard: React.FC = () => {
                                                                             expandable: false,
                                                                         }}
                                                                         strong
-                                                                        title={item.theme}
+                                                                        title={item?.theme ?? ""}
                                                                         style={{ marginBottom: 5 }}
                                                                     >
-                                                                        <Link to={`/appeals/${item.id}`}>
-                                                                            {item.theme}
+                                                                        <Link to={`/appeals/${item?.id}`}>
+                                                                            {item?.theme}
                                                                         </Link>
                                                                     </Paragraph>
 
-                                                                    <SmallText $color="grey2">{item.author}</SmallText>
+                                                                    <UserName userId={item?.authorId || ""} />
                                                                 </Card>
                                                             )
                                                         }}

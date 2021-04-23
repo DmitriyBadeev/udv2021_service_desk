@@ -31,7 +31,8 @@ namespace ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request
                 Theme = entity.Theme,
                 Software = entity.SoftwareModule?.Software?.Title,
                 SoftwareModule = entity.SoftwareModule?.Title,
-                RequestStatus = requestStatus
+                RequestStatus = requestStatus,
+                ClientId = entity.ClientId
             };
 
             return requestDto;

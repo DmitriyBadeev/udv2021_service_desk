@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request;
@@ -25,26 +26,28 @@ namespace ServiceDesk.Api.Mutations
             this.requestHandler = requestHandler;
         }
 
-        //[Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
-        public RequestDto CreateRequest(RequestCreateDto requestCreateDto, [Service] ServiceDeskDbContext context)
+        [Authorize(Roles = new[] {Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE})]
+        public RequestDto CreateRequest(RequestCreateDto requestCreateDto, 
+            [Service] ServiceDeskDbContext context, [CurrentUserIdGlobalState] string userId)
         {
             var requestData = new RequestData()
             {
                 Theme = requestCreateDto.Theme,
-                AuthorId = requestCreateDto.AuthorId,
+                AuthorId = userId,
                 SoftwareModuleId = requestCreateDto.SoftwareModuleId,
-                Text = requestCreateDto.Text
+                Text = requestCreateDto.Text,
+                ClientId = requestCreateDto.ClientId
             };
 
-            var client = requestHandler.Create<RequestFactory,
+            var request = requestHandler.Create<RequestFactory,
                 RequestDtoBuilder,
                 RequestData,
                 RequestDto>(requestData, context);
 
-            return client;
+            return request;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public RequestDto EditRequest(Guid id, RequestCreateDto requestCreateDto, [Service] ServiceDeskDbContext context)
         {
             var requestDto = requestHandler.Edit<RequestDtoBuilder,
@@ -54,7 +57,8 @@ namespace ServiceDesk.Api.Mutations
             return requestDto;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public string DeleteRequest(Guid id, [Service] ServiceDeskDbContext context)
         {
             bool isSuccess;

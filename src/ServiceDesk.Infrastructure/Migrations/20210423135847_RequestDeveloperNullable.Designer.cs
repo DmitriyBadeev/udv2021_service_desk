@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Infrastructure.Migrations
 {
     [DbContext(typeof(ServiceDeskDbContext))]
-    partial class ServiceDeskDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210423135847_RequestDeveloperNullable")]
+    partial class RequestDeveloperNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,6 +114,21 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("ServiceDesk.Core.Entities.PersonalAreaSystem.ClientRepresentative", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientRepresentatives");
+                });
+
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -145,10 +162,7 @@ namespace ServiceDesk.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -173,7 +187,7 @@ namespace ServiceDesk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("SoftwareModuleId");
 
@@ -230,6 +244,17 @@ namespace ServiceDesk.Infrastructure.Migrations
                     b.Navigation("Software");
                 });
 
+            modelBuilder.Entity("ServiceDesk.Core.Entities.PersonalAreaSystem.ClientRepresentative", b =>
+                {
+                    b.HasOne("ServiceDesk.Core.Entities.PersonalAreaSystem.Client", "Client")
+                        .WithMany("ClientRepresentatives")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+                });
+
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Comment", b =>
                 {
                     b.HasOne("ServiceDesk.Core.Entities.RequestSystem.Request", "Request")
@@ -243,17 +268,15 @@ namespace ServiceDesk.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Request", b =>
                 {
-                    b.HasOne("ServiceDesk.Core.Entities.PersonalAreaSystem.Client", "Client")
-                        .WithMany("Requests")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ServiceDesk.Core.Entities.PersonalAreaSystem.ClientRepresentative", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("ServiceDesk.Core.Entities.DirectorySystem.SoftwareModule", "SoftwareModule")
                         .WithMany()
                         .HasForeignKey("SoftwareModuleId");
 
-                    b.Navigation("Client");
+                    b.Navigation("Author");
 
                     b.Navigation("SoftwareModule");
                 });
@@ -276,9 +299,9 @@ namespace ServiceDesk.Infrastructure.Migrations
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.PersonalAreaSystem.Client", b =>
                 {
-                    b.Navigation("Licenses");
+                    b.Navigation("ClientRepresentatives");
 
-                    b.Navigation("Requests");
+                    b.Navigation("Licenses");
                 });
 
             modelBuilder.Entity("ServiceDesk.Core.Entities.RequestSystem.Request", b =>

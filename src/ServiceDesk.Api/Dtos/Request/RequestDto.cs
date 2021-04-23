@@ -17,5 +17,7 @@ namespace ServiceDesk.Api.Dtos.Request
         public string Software { get; set; }
         public string SoftwareModule { get; set; }
         public string RequestStatus { get; set; }
+
+        public int ClientId { get; set; }
     }
 }

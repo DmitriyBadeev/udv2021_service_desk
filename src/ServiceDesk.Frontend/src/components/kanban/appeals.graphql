@@ -53,3 +53,34 @@ query requestBoards {
         }
     }
 }
+
+query getRequest($id: Uuid!) {
+    request(requestId: $id) {
+        id
+        theme
+        text
+        creationDate
+        processingDate
+        developerRepresentativeId
+        authorId
+        software
+        softwareModule
+        requestStatus
+        clientId
+    }
+}
+
+query getAppealComments($requestId: Uuid!) {
+    requestComments(requestId: $requestId) {
+        id
+        text
+        authorId
+        creationDate
+    }
+}
+
+mutation createComment($text: String!, $appealId: Uuid!) {
+    createComment(commentCreateDto: { text: $text, requestId: $appealId }) {
+        id
+    }
+}

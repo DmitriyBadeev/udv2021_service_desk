@@ -1,12 +1,15 @@
-import { Button, Col, Descriptions, Divider, Form, Row, Typography } from "antd"
+import { Col, Descriptions, Divider, message, Row, Typography } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
 import React from "react"
 import { Link, useParams } from "react-router-dom"
-import { Text } from "GeneralStyles"
-import styled from "styled-components"
-import TextArea from "antd/lib/input/TextArea"
+import { getNumericStringDate } from "helpers/dateHelpers"
+import { useGetRequestQuery } from "types"
+import UserName from "components/etc/UserName"
+import EditAppeal from "components/forms/EditAppeal"
+import Loading from "components/loading/Loading"
+import AppealComments from "components/etc/AppealComments"
 
 type paramsTypes = {
     id: string
@@ -14,61 +17,13 @@ type paramsTypes = {
 
 const { Paragraph } = Typography
 
-const CommentContainer = styled.div`
-    margin-bottom: 30px;
-`
-
-const Comment = styled.div`
-    padding: 10px;
-    border: 1px solid ${(props) => props.theme.grey6};
-    border-radius: 2px;
-    margin: 10px 0;
-    transition: all 0.3s;
-
-    &:hover {
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-    }
-`
-
 const Appeal: React.FC = () => {
     const { id } = useParams<paramsTypes>()
+    const { data, loading, error, refetch } = useGetRequestQuery({ variables: { id } })
+    const appealData = data?.request
 
-    const appealData = {
-        id,
-        theme: "Тема очень важного обращения",
-        text:
-            "Многие думают, что Lorem Ipsum - взятый с потолка псевдо-латинский набор слов, но это не совсем так. Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть более двух тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа Hampden-Sydney, штат Вирджиния, взял одно из самых странных слов в Lorem Ipsum, и занялся его поисками в классической латинской литературе.",
-        creationDate: "21.04.2021",
-        processingDate: "25.04.2021",
-        developerRepresentativeId: "43cf386f-8024-4c5e-a012-d70eb0581d83",
-        developerRepresentativeName: "Генадий Лебедев",
-        status: "В работе",
-        author: "Иванов Иван Иванович",
-        authorId: "43cf386f-8024-4c5e-a012-d70eb0581d83",
-        software: "Название ПО",
-        softwareModule: "Название модуля ПО",
-        comments: [
-            {
-                id: 1,
-                text: "Классический текст Lorem Ipsum, используемый с XVI века, приведён ниже.",
-                author: "Генадий Лебедев",
-                authorId: "43cf386f-8024-4c5e-a012-d70eb0581d83",
-                creationDate: "21.04.2021",
-            },
-            {
-                id: 2,
-                text:
-                    "Есть много вариантов Lorem Ipsum, но большинство из них имеет не всегда приемлемые модификации, например, юмористические вставки или слова, которые даже отдалённо не напоминают латынь.",
-                author: "Иванов Иван",
-                authorId: "43cf386f-8024-4c5e-a012-d70eb0581d83",
-                creationDate: "21.04.2021",
-            },
-        ],
-    }
-
-    const onComment = (values: any) => {
-        console.log(values.comment)
-    }
+    if (loading) return <Loading />
+    if (error) message.error(error.message)
 
     return (
         <FadePage>
@@ -76,66 +31,50 @@ const Appeal: React.FC = () => {
                 <Col span={14}>
                     <Card>
                         <CardHeader
-                            title={appealData.theme}
+                            title={appealData?.theme || ""}
                             size="small"
-                            Form={(props) => (
-                                <Button size={props.buttonSize} type="primary">
-                                    Редактировать
-                                </Button>
+                            Form={() => (
+                                <EditAppeal
+                                    buttonSize="middle"
+                                    id={appealData?.id}
+                                    theme={appealData?.theme || ""}
+                                    text={appealData?.text || ""}
+                                    customerId={appealData?.clientId || -1}
+                                    type="primary"
+                                    reload={() => refetch()}
+                                />
                             )}
                         />
-                        <Paragraph>{appealData.text}</Paragraph>
+                        <Paragraph>{appealData?.text}</Paragraph>
 
                         <Divider />
-
-                        <CommentContainer>
-                            {appealData.comments.map((comment) => (
-                                <Comment key={comment.id}>
-                                    <Paragraph>
-                                        <Link to={`/profile/${comment.authorId}`}>{comment.author}</Link>{" "}
-                                        <Text $color="grey4">{comment.creationDate}</Text>
-                                    </Paragraph>
-                                    <Paragraph>{comment.text}</Paragraph>
-                                </Comment>
-                            ))}
-                        </CommentContainer>
-                        <Form layout="vertical" onFinish={onComment}>
-                            <Row gutter={16}>
-                                <Col span={24}>
-                                    <Form.Item
-                                        name="comment"
-                                        rules={[{ required: true, message: "Комментарий не может быть пустым" }]}
-                                    >
-                                        <TextArea rows={5} placeholder="Комментарий"></TextArea>
-                                    </Form.Item>
-                                    <Form.Item>
-                                        <Button htmlType="submit" type="primary">
-                                            Оставить комментарий
-                                        </Button>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Form>
+                        <AppealComments requestId={id} />
                     </Card>
                 </Col>
                 <Col span={10}>
                     <Card isSecondary>
                         <Descriptions column={1} labelStyle={{ fontWeight: 600 }} size="small">
                             <Descriptions.Item label="Идентификатор">{appealData?.id}</Descriptions.Item>
-                            <Descriptions.Item label="Статус">{appealData.status}</Descriptions.Item>
-                            <Descriptions.Item label="Дата создания">{appealData.creationDate}</Descriptions.Item>
-                            <Descriptions.Item label="Дата обработки">{appealData.processingDate}</Descriptions.Item>
-                            <Descriptions.Item label="Автор">
-                                <Link to={`/profile/${appealData.authorId}`}>{appealData.author}</Link>
+                            <Descriptions.Item label="Статус">{appealData?.requestStatus}</Descriptions.Item>
+                            <Descriptions.Item label="Дата создания">
+                                {getNumericStringDate(appealData?.creationDate)}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Ответственный разработчик">
-                                <Link to={`/profile/${appealData.developerRepresentativeId}`}>
-                                    {appealData.developerRepresentativeName}
+                            <Descriptions.Item label="Автор">
+                                <Link to={`/profile/${appealData?.authorId}`}>
+                                    <UserName userId={appealData?.authorId || ""} />
                                 </Link>
                             </Descriptions.Item>
-                            <Descriptions.Item label="Название ПО">{appealData.software}</Descriptions.Item>
+                            {appealData?.developerRepresentativeId && (
+                                <Descriptions.Item label="Ответственный разработчик">
+                                    <Link to={`/profile/${appealData?.developerRepresentativeId}`}>
+                                        {appealData.developerRepresentativeId}
+                                    </Link>
+                                </Descriptions.Item>
+                            )}
+
+                            <Descriptions.Item label="Название ПО">{appealData?.software || "—"}</Descriptions.Item>
                             <Descriptions.Item label="Функциональный модуль ПО">
-                                {appealData.softwareModule}
+                                {appealData?.softwareModule || "—"}
                             </Descriptions.Item>
                         </Descriptions>
                     </Card>

@@ -338,6 +338,46 @@ export type RequestBoardsQuery = (
   )>>> }
 );
 
+export type GetRequestQueryVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type GetRequestQuery = (
+  { __typename?: 'Queries' }
+  & { request?: Maybe<(
+    { __typename?: 'RequestDto' }
+    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'creationDate' | 'processingDate' | 'developerRepresentativeId' | 'authorId' | 'software' | 'softwareModule' | 'requestStatus' | 'clientId'>
+  )> }
+);
+
+export type GetAppealCommentsQueryVariables = Exact<{
+  requestId: Scalars['Uuid'];
+}>;
+
+
+export type GetAppealCommentsQuery = (
+  { __typename?: 'Queries' }
+  & { requestComments?: Maybe<Array<Maybe<(
+    { __typename?: 'CommentDto' }
+    & Pick<CommentDto, 'id' | 'text' | 'authorId' | 'creationDate'>
+  )>>> }
+);
+
+export type CreateCommentMutationVariables = Exact<{
+  text: Scalars['String'];
+  appealId: Scalars['Uuid'];
+}>;
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutations' }
+  & { createComment?: Maybe<(
+    { __typename?: 'CommentDto' }
+    & Pick<CommentDto, 'id'>
+  )> }
+);
+
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -694,6 +734,118 @@ export function useRequestBoardsLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type RequestBoardsQueryHookResult = ReturnType<typeof useRequestBoardsQuery>;
 export type RequestBoardsLazyQueryHookResult = ReturnType<typeof useRequestBoardsLazyQuery>;
 export type RequestBoardsQueryResult = ApolloReactCommon.QueryResult<RequestBoardsQuery, RequestBoardsQueryVariables>;
+export const GetRequestDocument = gql`
+    query getRequest($id: Uuid!) {
+  request(requestId: $id) {
+    id
+    theme
+    text
+    creationDate
+    processingDate
+    developerRepresentativeId
+    authorId
+    software
+    softwareModule
+    requestStatus
+    clientId
+  }
+}
+    `;
+
+/**
+ * __useGetRequestQuery__
+ *
+ * To run a query within a React component, call `useGetRequestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRequestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRequestQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetRequestQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRequestQuery, GetRequestQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetRequestQuery, GetRequestQueryVariables>(GetRequestDocument, baseOptions);
+      }
+export function useGetRequestLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRequestQuery, GetRequestQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetRequestQuery, GetRequestQueryVariables>(GetRequestDocument, baseOptions);
+        }
+export type GetRequestQueryHookResult = ReturnType<typeof useGetRequestQuery>;
+export type GetRequestLazyQueryHookResult = ReturnType<typeof useGetRequestLazyQuery>;
+export type GetRequestQueryResult = ApolloReactCommon.QueryResult<GetRequestQuery, GetRequestQueryVariables>;
+export const GetAppealCommentsDocument = gql`
+    query getAppealComments($requestId: Uuid!) {
+  requestComments(requestId: $requestId) {
+    id
+    text
+    authorId
+    creationDate
+  }
+}
+    `;
+
+/**
+ * __useGetAppealCommentsQuery__
+ *
+ * To run a query within a React component, call `useGetAppealCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAppealCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAppealCommentsQuery({
+ *   variables: {
+ *      requestId: // value for 'requestId'
+ *   },
+ * });
+ */
+export function useGetAppealCommentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>(GetAppealCommentsDocument, baseOptions);
+      }
+export function useGetAppealCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>(GetAppealCommentsDocument, baseOptions);
+        }
+export type GetAppealCommentsQueryHookResult = ReturnType<typeof useGetAppealCommentsQuery>;
+export type GetAppealCommentsLazyQueryHookResult = ReturnType<typeof useGetAppealCommentsLazyQuery>;
+export type GetAppealCommentsQueryResult = ApolloReactCommon.QueryResult<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>;
+export const CreateCommentDocument = gql`
+    mutation createComment($text: String!, $appealId: Uuid!) {
+  createComment(commentCreateDto: {text: $text, requestId: $appealId}) {
+    id
+  }
+}
+    `;
+export type CreateCommentMutationFn = ApolloReactCommon.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      text: // value for 'text'
+ *      appealId: // value for 'appealId'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = ApolloReactCommon.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const SecretDocument = gql`
     query Secret {
   userId

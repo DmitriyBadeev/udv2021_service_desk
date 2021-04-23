@@ -6,7 +6,7 @@ const useProfileData = (userId: string) => {
     const token = window.localStorage.getItem("token")
 
     const [data, setData] = useState<any>({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const reload = useCallback(() => {
         setLoading(true)

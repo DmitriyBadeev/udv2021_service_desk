@@ -3,8 +3,19 @@ import { Typography } from "antd"
 
 const { Text: AntText } = Typography
 
-type TextProps = {
-    $color?: "primary" | "grey1" | "grey2" | "grey3" | "grey4" | "grey5" | "grey6" | "black" | "red" | "green"
+export type TextProps = {
+    $color?:
+        | "primary"
+        | "grey1"
+        | "grey2"
+        | "grey3"
+        | "grey4"
+        | "grey5"
+        | "grey6"
+        | "black"
+        | "red"
+        | "green"
+        | "inherit"
     $bold?: boolean
     $align?: "center" | "left" | "right"
 }
@@ -82,7 +93,9 @@ function chooseColor(
             return props.theme.red
         case "green":
             return props.theme.green
+        case "inherit":
+            return "inherit"
         default:
-            return props.theme.black
+            return "inherit"
     }
 }

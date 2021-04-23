@@ -82,7 +82,7 @@ const Header: React.FC = observer(() => {
             <Flex>
                 <MenuContainer>
                     <MenuItem>
-                        <MenuLink to={`/profile/${userId}`} $active={location.pathname.startsWith("/profile")}>
+                        <MenuLink to={`/profile/${userId}`} $active={false}>
                             {fullName}
                         </MenuLink>
                     </MenuItem>

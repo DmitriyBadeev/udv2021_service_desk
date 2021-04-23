@@ -127,7 +127,7 @@ const Number = styled.div`
 `
 
 const KanbanBoard: React.FC = () => {
-    const { data, loading, error, refetch } = useRequestBoardsQuery()
+    const { data, loading, error } = useRequestBoardsQuery()
     const [columns, setColumns] = useState(data?.requestBoards)
 
     useEffect(() => {
@@ -189,7 +189,11 @@ const KanbanBoard: React.FC = () => {
                                                                         </Link>
                                                                     </Paragraph>
 
-                                                                    <UserName userId={item?.authorId || ""} />
+                                                                    <UserName
+                                                                        type="small"
+                                                                        userId={item?.authorId || ""}
+                                                                        $color="grey3"
+                                                                    />
                                                                 </Card>
                                                             )
                                                         }}

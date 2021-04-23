@@ -10,6 +10,7 @@ using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request;
 using ServiceDesk.Api.Dtos.Client;
 using ServiceDesk.Api.Dtos.Request;
 using ServiceDesk.Api.Handlers.RequestSystem.Request;
+using ServiceDesk.Core.Enums;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
 using ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem;
@@ -70,6 +71,54 @@ namespace ServiceDesk.Api.Mutations
             }
 
             return "Error";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string NewRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.New, context);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string RegistrationRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.Registration, context);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string InWorkRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.InWork, context);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string ClosingRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.Closing, context);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string RejectRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.Rejecting, context);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = new[] { Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE })]
+        public string ReopenRequest(Guid id, [Service] ServiceDeskDbContext context)
+        {
+            requestHandler.ChangeStatus(id, RequestStatuses.Reopening, context);
+
+            return "Ok";
         }
     }
 }

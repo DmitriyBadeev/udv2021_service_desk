@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request;
 using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
 using ServiceDesk.Api.Dtos.Request;
+using ServiceDesk.Core.Enums;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Handlers.RequestSystem.Request
@@ -44,6 +45,18 @@ namespace ServiceDesk.Api.Handlers.RequestSystem.Request
                 .ToList();
 
             return requests;
+        }
+
+        public void ChangeStatus(Guid requestId, 
+            RequestStatuses toStatus, 
+            ServiceDeskDbContext context)
+        {
+            var request = context.Requests.Find(requestId);
+
+            request.ChangeStatus(toStatus);
+
+            context.Update(request);
+            context.SaveChanges();
         }
     }
 }

@@ -54,6 +54,31 @@ namespace ServiceDesk.Identity.Controllers.Profile
             return Unauthorized();
         }
 
+        [HttpGet("/profile/username")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetUserName([FromQuery] string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+            var firstName = user.FirstName;
+            var lastName = user.LastName;
+            var patronymic = user.Patronymic;
+
+            var username = new Username()
+            {
+                LastName = lastName,
+                FirstName = firstName,
+                Patronymic = patronymic
+            };
+
+            return Ok(username);
+        }
+
         [HttpPost]
         public async Task<ActionResult> Index([FromBody] EditUserData editUserData)
         {

@@ -58,7 +58,7 @@ const Number = styled.div`
 `
 
 const KanbanBoard: React.FC = () => {
-    const { data, loading, error } = useRequestBoardsQuery()
+    const { data, loading, error } = useRequestBoardsQuery({ fetchPolicy: "no-cache" })
     const [columns, setColumns] = useState(data?.requestBoards)
 
     const [toNew] = useToNewStatusMutation()

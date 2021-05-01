@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Interceptors;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,17 +34,26 @@ namespace ServiceDesk.Api
             services.AddGraphQLServer()
                 .AddAuthorization()
                 .AddHttpRequestInterceptor(AuthenticationInterceptor())
+                .AddType<UploadType>()
                 .AddQueryType(d => d.Name("Queries"))
                 .AddType<TestQueries>()
                 .AddType<ClientQueries>()
                 .AddType<RequestQueries>()
                 .AddType<CommentQueries>()
+                .AddType<RequestAttachmentQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<TestMutations>()
                 .AddType<ClientMutations>()
                 .AddType<RequestMutations>()
-                .AddType<CommentMutations>();
-            
+                .AddType<CommentMutations>()
+                .AddType<RequestAttachmentMutations>();
+
+            services.Configure<FormOptions>(options =>
+            {
+                // Set the limit to 256 MB
+                options.MultipartBodyLengthLimit = 268435456;
+            });
+
             services.AddAuthentication("Bearer")
                 .AddIdentityServerAuthentication(options =>
                 {
@@ -83,12 +94,14 @@ namespace ServiceDesk.Api
             
             app.UseAuthentication();
 
+            app.UseStaticFiles();
+
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();
             });
-            app.UsePlayground("/graphql", "/playground");
+            app.UseGraphQLAltair();
         }
     }
 }

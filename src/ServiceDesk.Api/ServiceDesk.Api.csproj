@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="GraphQL.Server.Ui.Altair" Version="5.0.2" />
+      <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
@@ -23,6 +25,7 @@
     <ItemGroup>
       <Folder Include="Handlers\DirectorySystem\" />
       <Folder Include="Logs" />
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
     <ItemGroup>

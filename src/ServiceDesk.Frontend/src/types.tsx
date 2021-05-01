@@ -61,6 +61,12 @@ export type Mutations = {
   createRequest?: Maybe<RequestDto>;
   editRequest?: Maybe<RequestDto>;
   deleteRequest?: Maybe<Scalars['String']>;
+  newRequest?: Maybe<Scalars['String']>;
+  registrationRequest?: Maybe<Scalars['String']>;
+  inWorkRequest?: Maybe<Scalars['String']>;
+  closingRequest?: Maybe<Scalars['String']>;
+  rejectRequest?: Maybe<Scalars['String']>;
+  reopenRequest?: Maybe<Scalars['String']>;
   createComment?: Maybe<CommentDto>;
   editComment?: Maybe<CommentDto>;
   deleteComment?: Maybe<Scalars['String']>;
@@ -95,6 +101,36 @@ export type MutationsEditRequestArgs = {
 
 
 export type MutationsDeleteRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsNewRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsRegistrationRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsInWorkRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsClosingRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsRejectRequestArgs = {
+  id: Scalars['Uuid'];
+};
+
+
+export type MutationsReopenRequestArgs = {
   id: Scalars['Uuid'];
 };
 
@@ -376,6 +412,66 @@ export type CreateCommentMutation = (
     { __typename?: 'CommentDto' }
     & Pick<CommentDto, 'id'>
   )> }
+);
+
+export type ToNewStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToNewStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'newRequest'>
+);
+
+export type ToRegistrationStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToRegistrationStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'registrationRequest'>
+);
+
+export type ToWorkStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToWorkStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'inWorkRequest'>
+);
+
+export type ToClosingStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToClosingStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'closingRequest'>
+);
+
+export type ToRejectStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToRejectStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'rejectRequest'>
+);
+
+export type ToReopenStatusMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+}>;
+
+
+export type ToReopenStatusMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'reopenRequest'>
 );
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
@@ -846,6 +942,186 @@ export function useCreateCommentMutation(baseOptions?: ApolloReactHooks.Mutation
 export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
 export type CreateCommentMutationResult = ApolloReactCommon.MutationResult<CreateCommentMutation>;
 export type CreateCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
+export const ToNewStatusDocument = gql`
+    mutation toNewStatus($id: Uuid!) {
+  newRequest(id: $id)
+}
+    `;
+export type ToNewStatusMutationFn = ApolloReactCommon.MutationFunction<ToNewStatusMutation, ToNewStatusMutationVariables>;
+
+/**
+ * __useToNewStatusMutation__
+ *
+ * To run a mutation, you first call `useToNewStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToNewStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toNewStatusMutation, { data, loading, error }] = useToNewStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToNewStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToNewStatusMutation, ToNewStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToNewStatusMutation, ToNewStatusMutationVariables>(ToNewStatusDocument, baseOptions);
+      }
+export type ToNewStatusMutationHookResult = ReturnType<typeof useToNewStatusMutation>;
+export type ToNewStatusMutationResult = ApolloReactCommon.MutationResult<ToNewStatusMutation>;
+export type ToNewStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToNewStatusMutation, ToNewStatusMutationVariables>;
+export const ToRegistrationStatusDocument = gql`
+    mutation toRegistrationStatus($id: Uuid!) {
+  registrationRequest(id: $id)
+}
+    `;
+export type ToRegistrationStatusMutationFn = ApolloReactCommon.MutationFunction<ToRegistrationStatusMutation, ToRegistrationStatusMutationVariables>;
+
+/**
+ * __useToRegistrationStatusMutation__
+ *
+ * To run a mutation, you first call `useToRegistrationStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToRegistrationStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toRegistrationStatusMutation, { data, loading, error }] = useToRegistrationStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToRegistrationStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToRegistrationStatusMutation, ToRegistrationStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToRegistrationStatusMutation, ToRegistrationStatusMutationVariables>(ToRegistrationStatusDocument, baseOptions);
+      }
+export type ToRegistrationStatusMutationHookResult = ReturnType<typeof useToRegistrationStatusMutation>;
+export type ToRegistrationStatusMutationResult = ApolloReactCommon.MutationResult<ToRegistrationStatusMutation>;
+export type ToRegistrationStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToRegistrationStatusMutation, ToRegistrationStatusMutationVariables>;
+export const ToWorkStatusDocument = gql`
+    mutation toWorkStatus($id: Uuid!) {
+  inWorkRequest(id: $id)
+}
+    `;
+export type ToWorkStatusMutationFn = ApolloReactCommon.MutationFunction<ToWorkStatusMutation, ToWorkStatusMutationVariables>;
+
+/**
+ * __useToWorkStatusMutation__
+ *
+ * To run a mutation, you first call `useToWorkStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToWorkStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toWorkStatusMutation, { data, loading, error }] = useToWorkStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToWorkStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToWorkStatusMutation, ToWorkStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToWorkStatusMutation, ToWorkStatusMutationVariables>(ToWorkStatusDocument, baseOptions);
+      }
+export type ToWorkStatusMutationHookResult = ReturnType<typeof useToWorkStatusMutation>;
+export type ToWorkStatusMutationResult = ApolloReactCommon.MutationResult<ToWorkStatusMutation>;
+export type ToWorkStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToWorkStatusMutation, ToWorkStatusMutationVariables>;
+export const ToClosingStatusDocument = gql`
+    mutation toClosingStatus($id: Uuid!) {
+  closingRequest(id: $id)
+}
+    `;
+export type ToClosingStatusMutationFn = ApolloReactCommon.MutationFunction<ToClosingStatusMutation, ToClosingStatusMutationVariables>;
+
+/**
+ * __useToClosingStatusMutation__
+ *
+ * To run a mutation, you first call `useToClosingStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToClosingStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toClosingStatusMutation, { data, loading, error }] = useToClosingStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToClosingStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToClosingStatusMutation, ToClosingStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToClosingStatusMutation, ToClosingStatusMutationVariables>(ToClosingStatusDocument, baseOptions);
+      }
+export type ToClosingStatusMutationHookResult = ReturnType<typeof useToClosingStatusMutation>;
+export type ToClosingStatusMutationResult = ApolloReactCommon.MutationResult<ToClosingStatusMutation>;
+export type ToClosingStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToClosingStatusMutation, ToClosingStatusMutationVariables>;
+export const ToRejectStatusDocument = gql`
+    mutation toRejectStatus($id: Uuid!) {
+  rejectRequest(id: $id)
+}
+    `;
+export type ToRejectStatusMutationFn = ApolloReactCommon.MutationFunction<ToRejectStatusMutation, ToRejectStatusMutationVariables>;
+
+/**
+ * __useToRejectStatusMutation__
+ *
+ * To run a mutation, you first call `useToRejectStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToRejectStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toRejectStatusMutation, { data, loading, error }] = useToRejectStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToRejectStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToRejectStatusMutation, ToRejectStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToRejectStatusMutation, ToRejectStatusMutationVariables>(ToRejectStatusDocument, baseOptions);
+      }
+export type ToRejectStatusMutationHookResult = ReturnType<typeof useToRejectStatusMutation>;
+export type ToRejectStatusMutationResult = ApolloReactCommon.MutationResult<ToRejectStatusMutation>;
+export type ToRejectStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToRejectStatusMutation, ToRejectStatusMutationVariables>;
+export const ToReopenStatusDocument = gql`
+    mutation toReopenStatus($id: Uuid!) {
+  reopenRequest(id: $id)
+}
+    `;
+export type ToReopenStatusMutationFn = ApolloReactCommon.MutationFunction<ToReopenStatusMutation, ToReopenStatusMutationVariables>;
+
+/**
+ * __useToReopenStatusMutation__
+ *
+ * To run a mutation, you first call `useToReopenStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToReopenStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toReopenStatusMutation, { data, loading, error }] = useToReopenStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useToReopenStatusMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ToReopenStatusMutation, ToReopenStatusMutationVariables>) {
+        return ApolloReactHooks.useMutation<ToReopenStatusMutation, ToReopenStatusMutationVariables>(ToReopenStatusDocument, baseOptions);
+      }
+export type ToReopenStatusMutationHookResult = ReturnType<typeof useToReopenStatusMutation>;
+export type ToReopenStatusMutationResult = ApolloReactCommon.MutationResult<ToReopenStatusMutation>;
+export type ToReopenStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToReopenStatusMutation, ToReopenStatusMutationVariables>;
 export const SecretDocument = gql`
     query Secret {
   userId

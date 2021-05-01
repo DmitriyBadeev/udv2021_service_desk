@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotChocolate;
+﻿using HotChocolate;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.RequestAttachment;
 using ServiceDesk.Api.Dtos.RequestAttachment;
 using ServiceDesk.Api.Handlers.RequestSystem.RequestAttachment;
-using ServiceDesk.Api.Services.FilesManager;
 using ServiceDesk.Infrastructure;
-using ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem;
 
 namespace ServiceDesk.Api.Mutations
 {

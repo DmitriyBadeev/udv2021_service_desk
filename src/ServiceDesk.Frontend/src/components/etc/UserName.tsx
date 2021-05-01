@@ -1,6 +1,6 @@
 import React from "react"
 import { SmallText, Text, TextProps } from "GeneralStyles"
-import useProfileData from "hooks/useProfileData"
+import useUserName from "hooks/useUserName"
 
 type propTypes = {
     userId: string
@@ -10,7 +10,7 @@ type propTypes = {
 type allProps = TextProps & propTypes
 
 const UserName: React.FC<allProps> = ({ userId, type = "default", ...textProps }) => {
-    const { data, loading } = useProfileData(userId)
+    const { data, loading } = useUserName(userId)
     const lastName = data?.lastName
     const firstName = data?.firstName
     const patronymic = data?.patronymic

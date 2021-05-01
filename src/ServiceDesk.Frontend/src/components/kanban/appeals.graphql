@@ -84,3 +84,27 @@ mutation createComment($text: String!, $appealId: Uuid!) {
         id
     }
 }
+
+mutation toNewStatus($id: Uuid!) {
+    newRequest(id: $id)
+}
+
+mutation toRegistrationStatus($id: Uuid!) {
+    registrationRequest(id: $id)
+}
+
+mutation toWorkStatus($id: Uuid!) {
+    inWorkRequest(id: $id)
+}
+
+mutation toClosingStatus($id: Uuid!) {
+    closingRequest(id: $id)
+}
+
+mutation toRejectStatus($id: Uuid!) {
+    rejectRequest(id: $id)
+}
+
+mutation toReopenStatus($id: Uuid!) {
+    reopenRequest(id: $id)
+}

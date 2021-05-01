@@ -4,88 +4,19 @@ import { Row, Col, Typography, message } from "antd"
 import styled from "styled-components"
 import { SmallText } from "GeneralStyles"
 import { Link } from "react-router-dom"
-import { useRequestBoardsQuery } from "types"
+import {
+    useRequestBoardsQuery,
+    useToRegistrationStatusMutation,
+    useToNewStatusMutation,
+    useToWorkStatusMutation,
+    useToRejectStatusMutation,
+    useToClosingStatusMutation,
+    useToReopenStatusMutation,
+} from "types"
 import UserName from "components/etc/UserName"
 import Loading from "components/loading/Loading"
 
 const { Paragraph } = Typography
-
-// const columnsFromBackend = {
-//     [uuid()]: {
-//         name: "Новые",
-//         items: [
-//             { id: uuid(), theme: "Обращение №1", author: "Иванов И. И.", Software: "Название ПО" },
-//             { id: uuid(), theme: "Обращение №2", author: "Иванов И. И.", Software: "Название ПО" },
-//             { id: uuid(), theme: "Обращение №5", author: "Иванов И. И.", Software: "Название ПО" },
-//         ],
-//     },
-//     [uuid()]: {
-//         name: "Зарегистрированные",
-//         items: [
-//             {
-//                 id: uuid(),
-//                 theme: "Одно очень длинное обращение, которое, при всем желании, не помещается в карточку",
-//                 author: "Иванов И. И.",
-//                 Software: "Название ПО",
-//             },
-//             { id: uuid(), theme: "Обращение №7", author: "Иванов И. И.", Software: "Название ПО" },
-//             { id: uuid(), theme: "Обращение №8", author: "Иванов И. И.", Software: "Название ПО" },
-//         ],
-//     },
-//     [uuid()]: {
-//         name: "В работе",
-//         items: [{ id: uuid(), theme: "Обращение №3", author: "Иванов И. И.", Software: "Название ПО" }],
-//     },
-//     [uuid()]: {
-//         name: "Переоткрытые",
-//         items: [],
-//     },
-//     [uuid()]: {
-//         name: "Отклоненные",
-//         items: [],
-//     },
-//     [uuid()]: {
-//         name: "Закрытые",
-//         items: [{ id: uuid(), theme: "Обращение №9", author: "Иванов И. И.", Software: "Название ПО" }],
-//     },
-// }
-
-const onDragEnd = (result: any, columns: any, setColumns: any) => {
-    if (!result.destination) return
-    const { source, destination } = result
-
-    if (source.droppableId !== destination.droppableId) {
-        const sourceColumn = columns[source.droppableId]
-        const destColumn = columns[destination.droppableId]
-        const sourceItems = [...sourceColumn.items]
-        const destItems = [...destColumn.items]
-        const [removed] = sourceItems.splice(source.index, 1)
-        destItems.splice(destination.index, 0, removed)
-        setColumns({
-            ...columns,
-            [source.droppableId]: {
-                ...sourceColumn,
-                items: sourceItems,
-            },
-            [destination.droppableId]: {
-                ...destColumn,
-                items: destItems,
-            },
-        })
-    } else {
-        const column = columns[source.droppableId]
-        const copiedItems = [...column.items]
-        const [removed] = copiedItems.splice(source.index, 1)
-        copiedItems.splice(destination.index, 0, removed)
-        setColumns({
-            ...columns,
-            [source.droppableId]: {
-                ...column,
-                items: copiedItems,
-            },
-        })
-    }
-}
 
 const HeaderColumn = styled.div`
     background: ${(props) => props.theme.white};
@@ -127,8 +58,15 @@ const Number = styled.div`
 `
 
 const KanbanBoard: React.FC = () => {
-    const { data, loading, error } = useRequestBoardsQuery()
+    const { data, loading, error } = useRequestBoardsQuery({ fetchPolicy: "no-cache" })
     const [columns, setColumns] = useState(data?.requestBoards)
+
+    const [toNew] = useToNewStatusMutation()
+    const [toRegistration] = useToRegistrationStatusMutation()
+    const [toWork] = useToWorkStatusMutation()
+    const [toReject] = useToRejectStatusMutation()
+    const [toClosing] = useToClosingStatusMutation()
+    const [toReopen] = useToReopenStatusMutation()
 
     useEffect(() => {
         setColumns(data?.requestBoards)
@@ -136,6 +74,54 @@ const KanbanBoard: React.FC = () => {
 
     if (loading) return <Loading />
     if (error) message.error(error.message)
+
+    const onDragEnd = (result: any, columns: any, setColumns: any) => {
+        if (!result.destination) return
+        const { source, destination } = result
+
+        if (source.droppableId !== destination.droppableId) {
+            const sourceColumn = columns[source.droppableId]
+            const destColumn = columns[destination.droppableId]
+            const sourceItems = [...sourceColumn.items]
+            const destItems = [...destColumn.items]
+            const [removed] = sourceItems.splice(source.index, 1)
+            destItems.splice(destination.index, 0, removed)
+            setColumns({
+                ...columns,
+                [source.droppableId]: {
+                    ...sourceColumn,
+                    items: sourceItems,
+                },
+                [destination.droppableId]: {
+                    ...destColumn,
+                    items: destItems,
+                },
+            })
+
+            sendRequestToServer(destination.droppableId, removed)
+        } else {
+            const column = columns[source.droppableId]
+            const copiedItems = [...column.items]
+            const [removed] = copiedItems.splice(source.index, 1)
+            copiedItems.splice(destination.index, 0, removed)
+            setColumns({
+                ...columns,
+                [source.droppableId]: {
+                    ...column,
+                    items: copiedItems,
+                },
+            })
+        }
+    }
+
+    const sendRequestToServer = (columnId: any, appeal: any) => {
+        if (columnId === "0") toNew({ variables: { id: appeal.id } })
+        if (columnId === "1") toRegistration({ variables: { id: appeal.id } })
+        if (columnId === "2") toWork({ variables: { id: appeal.id } })
+        if (columnId === "3") toReopen({ variables: { id: appeal.id } })
+        if (columnId === "4") toReject({ variables: { id: appeal.id } })
+        if (columnId === "5") toClosing({ variables: { id: appeal.id } })
+    }
 
     return (
         <Row gutter={[12, 12]}>

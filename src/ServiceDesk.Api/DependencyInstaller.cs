@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ServiceDesk.Api.BackgroundTasks.ErrorFilter;
 using ServiceDesk.Api.Handlers;
+using ServiceDesk.Api.Services.FilesManager;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.EnumHelper;
@@ -32,6 +33,8 @@ namespace ServiceDesk.Api
                 .LogTo(Console.WriteLine, LogLevel.Information));
 
             services.AddTransient<IEnumHelper, EnumHelper>();
+            services.AddTransient<IFilesManager, FilesManager>();
+
             services.AddErrorFilter<GraphQlErrorFilter>();
 
             services.Scan(scan => scan

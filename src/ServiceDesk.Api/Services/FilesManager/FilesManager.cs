@@ -13,7 +13,7 @@ namespace ServiceDesk.Api.Services.FilesManager
         private readonly string baseDirectoryPath;
         private readonly string directoryName = "Files";
 
-        public FilesManager(IHostingEnvironment environment)
+        public FilesManager(IWebHostEnvironment environment)
         {
             this.baseDirectoryPath = Path.Combine(environment.WebRootPath, directoryName);
         }

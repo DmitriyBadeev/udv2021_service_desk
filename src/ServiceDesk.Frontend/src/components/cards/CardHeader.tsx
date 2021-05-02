@@ -19,7 +19,7 @@ const CardHeader: React.FC<propTypes> = ({ title, Form, size = "default" }) => {
 
     return (
         <HeaderContainer justify="space-between">
-            <Col>
+            <Col span={18}>
                 <Title>{title}</Title>
             </Col>
             <Col>

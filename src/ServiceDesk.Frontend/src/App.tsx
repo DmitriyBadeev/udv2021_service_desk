@@ -5,25 +5,36 @@ import ru_RU from "antd/es/locale/ru_RU"
 import { BrowserRouter } from "react-router-dom"
 import Shared from "pages/shared/Shared"
 import Routes from "Routes"
-import ApolloClient from "apollo-boost"
+import { from, ApolloClient, InMemoryCache } from "apollo-boost"
 import { ApolloProvider } from "@apollo/react-hooks"
 import { observer } from "mobx-react"
 import useStore from "store/useStore"
 import { LoadingOutlined } from "@ant-design/icons"
+import { BASE_GRAPHQL_API_URL } from "store/Config"
+import { createUploadLink } from "apollo-upload-client"
+import { setContext } from "apollo-link-context"
 
 import "./index.css"
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 32 }} spin />)
 
+const links = from([
+    //@ts-ignore
+    new createUploadLink({ uri: `${BASE_GRAPHQL_API_URL}/graphql?` }),
+])
+
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem("token")
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? token : "",
+        },
+    }
+})
+
 const client = new ApolloClient({
-    uri: "https://api-desk.badeev.info/graphql?",
-    request: (operation) => {
-        const token = window.localStorage.getItem("token")
-        operation.setContext({
-            headers: {
-                Authorization: token ? token : "",
-            },
-        })
-    },
+    link: authLink.concat(links),
+    cache: new InMemoryCache(),
 })
 
 const theme = {

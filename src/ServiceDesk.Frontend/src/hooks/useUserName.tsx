@@ -21,8 +21,6 @@ const useUserName = (userId: string) => {
         identityApi
             .get("/profile/username", { params: { userId } })
             .then((res) => {
-                console.log(res.data)
-
                 setData(res.data)
                 setLoading(false)
             })

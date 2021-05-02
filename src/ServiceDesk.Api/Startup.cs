@@ -92,11 +92,11 @@ namespace ServiceDesk.Api
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
             
-            app.UseAuthentication();
-
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();

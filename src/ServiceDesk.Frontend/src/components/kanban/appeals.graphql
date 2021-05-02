@@ -79,6 +79,28 @@ query getAppealComments($requestId: Uuid!) {
     }
 }
 
+query getRequestAttachments($requestId: Uuid!) {
+    requestAttachments(requestId: $requestId) {
+        id
+        name
+        sizeMb
+        reference
+    }
+}
+
+mutation attach($id: Uuid!, $file: Upload!) {
+    createRequestAttachment(requestAttachmentCreateDto: { requestId: $id, file: $file }) {
+        id
+        name
+        sizeMb
+        reference
+    }
+}
+
+mutation deleteAttach($attachId: Int!) {
+    deleteRequestAttachment(requestAttachmentId: $attachId)
+}
+
 mutation createComment($text: String!, $appealId: Uuid!) {
     createComment(commentCreateDto: { text: $text, requestId: $appealId }) {
         id

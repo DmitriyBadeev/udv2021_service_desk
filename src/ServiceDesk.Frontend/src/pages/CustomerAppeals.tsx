@@ -47,6 +47,7 @@ const CustomerAppeals: React.FC = observer(() => {
         {
             title: "Тема",
             key: "theme",
+            width: 500,
             render: (_items: any, item: any) => {
                 return <Link to={`/appeals/${item.id}`}>{item.theme}</Link>
             },

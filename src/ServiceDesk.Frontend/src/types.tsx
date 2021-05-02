@@ -14,6 +14,8 @@ export type Scalars = {
   Float: number;
   /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
   DateTime: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
   Uuid: any;
 };
 
@@ -70,6 +72,8 @@ export type Mutations = {
   createComment?: Maybe<CommentDto>;
   editComment?: Maybe<CommentDto>;
   deleteComment?: Maybe<Scalars['String']>;
+  createRequestAttachment?: Maybe<RequestAttachmentDto>;
+  deleteRequestAttachment?: Maybe<Scalars['String']>;
 };
 
 
@@ -150,6 +154,16 @@ export type MutationsDeleteCommentArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationsCreateRequestAttachmentArgs = {
+  requestAttachmentCreateDto?: Maybe<RequestAttachmentCreateDtoInput>;
+};
+
+
+export type MutationsDeleteRequestAttachmentArgs = {
+  requestAttachmentId: Scalars['Int'];
+};
+
 export type Queries = {
   __typename?: 'Queries';
   testQuery?: Maybe<Scalars['String']>;
@@ -169,6 +183,9 @@ export type Queries = {
   comments?: Maybe<Array<Maybe<CommentDto>>>;
   pageComments?: Maybe<Array<Maybe<CommentDto>>>;
   requestComments?: Maybe<Array<Maybe<CommentDto>>>;
+  attachment?: Maybe<RequestAttachmentDto>;
+  attachments?: Maybe<Array<Maybe<RequestAttachmentDto>>>;
+  requestAttachments?: Maybe<Array<Maybe<RequestAttachmentDto>>>;
 };
 
 
@@ -214,6 +231,29 @@ export type QueriesRequestCommentsArgs = {
   requestId: Scalars['Uuid'];
 };
 
+
+export type QueriesAttachmentArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueriesRequestAttachmentsArgs = {
+  requestId: Scalars['Uuid'];
+};
+
+export type RequestAttachmentCreateDtoInput = {
+  requestId: Scalars['Uuid'];
+  file?: Maybe<Scalars['Upload']>;
+};
+
+export type RequestAttachmentDto = {
+  __typename?: 'RequestAttachmentDto';
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  sizeMb?: Maybe<Scalars['String']>;
+  reference?: Maybe<Scalars['String']>;
+};
+
 export type RequestBoardDto = {
   __typename?: 'RequestBoardDto';
   name?: Maybe<Scalars['String']>;
@@ -242,6 +282,7 @@ export type RequestDto = {
   requestStatus?: Maybe<Scalars['String']>;
   clientId: Scalars['Int'];
 };
+
 
 
 export type GetClientQueryVariables = Exact<{
@@ -398,6 +439,43 @@ export type GetAppealCommentsQuery = (
     { __typename?: 'CommentDto' }
     & Pick<CommentDto, 'id' | 'text' | 'authorId' | 'creationDate'>
   )>>> }
+);
+
+export type GetRequestAttachmentsQueryVariables = Exact<{
+  requestId: Scalars['Uuid'];
+}>;
+
+
+export type GetRequestAttachmentsQuery = (
+  { __typename?: 'Queries' }
+  & { requestAttachments?: Maybe<Array<Maybe<(
+    { __typename?: 'RequestAttachmentDto' }
+    & Pick<RequestAttachmentDto, 'id' | 'name' | 'sizeMb' | 'reference'>
+  )>>> }
+);
+
+export type AttachMutationVariables = Exact<{
+  id: Scalars['Uuid'];
+  file: Scalars['Upload'];
+}>;
+
+
+export type AttachMutation = (
+  { __typename?: 'Mutations' }
+  & { createRequestAttachment?: Maybe<(
+    { __typename?: 'RequestAttachmentDto' }
+    & Pick<RequestAttachmentDto, 'id' | 'name' | 'sizeMb' | 'reference'>
+  )> }
+);
+
+export type DeleteAttachMutationVariables = Exact<{
+  attachId: Scalars['Int'];
+}>;
+
+
+export type DeleteAttachMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'deleteRequestAttachment'>
 );
 
 export type CreateCommentMutationVariables = Exact<{
@@ -909,6 +987,110 @@ export function useGetAppealCommentsLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type GetAppealCommentsQueryHookResult = ReturnType<typeof useGetAppealCommentsQuery>;
 export type GetAppealCommentsLazyQueryHookResult = ReturnType<typeof useGetAppealCommentsLazyQuery>;
 export type GetAppealCommentsQueryResult = ApolloReactCommon.QueryResult<GetAppealCommentsQuery, GetAppealCommentsQueryVariables>;
+export const GetRequestAttachmentsDocument = gql`
+    query getRequestAttachments($requestId: Uuid!) {
+  requestAttachments(requestId: $requestId) {
+    id
+    name
+    sizeMb
+    reference
+  }
+}
+    `;
+
+/**
+ * __useGetRequestAttachmentsQuery__
+ *
+ * To run a query within a React component, call `useGetRequestAttachmentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRequestAttachmentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRequestAttachmentsQuery({
+ *   variables: {
+ *      requestId: // value for 'requestId'
+ *   },
+ * });
+ */
+export function useGetRequestAttachmentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRequestAttachmentsQuery, GetRequestAttachmentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetRequestAttachmentsQuery, GetRequestAttachmentsQueryVariables>(GetRequestAttachmentsDocument, baseOptions);
+      }
+export function useGetRequestAttachmentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRequestAttachmentsQuery, GetRequestAttachmentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetRequestAttachmentsQuery, GetRequestAttachmentsQueryVariables>(GetRequestAttachmentsDocument, baseOptions);
+        }
+export type GetRequestAttachmentsQueryHookResult = ReturnType<typeof useGetRequestAttachmentsQuery>;
+export type GetRequestAttachmentsLazyQueryHookResult = ReturnType<typeof useGetRequestAttachmentsLazyQuery>;
+export type GetRequestAttachmentsQueryResult = ApolloReactCommon.QueryResult<GetRequestAttachmentsQuery, GetRequestAttachmentsQueryVariables>;
+export const AttachDocument = gql`
+    mutation attach($id: Uuid!, $file: Upload!) {
+  createRequestAttachment(
+    requestAttachmentCreateDto: {requestId: $id, file: $file}
+  ) {
+    id
+    name
+    sizeMb
+    reference
+  }
+}
+    `;
+export type AttachMutationFn = ApolloReactCommon.MutationFunction<AttachMutation, AttachMutationVariables>;
+
+/**
+ * __useAttachMutation__
+ *
+ * To run a mutation, you first call `useAttachMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAttachMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [attachMutation, { data, loading, error }] = useAttachMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useAttachMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AttachMutation, AttachMutationVariables>) {
+        return ApolloReactHooks.useMutation<AttachMutation, AttachMutationVariables>(AttachDocument, baseOptions);
+      }
+export type AttachMutationHookResult = ReturnType<typeof useAttachMutation>;
+export type AttachMutationResult = ApolloReactCommon.MutationResult<AttachMutation>;
+export type AttachMutationOptions = ApolloReactCommon.BaseMutationOptions<AttachMutation, AttachMutationVariables>;
+export const DeleteAttachDocument = gql`
+    mutation deleteAttach($attachId: Int!) {
+  deleteRequestAttachment(requestAttachmentId: $attachId)
+}
+    `;
+export type DeleteAttachMutationFn = ApolloReactCommon.MutationFunction<DeleteAttachMutation, DeleteAttachMutationVariables>;
+
+/**
+ * __useDeleteAttachMutation__
+ *
+ * To run a mutation, you first call `useDeleteAttachMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAttachMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAttachMutation, { data, loading, error }] = useDeleteAttachMutation({
+ *   variables: {
+ *      attachId: // value for 'attachId'
+ *   },
+ * });
+ */
+export function useDeleteAttachMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteAttachMutation, DeleteAttachMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteAttachMutation, DeleteAttachMutationVariables>(DeleteAttachDocument, baseOptions);
+      }
+export type DeleteAttachMutationHookResult = ReturnType<typeof useDeleteAttachMutation>;
+export type DeleteAttachMutationResult = ApolloReactCommon.MutationResult<DeleteAttachMutation>;
+export type DeleteAttachMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteAttachMutation, DeleteAttachMutationVariables>;
 export const CreateCommentDocument = gql`
     mutation createComment($text: String!, $appealId: Uuid!) {
   createComment(commentCreateDto: {text: $text, requestId: $appealId}) {

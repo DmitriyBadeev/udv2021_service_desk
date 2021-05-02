@@ -9,7 +9,8 @@ import { useGetRequestQuery } from "types"
 import UserName from "components/etc/UserName"
 import EditAppeal from "components/forms/EditAppeal"
 import Loading from "components/loading/Loading"
-import AppealComments from "components/etc/AppealComments"
+import AppealComments from "components/appeals/AppealComments"
+import AppealAttachments from "components/appeals/AppealAttachments"
 
 type paramsTypes = {
     id: string
@@ -52,7 +53,7 @@ const Appeal: React.FC = () => {
                     </Card>
                 </Col>
                 <Col span={10}>
-                    <Card isSecondary>
+                    <Card isSecondary marginBottom={20}>
                         <Descriptions column={1} labelStyle={{ fontWeight: 600 }} size="small">
                             <Descriptions.Item label="Идентификатор">{appealData?.id}</Descriptions.Item>
                             <Descriptions.Item label="Статус">{appealData?.requestStatus}</Descriptions.Item>
@@ -78,6 +79,7 @@ const Appeal: React.FC = () => {
                             </Descriptions.Item>
                         </Descriptions>
                     </Card>
+                    <AppealAttachments appealId={id} />
                 </Col>
             </Row>
         </FadePage>

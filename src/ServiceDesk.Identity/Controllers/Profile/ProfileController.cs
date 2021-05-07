@@ -156,5 +156,37 @@ namespace ServiceDesk.Identity.Controllers.Profile
 
             return Unauthorized();
         }
+
+        [HttpPost("/profile/delete")]
+        public async Task<ActionResult> DeleteUser([FromQuery] string userId)
+        {
+            var authUserId = HttpContext.User.GetSubjectId();
+            var authUser = await _userManager.FindByIdAsync(authUserId);
+            var authRole = await _customerService.GetRole(authUser);
+        
+            var removedUser = await _userManager.FindByIdAsync(userId);
+            var removedUserRole = await _customerService.GetRole(removedUser);
+            
+            var authClientId = _customerService.GetClientId(authUserId);
+            var removedClientId = _customerService.GetClientId(userId);
+            
+            var canRemove = _customerService.CanEditProfile(authRole, removedUserRole, authClientId,
+                removedClientId, authUserId == userId);
+        
+            if (canRemove)
+            {
+                await _customerService.RemoveUserFromCustomer(removedClientId, userId);
+                var result = await _userManager.DeleteAsync(removedUser);
+        
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                
+                return BadRequest(result.Errors);
+            }
+            
+            return Unauthorized();
+        }
     }
 }

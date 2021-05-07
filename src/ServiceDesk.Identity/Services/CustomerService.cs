@@ -67,5 +67,14 @@ namespace ServiceDesk.Identity.Services
 
             return false;
         }
+
+        public async Task RemoveUserFromCustomer(int? customerId, string userId)
+        {
+            var clientUsers = _applicationDbContext.ClientUsers
+                .Where(cu => cu.ClientId == customerId && cu.UserId == userId);
+            
+            _applicationDbContext.ClientUsers.RemoveRange(clientUsers);
+            await _applicationDbContext.SaveChangesAsync();
+        }
     }
 }

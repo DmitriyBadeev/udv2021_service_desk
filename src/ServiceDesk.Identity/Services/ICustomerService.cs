@@ -14,5 +14,7 @@ namespace ServiceDesk.Identity.Services
 
         bool CanEditProfile(string authRole, string editedRole, int? authClientId,
             int? editedClientId, bool isMyProfile);
+
+        Task RemoveUserFromCustomer(int? customerId, string userId);
     }
 }

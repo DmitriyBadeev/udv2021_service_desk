@@ -1,4 +1,4 @@
-import { Button, Descriptions, Table, message } from "antd"
+import { Button, Descriptions, Table, message, Popconfirm } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
@@ -16,6 +16,8 @@ import AddUserCustomer from "components/forms/AddUserCustomer"
 import { observer } from "mobx-react"
 import { DEVELOPER_ROLE, OWNER_ROLE } from "helpers/roleHelper"
 import useStore from "store/useStore"
+import useDeleteUser from "hooks/useDeleteUser"
+import { DeleteOutlined } from "@ant-design/icons"
 
 type paramsTypes = {
     id: string
@@ -28,6 +30,7 @@ const Cabinet: React.FC = observer(() => {
 
     const { data: users, loading: usersLoading, reload: reloadUsers } = useCustomerUsersData(id)
     const { authService } = useStore()
+    const { query, loading: deleteLoading } = useDeleteUser()
 
     const userRole = authService.user?.profile.role
     const canEditCustomer = userRole === OWNER_ROLE || userRole === DEVELOPER_ROLE
@@ -37,6 +40,15 @@ const Cabinet: React.FC = observer(() => {
     if (error) message.error(error.message)
 
     const customerData = data?.client
+
+    const onSuccessDelete = () => {
+        reloadUsers()
+        message.success("Пользователь удален")
+    }
+
+    const onErrorDelete = () => {
+        message.error("Ошибка при удалении пользователя")
+    }
 
     const columns = [
         {
@@ -103,11 +115,23 @@ const Cabinet: React.FC = observer(() => {
             colSpan: 0,
             width: 100,
             render: (_items: any, item: any) => {
-                return (
-                    <Button type="link" danger>
-                        Удалить
-                    </Button>
-                )
+                if (item.canEdit)
+                    return (
+                        <Popconfirm
+                            title="Вы уверены, что хотите удалить пользователя?"
+                            onConfirm={() =>
+                                query(
+                                    item.userId,
+                                    () => onSuccessDelete(),
+                                    () => onErrorDelete()
+                                )
+                            }
+                        >
+                            <Button type="link" danger loading={deleteLoading} icon={<DeleteOutlined />}>
+                                Удалить
+                            </Button>
+                        </Popconfirm>
+                    )
             },
         },
     ]

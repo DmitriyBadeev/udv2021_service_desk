@@ -20,8 +20,6 @@ const AddUserDeveloper: React.FC<propTypes> = ({ OpenButton }) => {
             Password: data.password,
         }
 
-        console.log(user)
-
         query(user, onSuccess, onError)
     }
 
@@ -31,7 +29,9 @@ const AddUserDeveloper: React.FC<propTypes> = ({ OpenButton }) => {
     }
 
     const onError = (error: any) => {
-        message.error("Произошла ошибка")
+        if (error.response) {
+            message.error(error.response.data[0].description)
+        }
     }
 
     return (

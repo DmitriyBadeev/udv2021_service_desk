@@ -28,8 +28,6 @@ const AddUserCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, c
             Password: data.password,
         }
 
-        console.log(user)
-
         query(user, onSuccess, onError)
     }
 
@@ -40,7 +38,9 @@ const AddUserCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, c
     }
 
     const onError = (error: any) => {
-        message.error("Произошла ошибка")
+        if (error.response) {
+            message.error(error.response.data[0].description)
+        }
     }
 
     return (

@@ -9,6 +9,7 @@ import { useGetClientsQuery, useDeleteClientMutation } from "types"
 import { Text } from "GeneralStyles"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import EditCustomer from "components/forms/EditCustomer"
+import { DeleteOutlined } from "@ant-design/icons"
 
 const Cabinets: React.FC = () => {
     const { loading, data, error, refetch } = useGetClientsQuery()
@@ -91,7 +92,7 @@ const Cabinets: React.FC = () => {
                         title="Вы уверены, что хотите удалить заказчика?"
                         onConfirm={() => deleteHandler(item.id)}
                     >
-                        <Button type="link" danger>
+                        <Button type="link" danger icon={<DeleteOutlined />}>
                             Удалить
                         </Button>
                     </Popconfirm>

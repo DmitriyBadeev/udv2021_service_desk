@@ -3,7 +3,7 @@ import useProfileData from "hooks/useProfileData"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
-import { Descriptions, Space } from "antd"
+import { Descriptions, Result, Space } from "antd"
 import { getRoleDisplayName } from "helpers/roleHelper"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import { useParams } from "react-router-dom"
@@ -17,9 +17,15 @@ type paramsTypes = {
 
 const Profile: React.FC = () => {
     const { userId } = useParams<paramsTypes>()
-    const { data, loading, reload } = useProfileData(userId)
+    const { data, loading, error, reload } = useProfileData(userId)
 
-    if (loading) return <Loading />
+    if (loading) return <Loading height="70vh" size="big" />
+
+    if (error) {
+        if (error.response.status === 404) {
+            return <Result status="404" title="404" subTitle="Такого пользователя не существует" />
+        }
+    }
 
     const lastName = data?.lastName
     const firstName = data?.firstName

@@ -281,6 +281,7 @@ export type RequestDto = {
   softwareModule?: Maybe<Scalars['String']>;
   requestStatus?: Maybe<Scalars['String']>;
   clientId: Scalars['Int'];
+  clientName?: Maybe<Scalars['String']>;
 };
 
 
@@ -410,7 +411,7 @@ export type RequestBoardsQuery = (
     & Pick<RequestBoardDto, 'name'>
     & { items?: Maybe<Array<Maybe<(
       { __typename?: 'RequestDto' }
-      & Pick<RequestDto, 'id' | 'theme' | 'software' | 'authorId'>
+      & Pick<RequestDto, 'id' | 'theme' | 'software' | 'clientName'>
     )>>> }
   )>>> }
 );
@@ -878,7 +879,7 @@ export const RequestBoardsDocument = gql`
       id
       theme
       software
-      authorId
+      clientName
     }
   }
 }

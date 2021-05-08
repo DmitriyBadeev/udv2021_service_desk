@@ -13,7 +13,6 @@ import {
     useToClosingStatusMutation,
     useToReopenStatusMutation,
 } from "types"
-import UserName from "components/etc/UserName"
 import Loading from "components/loading/Loading"
 
 const { Paragraph } = Typography
@@ -72,7 +71,7 @@ const KanbanBoard: React.FC = () => {
         setColumns(data?.requestBoards)
     }, [data, setColumns])
 
-    if (loading) return <Loading />
+    if (loading) return <Loading height="70vh" size="big" />
     if (error) message.error(error.message)
 
     const onDragEnd = (result: any, columns: any, setColumns: any) => {
@@ -174,12 +173,9 @@ const KanbanBoard: React.FC = () => {
                                                                             {item?.theme}
                                                                         </Link>
                                                                     </Paragraph>
-
-                                                                    <UserName
-                                                                        type="small"
-                                                                        userId={item?.authorId || ""}
-                                                                        $color="grey3"
-                                                                    />
+                                                                    <SmallText $color="grey3">
+                                                                        {item?.clientName}
+                                                                    </SmallText>
                                                                 </Card>
                                                             )
                                                         }}

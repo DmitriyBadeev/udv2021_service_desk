@@ -32,7 +32,8 @@ namespace ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request
                 Software = entity.SoftwareModule?.Software?.Title,
                 SoftwareModule = entity.SoftwareModule?.Title,
                 RequestStatus = requestStatus,
-                ClientId = entity.ClientId
+                ClientId = entity.ClientId,
+                ClientName = entity.Client.Name
             };
 
             return requestDto;
@@ -49,6 +50,7 @@ namespace ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request
             var requests = context.Requests
                 .Include(x => x.SoftwareModule)
                 .ThenInclude(x => x.Software)
+                .Include(x => x.Client)
                 .ToList();
 
             var boards = new List<RequestBoardDto>();

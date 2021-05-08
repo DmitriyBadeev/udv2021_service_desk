@@ -7,7 +7,6 @@ import useStore from "store/useStore"
 import { useSecretLazyQuery } from "types"
 import Logo from "components/logo/Logo"
 import { Flex } from "GeneralStyles"
-import AddUserDeveloper from "components/forms/AddUserDeveloper"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -160,13 +159,9 @@ const DeveloperMenu = (location: string) => {
                 </MenuLink>
             </MenuItem>
             <MenuItem>
-                <AddUserDeveloper
-                    OpenButton={(props) => (
-                        <MenuLink to="#" $active={false} onClick={props.onClick}>
-                            Регистрация
-                        </MenuLink>
-                    )}
-                />
+                <MenuLink to="/users" $active={location.startsWith("/users")}>
+                    Пользователи
+                </MenuLink>
             </MenuItem>
         </>
     )

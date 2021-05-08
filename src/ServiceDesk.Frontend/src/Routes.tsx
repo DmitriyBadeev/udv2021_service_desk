@@ -14,6 +14,8 @@ import Cabinet from "pages/Cabinet"
 import Profile from "pages/Profile"
 import CustomerAppeals from "pages/CustomerAppeals"
 import Appeal from "pages/Appeal"
+import Users from "pages/Users"
+
 import { DEVELOPER_ROLE } from "helpers/roleHelper"
 
 const Routes: React.FC = () => {
@@ -41,6 +43,9 @@ const Routes: React.FC = () => {
                 </PrivateRoute>
                 <PrivateRoute exact path="/appeals/:id">
                     <Appeal />
+                </PrivateRoute>
+                <PrivateRoute exact path="/users">
+                    <Users />
                 </PrivateRoute>
                 <Route exact path="/enter">
                     <Enter />

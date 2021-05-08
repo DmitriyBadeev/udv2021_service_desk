@@ -49,7 +49,7 @@ query requestBoards {
             id
             theme
             software
-            authorId
+            clientName
         }
     }
 }

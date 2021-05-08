@@ -2,11 +2,10 @@ import { useEffect, useState, useCallback } from "react"
 import { BASE_IDENTITY_URL } from "store/Config"
 import axios from "axios"
 
-const useProfileData = (userId: string) => {
+const useGetAllUsers = () => {
     const token = window.localStorage.getItem("token")
 
     const [data, setData] = useState<any>({})
-    const [error, setError] = useState<any>()
     const [loading, setLoading] = useState(true)
 
     const reload = useCallback(() => {
@@ -20,23 +19,22 @@ const useProfileData = (userId: string) => {
         })
 
         identityApi
-            .get("/profile", { params: { userId } })
+            .get("/profile/all")
             .then((res) => {
                 setData(res.data)
                 setLoading(false)
             })
             .catch((error) => {
                 console.log(error)
-                setError(error)
                 setLoading(false)
             })
-    }, [setLoading, setData, token, userId])
+    }, [setLoading, setData, token])
 
     useEffect(() => {
         reload()
     }, [reload])
 
-    return { data, loading, error, reload }
+    return { data, loading, reload }
 }
 
-export default useProfileData
+export default useGetAllUsers

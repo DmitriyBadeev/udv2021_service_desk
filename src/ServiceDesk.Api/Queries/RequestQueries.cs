@@ -44,7 +44,7 @@ namespace ServiceDesk.Api.Queries
             return requests;
         }
         
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<RequestBoardDto> GetRequestBoards([Service] ServiceDeskDbContext context)
         {
             var boards = requestHandler.RequestBoards(context);

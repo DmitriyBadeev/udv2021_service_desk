@@ -47,6 +47,13 @@ const EditProfile: React.FC<propTypes> = ({
     }
 
     const onError = (error: any) => {
+        if (error.response) {
+            if (error.response.status === 401) {
+                message.error("Нет прав доступа")
+
+                return
+            }
+        }
         message.error("Произошла ошибка")
     }
 

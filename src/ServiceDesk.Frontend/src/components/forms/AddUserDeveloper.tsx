@@ -1,12 +1,14 @@
 import React, { useState } from "react"
 import { Drawer, Form, Col, Row, Button, Input, Space, message } from "antd"
 import useAddDeveloperUser, { RegistrationDeveloperUserData } from "hooks/useAddDeveloperUser"
+import { PlusOutlined } from "@ant-design/icons"
 
 type propTypes = {
-    OpenButton: React.FC<{ onClick: () => void }>
+    buttonSize?: "large" | "middle"
+    reload: () => void
 }
 
-const AddUserDeveloper: React.FC<propTypes> = ({ OpenButton }) => {
+const AddUserDeveloper: React.FC<propTypes> = ({ buttonSize, reload }) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
     const { loading, query } = useAddDeveloperUser()
@@ -25,6 +27,7 @@ const AddUserDeveloper: React.FC<propTypes> = ({ OpenButton }) => {
 
     const onSuccess = (res: any) => {
         message.success("Пользователь успешно создан")
+        reload()
         setVisible(false)
     }
 
@@ -36,10 +39,9 @@ const AddUserDeveloper: React.FC<propTypes> = ({ OpenButton }) => {
 
     return (
         <>
-            <OpenButton onClick={() => setVisible(true)} />
-            {/* <Button type="primary" onClick={} size={buttonSize}>
-                <PlusOutlined /> Добавить
-            </Button> */}
+            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize}>
+                <PlusOutlined /> Добавить разработчика
+            </Button>
             <Drawer
                 title="Регистрация представителя разработчика"
                 width={720}

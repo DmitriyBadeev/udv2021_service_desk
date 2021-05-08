@@ -36,7 +36,7 @@ const Cabinet: React.FC = observer(() => {
     const canEditCustomer = userRole === OWNER_ROLE || userRole === DEVELOPER_ROLE
     const canCreateCustomer = userRole === OWNER_ROLE || userRole === DEVELOPER_ROLE
 
-    if (loading) return <Loading />
+    if (loading) return <Loading height="70vh" size="big" />
     if (error) message.error(error.message)
 
     const customerData = data?.client

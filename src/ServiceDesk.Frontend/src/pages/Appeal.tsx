@@ -23,7 +23,7 @@ const Appeal: React.FC = () => {
     const { data, loading, error, refetch } = useGetRequestQuery({ variables: { id } })
     const appealData = data?.request
 
-    if (loading) return <Loading />
+    if (loading) return <Loading height="70vh" size="big" />
     if (error) message.error(error.message)
 
     return (

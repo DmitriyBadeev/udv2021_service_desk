@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +33,12 @@ namespace ServiceDesk.Identity.Controllers.Profile
             var authRole = await _customerService.GetRole(authUser);
             
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
             var role = await _customerService.GetRole(user);
             
             var clientId = _customerService.GetClientId(userId);
@@ -54,6 +62,28 @@ namespace ServiceDesk.Identity.Controllers.Profile
             return Unauthorized();
         }
 
+        [HttpGet("/profile/all")]
+        [Authorize(IdentityServerConstants.LocalApi.PolicyName, Roles = SeedConfig.DEVELOPER_ROLE)]
+        public async Task<ActionResult> GetAll()
+        {
+            var authUserId = HttpContext.User.GetSubjectId();
+            var users = _userManager.Users;
+            var usersData = new List<UserDataDto>();
+            
+            foreach (var user in users)
+            {
+                var role = await _customerService.GetRole(user);
+                var clientId = _customerService.GetClientId(user.Id);
+
+                var canEdit = role != SeedConfig.DEVELOPER_ROLE || authUserId == user.Id;
+                var userData = _customerService.GetUserData(user, role, clientId, canEdit);
+                
+                usersData.Add(userData);
+            }
+        
+            return Ok(usersData);
+        }
+        
         [HttpGet("/profile/username")]
         [AllowAnonymous]
         public async Task<ActionResult> GetUserName([FromQuery] string userId)
@@ -165,6 +195,11 @@ namespace ServiceDesk.Identity.Controllers.Profile
             var authRole = await _customerService.GetRole(authUser);
         
             var removedUser = await _userManager.FindByIdAsync(userId);
+            if (removedUser == null)
+            {
+                return NotFound();
+            }
+            
             var removedUserRole = await _customerService.GetRole(removedUser);
             
             var authClientId = _customerService.GetClientId(authUserId);

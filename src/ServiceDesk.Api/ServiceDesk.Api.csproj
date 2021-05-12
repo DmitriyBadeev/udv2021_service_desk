@@ -23,8 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Handlers\DirectorySystem\" />
       <Folder Include="Logs" />
+      <Folder Include="Systems\DirectorySystem\Handlers\License\" />
+      <Folder Include="Systems\DirectorySystem\Handlers\SoftwareModule\" />
+      <Folder Include="Systems\DirectorySystem\Handlers\Software\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 

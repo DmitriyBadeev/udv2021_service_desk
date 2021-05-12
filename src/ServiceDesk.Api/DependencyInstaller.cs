@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ServiceDesk.Api.BackgroundTasks.ErrorFilter;
-using ServiceDesk.Api.Handlers;
 using ServiceDesk.Api.Services.FilesManager;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
@@ -48,7 +47,7 @@ namespace ServiceDesk.Api
             services.Scan(scan => scan
                 .FromApplicationDependencies()
                 .AddClasses(classes => classes
-                    .InNamespaces("ServiceDesk.Api.Builders.DtoBuilders")
+                    .InNamespaces("ServiceDesk.Api.Systems")
                     .Where(type => type.Name.Contains("Builder")))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
@@ -56,7 +55,7 @@ namespace ServiceDesk.Api
             services.Scan(scan => scan
                 .FromApplicationDependencies()
                 .AddClasses(classes => classes
-                    .InNamespaces("ServiceDesk.Api.Handlers")
+                    .InNamespaces("ServiceDesk.Api.Systems")
                     .Where(type => type.Name.EndsWith("Handler")))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());

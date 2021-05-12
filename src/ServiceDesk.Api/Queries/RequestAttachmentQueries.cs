@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.RequestAttachment;
-using ServiceDesk.Api.Dtos.RequestAttachment;
-using ServiceDesk.Api.Handlers.RequestSystem.RequestAttachment;
+using ServiceDesk.Api.Systems.RequestSystem.Dtos.RequestAttachment;
+using ServiceDesk.Api.Systems.RequestSystem.Handlers.RequestAttachment;
 using ServiceDesk.Infrastructure;
+using RequestAttachmentDtoBuilder = ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.RequestAttachment.RequestAttachmentDtoBuilder;
 
 namespace ServiceDesk.Api.Queries
 {

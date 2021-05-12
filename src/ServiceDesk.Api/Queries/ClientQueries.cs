@@ -2,10 +2,10 @@
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.AspNetCore.Authorization;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
-using ServiceDesk.Api.Dtos.Client;
-using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
+using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
+using ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client;
 using ServiceDesk.Infrastructure;
+using ClientDtoBuilder = ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client.ClientDtoBuilder;
 
 namespace ServiceDesk.Api.Queries
 {

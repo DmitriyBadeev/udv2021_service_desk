@@ -1,7 +1,7 @@
 ﻿using HotChocolate;
 using HotChocolate.Types;
-using ServiceDesk.Api.Dtos.RequestAttachment;
-using ServiceDesk.Api.Handlers.RequestSystem.RequestAttachment;
+using ServiceDesk.Api.Systems.RequestSystem.Dtos.RequestAttachment;
+using ServiceDesk.Api.Systems.RequestSystem.Handlers.RequestAttachment;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Mutations

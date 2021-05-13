@@ -41,12 +41,18 @@ namespace ServiceDesk.Api
                 .AddType<RequestQueries>()
                 .AddType<CommentQueries>()
                 .AddType<RequestAttachmentQueries>()
+                .AddType<LicenseQueries>()
+                .AddType<SoftwareQueries>()
+                .AddType<SoftwareModuleQueries>()
                 .AddMutationType(d => d.Name("Mutations"))
                 .AddType<TestMutations>()
                 .AddType<ClientMutations>()
                 .AddType<RequestMutations>()
                 .AddType<CommentMutations>()
-                .AddType<RequestAttachmentMutations>();
+                .AddType<RequestAttachmentMutations>()
+                .AddType<LicenseMutations>()
+                .AddType<SoftwareMutations>()
+                .AddType<SoftwareModuleMutations>();
 
             services.Configure<FormOptions>(options =>
             {

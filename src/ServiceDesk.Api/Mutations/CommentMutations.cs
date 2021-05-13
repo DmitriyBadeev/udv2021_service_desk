@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Comment;
-using ServiceDesk.Api.Dtos.Client;
-using ServiceDesk.Api.Dtos.Comment;
-using ServiceDesk.Api.Handlers.RequestSystem.Comment;
+using ServiceDesk.Api.Systems.RequestSystem.Dtos.Comment;
+using ServiceDesk.Api.Systems.RequestSystem.Handlers.Comment;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
 using ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem;
+using CommentDtoBuilder = ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.Comment.CommentDtoBuilder;
 
 namespace ServiceDesk.Api.Mutations
 {

@@ -2,12 +2,12 @@
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Request;
-using ServiceDesk.Api.Dtos.Request;
-using ServiceDesk.Api.Handlers.RequestSystem.Request;
+using ServiceDesk.Api.Systems.RequestSystem.Dtos.Request;
+using ServiceDesk.Api.Systems.RequestSystem.Handlers.Request;
 using ServiceDesk.Core.Enums;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.Implementations.Factories.RequestSystem;
+using RequestDtoBuilder = ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.Request.RequestDtoBuilder;
 
 namespace ServiceDesk.Api.Mutations
 {

@@ -1,14 +1,12 @@
 ﻿using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using ServiceDesk.Api.Builders.DtoBuilders.EntityDtoBuilders.Client;
-using ServiceDesk.Api.Builders.DtoBuilders.Interfaces;
-using ServiceDesk.Api.Dtos.Client;
-using ServiceDesk.Api.Handlers;
-using ServiceDesk.Api.Handlers.PersonalAreaSystem.Client;
+using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
+using ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Infrastructure;
 using ServiceDesk.Infrastructure.Implementations.Factories.PersonalAreaSystem;
+using ClientDtoBuilder = ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client.ClientDtoBuilder;
 
 namespace ServiceDesk.Api.Mutations
 {

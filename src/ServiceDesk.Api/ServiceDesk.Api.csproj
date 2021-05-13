@@ -23,7 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Handlers\DirectorySystem\" />
       <Folder Include="Logs" />
       <Folder Include="wwwroot\" />
     </ItemGroup>

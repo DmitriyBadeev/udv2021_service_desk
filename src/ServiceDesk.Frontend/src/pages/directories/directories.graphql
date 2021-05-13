@@ -1,0 +1,108 @@
+query getSoftwares {
+    softwares {
+        id
+        title
+    }
+}
+
+mutation createSoftware($title: String!) {
+    createSoftware(softwareCreateDto: { title: $title }) {
+        id
+    }
+}
+
+mutation editSoftware($id: Int!, $title: String!) {
+    editSoftware(id: $id, softwareCreateDto: { title: $title }) {
+        id
+    }
+}
+
+mutation deleteSoftware($id: Int!) {
+    deleteSoftware(id: $id)
+}
+
+query getModules {
+    softwareModules {
+        id
+        title
+        software
+    }
+}
+
+mutation createModule($softwareId: Int!, $title: String!) {
+    createSoftwareModule(softwareModuleCreateDto: { title: $title, softwareId: $softwareId }) {
+        id
+    }
+}
+
+mutation editModule($id: Int!, $title: String!, $softwareId: Int!) {
+    editSoftwareModule(id: $id, commentCreateDto: { softwareId: $softwareId, title: $title }) {
+        id
+    }
+}
+
+mutation deleteModule($id: Int!) {
+    deleteSoftwareModule(id: $id)
+}
+
+query getLicenses {
+    licenses {
+        id
+        number
+        startDate
+        expiresDate
+        countOfUsers
+        client
+        software
+    }
+}
+
+mutation createLicense(
+    $number: Int!
+    $startDate: DateTime!
+    $expiresDate: DateTime!
+    $countUsers: Int!
+    $clientId: Int!
+    $softwareId: Int!
+) {
+    createLicense(
+        licenseCreateDto: {
+            number: $number
+            startDate: $startDate
+            expiresDate: $expiresDate
+            countOfUsers: $countUsers
+            clientId: $clientId
+            softwareId: $softwareId
+        }
+    ) {
+        id
+    }
+}
+
+mutation editLicense(
+    $id: Int!
+    $number: Int!
+    $startDate: DateTime!
+    $expiresDate: DateTime!
+    $countUsers: Int!
+    $clientId: Int!
+    $softwareId: Int!
+) {
+    editLicense(
+        id: $id
+        licenseCreateDto: {
+            number: $number
+            startDate: $startDate
+            expiresDate: $expiresDate
+            countOfUsers: $countUsers
+            clientId: $clientId
+            softwareId: $softwareId
+        }
+    ) {
+        id
+    }
+}
+
+mutation deleteLicense($id: Int!) {
+    deleteLicense(id: $id)
+}

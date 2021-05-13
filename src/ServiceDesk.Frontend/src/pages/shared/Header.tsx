@@ -159,6 +159,11 @@ const DeveloperMenu = (location: string) => {
                 </MenuLink>
             </MenuItem>
             <MenuItem>
+                <MenuLink to="/directories" $active={location.startsWith("/directories")}>
+                    Справочники
+                </MenuLink>
+            </MenuItem>
+            <MenuItem>
                 <MenuLink to="/users" $active={location.startsWith("/users")}>
                     Пользователи
                 </MenuLink>

@@ -16,7 +16,7 @@ import { setContext } from "apollo-link-context"
 
 import "./index.css"
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 32 }} spin />)
-k
+
 const links = from([
     //@ts-ignore
     new createUploadLink({ uri: `${BASE_GRAPHQL_API_URL}/graphql?` }),

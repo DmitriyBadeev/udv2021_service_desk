@@ -26,7 +26,7 @@ namespace ServiceDesk.Api.Mutations
             this.licenseHandler = licenseHandler;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public LicenseDto CreateLicense(LicenseCreateDto licenseCreateDto,
             [Service] ServiceDeskDbContext context)
         {
@@ -48,7 +48,7 @@ namespace ServiceDesk.Api.Mutations
             return license;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public LicenseDto EditLicense(int id, LicenseCreateDto licenseCreateDto, [Service] ServiceDeskDbContext context)
         {
             var license = licenseHandler.Edit<LicenseDtoBuilder,
@@ -58,7 +58,7 @@ namespace ServiceDesk.Api.Mutations
             return license;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public string DeleteLicense(int id, [Service] ServiceDeskDbContext context)
         {
             bool isSuccess;

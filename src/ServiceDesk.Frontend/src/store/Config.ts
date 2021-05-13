@@ -3,8 +3,8 @@ import { UserManagerSettings, WebStorageStateStore } from "oidc-client"
 export const BASE_IDENTITY_URL = "https://identity-desk.badeev.info/"
 //export const BASE_IDENTITY_URL = "https://localhost:6001/"
 
-export const BASE_GRAPHQL_API_URL = "http://localhost:5001/"
-export const BASE_FILE_SERVER_URL = "http://localhost:5001/"
+export const BASE_GRAPHQL_API_URL = "https://api-desk.badeev.info"
+export const BASE_FILE_SERVER_URL = "https://api-desk.badeev.info"
 
 export const prodConfig: UserManagerSettings = {
     authority: BASE_IDENTITY_URL,

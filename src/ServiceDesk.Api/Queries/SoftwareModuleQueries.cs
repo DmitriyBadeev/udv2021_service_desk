@@ -22,7 +22,7 @@ namespace ServiceDesk.Api.Queries
             this.softwareModuleHandler = softwareModuleHandler;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public SoftwareModuleDto GetSoftwareModule(int id, [Service] ServiceDeskDbContext context)
         {
             var softwareModule = softwareModuleHandler
@@ -31,7 +31,7 @@ namespace ServiceDesk.Api.Queries
             return softwareModule;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<SoftwareModuleDto> GetSoftwareModules([Service] ServiceDeskDbContext context)
         {
             var softwareModules = softwareModuleHandler
@@ -40,7 +40,7 @@ namespace ServiceDesk.Api.Queries
             return softwareModules;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<SoftwareModuleDto> PageSoftwareModules(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
             var softwareModules = softwareModuleHandler

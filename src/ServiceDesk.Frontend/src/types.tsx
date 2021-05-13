@@ -54,6 +54,26 @@ export type CommentDto = {
 };
 
 
+export type LicenseCreateDtoInput = {
+  number: Scalars['Int'];
+  startDate: Scalars['DateTime'];
+  expiresDate: Scalars['DateTime'];
+  countOfUsers: Scalars['Int'];
+  clientId: Scalars['Int'];
+  softwareId: Scalars['Int'];
+};
+
+export type LicenseDto = {
+  __typename?: 'LicenseDto';
+  id: Scalars['Int'];
+  number: Scalars['Int'];
+  startDate: Scalars['DateTime'];
+  expiresDate: Scalars['DateTime'];
+  countOfUsers: Scalars['Int'];
+  client?: Maybe<Scalars['String']>;
+  software?: Maybe<Scalars['String']>;
+};
+
 export type Mutations = {
   __typename?: 'Mutations';
   testMutation?: Maybe<Scalars['String']>;
@@ -74,6 +94,15 @@ export type Mutations = {
   deleteComment?: Maybe<Scalars['String']>;
   createRequestAttachment?: Maybe<RequestAttachmentDto>;
   deleteRequestAttachment?: Maybe<Scalars['String']>;
+  createLicense?: Maybe<LicenseDto>;
+  editLicense?: Maybe<LicenseDto>;
+  deleteLicense?: Maybe<Scalars['String']>;
+  createSoftware?: Maybe<SoftwareDto>;
+  editSoftware?: Maybe<SoftwareDto>;
+  deleteSoftware?: Maybe<Scalars['String']>;
+  createSoftwareModule?: Maybe<SoftwareModuleDto>;
+  editSoftwareModule?: Maybe<SoftwareModuleDto>;
+  deleteSoftwareModule?: Maybe<Scalars['String']>;
 };
 
 
@@ -164,6 +193,54 @@ export type MutationsDeleteRequestAttachmentArgs = {
   requestAttachmentId: Scalars['Int'];
 };
 
+
+export type MutationsCreateLicenseArgs = {
+  licenseCreateDto?: Maybe<LicenseCreateDtoInput>;
+};
+
+
+export type MutationsEditLicenseArgs = {
+  id: Scalars['Int'];
+  licenseCreateDto?: Maybe<LicenseCreateDtoInput>;
+};
+
+
+export type MutationsDeleteLicenseArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationsCreateSoftwareArgs = {
+  softwareCreateDto?: Maybe<SoftwareCreateDtoInput>;
+};
+
+
+export type MutationsEditSoftwareArgs = {
+  id: Scalars['Int'];
+  softwareCreateDto?: Maybe<SoftwareCreateDtoInput>;
+};
+
+
+export type MutationsDeleteSoftwareArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationsCreateSoftwareModuleArgs = {
+  softwareModuleCreateDto?: Maybe<SoftwareModuleCreateDtoInput>;
+};
+
+
+export type MutationsEditSoftwareModuleArgs = {
+  id: Scalars['Int'];
+  commentCreateDto?: Maybe<SoftwareModuleCreateDtoInput>;
+};
+
+
+export type MutationsDeleteSoftwareModuleArgs = {
+  id: Scalars['Int'];
+};
+
 export type Queries = {
   __typename?: 'Queries';
   testQuery?: Maybe<Scalars['String']>;
@@ -186,6 +263,15 @@ export type Queries = {
   attachment?: Maybe<RequestAttachmentDto>;
   attachments?: Maybe<Array<Maybe<RequestAttachmentDto>>>;
   requestAttachments?: Maybe<Array<Maybe<RequestAttachmentDto>>>;
+  license?: Maybe<LicenseDto>;
+  licenses?: Maybe<Array<Maybe<LicenseDto>>>;
+  pageLicenses?: Maybe<Array<Maybe<LicenseDto>>>;
+  software?: Maybe<SoftwareDto>;
+  softwares?: Maybe<Array<Maybe<SoftwareDto>>>;
+  pageSoftwares?: Maybe<Array<Maybe<SoftwareDto>>>;
+  softwareModule?: Maybe<SoftwareModuleDto>;
+  softwareModules?: Maybe<Array<Maybe<SoftwareModuleDto>>>;
+  pageSoftwareModules?: Maybe<Array<Maybe<SoftwareModuleDto>>>;
 };
 
 
@@ -241,6 +327,39 @@ export type QueriesRequestAttachmentsArgs = {
   requestId: Scalars['Uuid'];
 };
 
+
+export type QueriesLicenseArgs = {
+  licenseId: Scalars['Int'];
+};
+
+
+export type QueriesPageLicensesArgs = {
+  pageNumber: Scalars['Int'];
+  count: Scalars['Int'];
+};
+
+
+export type QueriesSoftwareArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueriesPageSoftwaresArgs = {
+  pageNumber: Scalars['Int'];
+  count: Scalars['Int'];
+};
+
+
+export type QueriesSoftwareModuleArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueriesPageSoftwareModulesArgs = {
+  pageNumber: Scalars['Int'];
+  count: Scalars['Int'];
+};
+
 export type RequestAttachmentCreateDtoInput = {
   requestId: Scalars['Uuid'];
   file?: Maybe<Scalars['Upload']>;
@@ -282,6 +401,28 @@ export type RequestDto = {
   requestStatus?: Maybe<Scalars['String']>;
   clientId: Scalars['Int'];
   clientName?: Maybe<Scalars['String']>;
+};
+
+export type SoftwareCreateDtoInput = {
+  title?: Maybe<Scalars['String']>;
+};
+
+export type SoftwareDto = {
+  __typename?: 'SoftwareDto';
+  id: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+};
+
+export type SoftwareModuleCreateDtoInput = {
+  title?: Maybe<Scalars['String']>;
+  softwareId: Scalars['Int'];
+};
+
+export type SoftwareModuleDto = {
+  __typename?: 'SoftwareModuleDto';
+  id: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+  software?: Maybe<Scalars['String']>;
 };
 
 
@@ -551,6 +692,162 @@ export type ToReopenStatusMutationVariables = Exact<{
 export type ToReopenStatusMutation = (
   { __typename?: 'Mutations' }
   & Pick<Mutations, 'reopenRequest'>
+);
+
+export type GetSoftwaresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSoftwaresQuery = (
+  { __typename?: 'Queries' }
+  & { softwares?: Maybe<Array<Maybe<(
+    { __typename?: 'SoftwareDto' }
+    & Pick<SoftwareDto, 'id' | 'title'>
+  )>>> }
+);
+
+export type CreateSoftwareMutationVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type CreateSoftwareMutation = (
+  { __typename?: 'Mutations' }
+  & { createSoftware?: Maybe<(
+    { __typename?: 'SoftwareDto' }
+    & Pick<SoftwareDto, 'id'>
+  )> }
+);
+
+export type EditSoftwareMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+}>;
+
+
+export type EditSoftwareMutation = (
+  { __typename?: 'Mutations' }
+  & { editSoftware?: Maybe<(
+    { __typename?: 'SoftwareDto' }
+    & Pick<SoftwareDto, 'id'>
+  )> }
+);
+
+export type DeleteSoftwareMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteSoftwareMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'deleteSoftware'>
+);
+
+export type GetModulesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetModulesQuery = (
+  { __typename?: 'Queries' }
+  & { softwareModules?: Maybe<Array<Maybe<(
+    { __typename?: 'SoftwareModuleDto' }
+    & Pick<SoftwareModuleDto, 'id' | 'title' | 'software'>
+  )>>> }
+);
+
+export type CreateModuleMutationVariables = Exact<{
+  softwareId: Scalars['Int'];
+  title: Scalars['String'];
+}>;
+
+
+export type CreateModuleMutation = (
+  { __typename?: 'Mutations' }
+  & { createSoftwareModule?: Maybe<(
+    { __typename?: 'SoftwareModuleDto' }
+    & Pick<SoftwareModuleDto, 'id'>
+  )> }
+);
+
+export type EditModuleMutationVariables = Exact<{
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  softwareId: Scalars['Int'];
+}>;
+
+
+export type EditModuleMutation = (
+  { __typename?: 'Mutations' }
+  & { editSoftwareModule?: Maybe<(
+    { __typename?: 'SoftwareModuleDto' }
+    & Pick<SoftwareModuleDto, 'id'>
+  )> }
+);
+
+export type DeleteModuleMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteModuleMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'deleteSoftwareModule'>
+);
+
+export type GetLicensesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLicensesQuery = (
+  { __typename?: 'Queries' }
+  & { licenses?: Maybe<Array<Maybe<(
+    { __typename?: 'LicenseDto' }
+    & Pick<LicenseDto, 'id' | 'number' | 'startDate' | 'expiresDate' | 'countOfUsers' | 'client' | 'software'>
+  )>>> }
+);
+
+export type CreateLicenseMutationVariables = Exact<{
+  number: Scalars['Int'];
+  startDate: Scalars['DateTime'];
+  expiresDate: Scalars['DateTime'];
+  countUsers: Scalars['Int'];
+  clientId: Scalars['Int'];
+  softwareId: Scalars['Int'];
+}>;
+
+
+export type CreateLicenseMutation = (
+  { __typename?: 'Mutations' }
+  & { createLicense?: Maybe<(
+    { __typename?: 'LicenseDto' }
+    & Pick<LicenseDto, 'id'>
+  )> }
+);
+
+export type EditLicenseMutationVariables = Exact<{
+  id: Scalars['Int'];
+  number: Scalars['Int'];
+  startDate: Scalars['DateTime'];
+  expiresDate: Scalars['DateTime'];
+  countUsers: Scalars['Int'];
+  clientId: Scalars['Int'];
+  softwareId: Scalars['Int'];
+}>;
+
+
+export type EditLicenseMutation = (
+  { __typename?: 'Mutations' }
+  & { editLicense?: Maybe<(
+    { __typename?: 'LicenseDto' }
+    & Pick<LicenseDto, 'id'>
+  )> }
+);
+
+export type DeleteLicenseMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteLicenseMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'deleteLicense'>
 );
 
 export type SecretQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1305,6 +1602,418 @@ export function useToReopenStatusMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type ToReopenStatusMutationHookResult = ReturnType<typeof useToReopenStatusMutation>;
 export type ToReopenStatusMutationResult = ApolloReactCommon.MutationResult<ToReopenStatusMutation>;
 export type ToReopenStatusMutationOptions = ApolloReactCommon.BaseMutationOptions<ToReopenStatusMutation, ToReopenStatusMutationVariables>;
+export const GetSoftwaresDocument = gql`
+    query getSoftwares {
+  softwares {
+    id
+    title
+  }
+}
+    `;
+
+/**
+ * __useGetSoftwaresQuery__
+ *
+ * To run a query within a React component, call `useGetSoftwaresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSoftwaresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSoftwaresQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSoftwaresQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSoftwaresQuery, GetSoftwaresQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSoftwaresQuery, GetSoftwaresQueryVariables>(GetSoftwaresDocument, baseOptions);
+      }
+export function useGetSoftwaresLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSoftwaresQuery, GetSoftwaresQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSoftwaresQuery, GetSoftwaresQueryVariables>(GetSoftwaresDocument, baseOptions);
+        }
+export type GetSoftwaresQueryHookResult = ReturnType<typeof useGetSoftwaresQuery>;
+export type GetSoftwaresLazyQueryHookResult = ReturnType<typeof useGetSoftwaresLazyQuery>;
+export type GetSoftwaresQueryResult = ApolloReactCommon.QueryResult<GetSoftwaresQuery, GetSoftwaresQueryVariables>;
+export const CreateSoftwareDocument = gql`
+    mutation createSoftware($title: String!) {
+  createSoftware(softwareCreateDto: {title: $title}) {
+    id
+  }
+}
+    `;
+export type CreateSoftwareMutationFn = ApolloReactCommon.MutationFunction<CreateSoftwareMutation, CreateSoftwareMutationVariables>;
+
+/**
+ * __useCreateSoftwareMutation__
+ *
+ * To run a mutation, you first call `useCreateSoftwareMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSoftwareMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSoftwareMutation, { data, loading, error }] = useCreateSoftwareMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useCreateSoftwareMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateSoftwareMutation, CreateSoftwareMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateSoftwareMutation, CreateSoftwareMutationVariables>(CreateSoftwareDocument, baseOptions);
+      }
+export type CreateSoftwareMutationHookResult = ReturnType<typeof useCreateSoftwareMutation>;
+export type CreateSoftwareMutationResult = ApolloReactCommon.MutationResult<CreateSoftwareMutation>;
+export type CreateSoftwareMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateSoftwareMutation, CreateSoftwareMutationVariables>;
+export const EditSoftwareDocument = gql`
+    mutation editSoftware($id: Int!, $title: String!) {
+  editSoftware(id: $id, softwareCreateDto: {title: $title}) {
+    id
+  }
+}
+    `;
+export type EditSoftwareMutationFn = ApolloReactCommon.MutationFunction<EditSoftwareMutation, EditSoftwareMutationVariables>;
+
+/**
+ * __useEditSoftwareMutation__
+ *
+ * To run a mutation, you first call `useEditSoftwareMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditSoftwareMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editSoftwareMutation, { data, loading, error }] = useEditSoftwareMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useEditSoftwareMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditSoftwareMutation, EditSoftwareMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditSoftwareMutation, EditSoftwareMutationVariables>(EditSoftwareDocument, baseOptions);
+      }
+export type EditSoftwareMutationHookResult = ReturnType<typeof useEditSoftwareMutation>;
+export type EditSoftwareMutationResult = ApolloReactCommon.MutationResult<EditSoftwareMutation>;
+export type EditSoftwareMutationOptions = ApolloReactCommon.BaseMutationOptions<EditSoftwareMutation, EditSoftwareMutationVariables>;
+export const DeleteSoftwareDocument = gql`
+    mutation deleteSoftware($id: Int!) {
+  deleteSoftware(id: $id)
+}
+    `;
+export type DeleteSoftwareMutationFn = ApolloReactCommon.MutationFunction<DeleteSoftwareMutation, DeleteSoftwareMutationVariables>;
+
+/**
+ * __useDeleteSoftwareMutation__
+ *
+ * To run a mutation, you first call `useDeleteSoftwareMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSoftwareMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSoftwareMutation, { data, loading, error }] = useDeleteSoftwareMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSoftwareMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteSoftwareMutation, DeleteSoftwareMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteSoftwareMutation, DeleteSoftwareMutationVariables>(DeleteSoftwareDocument, baseOptions);
+      }
+export type DeleteSoftwareMutationHookResult = ReturnType<typeof useDeleteSoftwareMutation>;
+export type DeleteSoftwareMutationResult = ApolloReactCommon.MutationResult<DeleteSoftwareMutation>;
+export type DeleteSoftwareMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteSoftwareMutation, DeleteSoftwareMutationVariables>;
+export const GetModulesDocument = gql`
+    query getModules {
+  softwareModules {
+    id
+    title
+    software
+  }
+}
+    `;
+
+/**
+ * __useGetModulesQuery__
+ *
+ * To run a query within a React component, call `useGetModulesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetModulesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetModulesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetModulesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetModulesQuery, GetModulesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetModulesQuery, GetModulesQueryVariables>(GetModulesDocument, baseOptions);
+      }
+export function useGetModulesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetModulesQuery, GetModulesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetModulesQuery, GetModulesQueryVariables>(GetModulesDocument, baseOptions);
+        }
+export type GetModulesQueryHookResult = ReturnType<typeof useGetModulesQuery>;
+export type GetModulesLazyQueryHookResult = ReturnType<typeof useGetModulesLazyQuery>;
+export type GetModulesQueryResult = ApolloReactCommon.QueryResult<GetModulesQuery, GetModulesQueryVariables>;
+export const CreateModuleDocument = gql`
+    mutation createModule($softwareId: Int!, $title: String!) {
+  createSoftwareModule(
+    softwareModuleCreateDto: {title: $title, softwareId: $softwareId}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateModuleMutationFn = ApolloReactCommon.MutationFunction<CreateModuleMutation, CreateModuleMutationVariables>;
+
+/**
+ * __useCreateModuleMutation__
+ *
+ * To run a mutation, you first call `useCreateModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createModuleMutation, { data, loading, error }] = useCreateModuleMutation({
+ *   variables: {
+ *      softwareId: // value for 'softwareId'
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useCreateModuleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateModuleMutation, CreateModuleMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateModuleMutation, CreateModuleMutationVariables>(CreateModuleDocument, baseOptions);
+      }
+export type CreateModuleMutationHookResult = ReturnType<typeof useCreateModuleMutation>;
+export type CreateModuleMutationResult = ApolloReactCommon.MutationResult<CreateModuleMutation>;
+export type CreateModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateModuleMutation, CreateModuleMutationVariables>;
+export const EditModuleDocument = gql`
+    mutation editModule($id: Int!, $title: String!, $softwareId: Int!) {
+  editSoftwareModule(
+    id: $id
+    commentCreateDto: {softwareId: $softwareId, title: $title}
+  ) {
+    id
+  }
+}
+    `;
+export type EditModuleMutationFn = ApolloReactCommon.MutationFunction<EditModuleMutation, EditModuleMutationVariables>;
+
+/**
+ * __useEditModuleMutation__
+ *
+ * To run a mutation, you first call `useEditModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editModuleMutation, { data, loading, error }] = useEditModuleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      title: // value for 'title'
+ *      softwareId: // value for 'softwareId'
+ *   },
+ * });
+ */
+export function useEditModuleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditModuleMutation, EditModuleMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditModuleMutation, EditModuleMutationVariables>(EditModuleDocument, baseOptions);
+      }
+export type EditModuleMutationHookResult = ReturnType<typeof useEditModuleMutation>;
+export type EditModuleMutationResult = ApolloReactCommon.MutationResult<EditModuleMutation>;
+export type EditModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<EditModuleMutation, EditModuleMutationVariables>;
+export const DeleteModuleDocument = gql`
+    mutation deleteModule($id: Int!) {
+  deleteSoftwareModule(id: $id)
+}
+    `;
+export type DeleteModuleMutationFn = ApolloReactCommon.MutationFunction<DeleteModuleMutation, DeleteModuleMutationVariables>;
+
+/**
+ * __useDeleteModuleMutation__
+ *
+ * To run a mutation, you first call `useDeleteModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteModuleMutation, { data, loading, error }] = useDeleteModuleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteModuleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteModuleMutation, DeleteModuleMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteModuleMutation, DeleteModuleMutationVariables>(DeleteModuleDocument, baseOptions);
+      }
+export type DeleteModuleMutationHookResult = ReturnType<typeof useDeleteModuleMutation>;
+export type DeleteModuleMutationResult = ApolloReactCommon.MutationResult<DeleteModuleMutation>;
+export type DeleteModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteModuleMutation, DeleteModuleMutationVariables>;
+export const GetLicensesDocument = gql`
+    query getLicenses {
+  licenses {
+    id
+    number
+    startDate
+    expiresDate
+    countOfUsers
+    client
+    software
+  }
+}
+    `;
+
+/**
+ * __useGetLicensesQuery__
+ *
+ * To run a query within a React component, call `useGetLicensesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLicensesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLicensesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLicensesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetLicensesQuery, GetLicensesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetLicensesQuery, GetLicensesQueryVariables>(GetLicensesDocument, baseOptions);
+      }
+export function useGetLicensesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetLicensesQuery, GetLicensesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetLicensesQuery, GetLicensesQueryVariables>(GetLicensesDocument, baseOptions);
+        }
+export type GetLicensesQueryHookResult = ReturnType<typeof useGetLicensesQuery>;
+export type GetLicensesLazyQueryHookResult = ReturnType<typeof useGetLicensesLazyQuery>;
+export type GetLicensesQueryResult = ApolloReactCommon.QueryResult<GetLicensesQuery, GetLicensesQueryVariables>;
+export const CreateLicenseDocument = gql`
+    mutation createLicense($number: Int!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
+  createLicense(
+    licenseCreateDto: {number: $number, startDate: $startDate, expiresDate: $expiresDate, countOfUsers: $countUsers, clientId: $clientId, softwareId: $softwareId}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateLicenseMutationFn = ApolloReactCommon.MutationFunction<CreateLicenseMutation, CreateLicenseMutationVariables>;
+
+/**
+ * __useCreateLicenseMutation__
+ *
+ * To run a mutation, you first call `useCreateLicenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLicenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLicenseMutation, { data, loading, error }] = useCreateLicenseMutation({
+ *   variables: {
+ *      number: // value for 'number'
+ *      startDate: // value for 'startDate'
+ *      expiresDate: // value for 'expiresDate'
+ *      countUsers: // value for 'countUsers'
+ *      clientId: // value for 'clientId'
+ *      softwareId: // value for 'softwareId'
+ *   },
+ * });
+ */
+export function useCreateLicenseMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateLicenseMutation, CreateLicenseMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateLicenseMutation, CreateLicenseMutationVariables>(CreateLicenseDocument, baseOptions);
+      }
+export type CreateLicenseMutationHookResult = ReturnType<typeof useCreateLicenseMutation>;
+export type CreateLicenseMutationResult = ApolloReactCommon.MutationResult<CreateLicenseMutation>;
+export type CreateLicenseMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateLicenseMutation, CreateLicenseMutationVariables>;
+export const EditLicenseDocument = gql`
+    mutation editLicense($id: Int!, $number: Int!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
+  editLicense(
+    id: $id
+    licenseCreateDto: {number: $number, startDate: $startDate, expiresDate: $expiresDate, countOfUsers: $countUsers, clientId: $clientId, softwareId: $softwareId}
+  ) {
+    id
+  }
+}
+    `;
+export type EditLicenseMutationFn = ApolloReactCommon.MutationFunction<EditLicenseMutation, EditLicenseMutationVariables>;
+
+/**
+ * __useEditLicenseMutation__
+ *
+ * To run a mutation, you first call `useEditLicenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditLicenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editLicenseMutation, { data, loading, error }] = useEditLicenseMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      number: // value for 'number'
+ *      startDate: // value for 'startDate'
+ *      expiresDate: // value for 'expiresDate'
+ *      countUsers: // value for 'countUsers'
+ *      clientId: // value for 'clientId'
+ *      softwareId: // value for 'softwareId'
+ *   },
+ * });
+ */
+export function useEditLicenseMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditLicenseMutation, EditLicenseMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditLicenseMutation, EditLicenseMutationVariables>(EditLicenseDocument, baseOptions);
+      }
+export type EditLicenseMutationHookResult = ReturnType<typeof useEditLicenseMutation>;
+export type EditLicenseMutationResult = ApolloReactCommon.MutationResult<EditLicenseMutation>;
+export type EditLicenseMutationOptions = ApolloReactCommon.BaseMutationOptions<EditLicenseMutation, EditLicenseMutationVariables>;
+export const DeleteLicenseDocument = gql`
+    mutation deleteLicense($id: Int!) {
+  deleteLicense(id: $id)
+}
+    `;
+export type DeleteLicenseMutationFn = ApolloReactCommon.MutationFunction<DeleteLicenseMutation, DeleteLicenseMutationVariables>;
+
+/**
+ * __useDeleteLicenseMutation__
+ *
+ * To run a mutation, you first call `useDeleteLicenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLicenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLicenseMutation, { data, loading, error }] = useDeleteLicenseMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteLicenseMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteLicenseMutation, DeleteLicenseMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteLicenseMutation, DeleteLicenseMutationVariables>(DeleteLicenseDocument, baseOptions);
+      }
+export type DeleteLicenseMutationHookResult = ReturnType<typeof useDeleteLicenseMutation>;
+export type DeleteLicenseMutationResult = ApolloReactCommon.MutationResult<DeleteLicenseMutation>;
+export type DeleteLicenseMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteLicenseMutation, DeleteLicenseMutationVariables>;
 export const SecretDocument = gql`
     query Secret {
   userId

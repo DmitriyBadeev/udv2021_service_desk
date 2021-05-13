@@ -21,7 +21,7 @@ namespace ServiceDesk.Api.Queries
             this.licenseHandler = licenseHandler;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public LicenseDto GetLicense(int licenseId, [Service] ServiceDeskDbContext context)
         {
             var license = licenseHandler.Get<LicenseDtoBuilder, LicenseDto>(licenseId, context);
@@ -29,7 +29,7 @@ namespace ServiceDesk.Api.Queries
             return license;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<LicenseDto> GetLicenses([Service] ServiceDeskDbContext context)
         {
             var licenses = licenseHandler.GetAll<LicenseDtoBuilder, LicenseDto>(context);
@@ -37,7 +37,7 @@ namespace ServiceDesk.Api.Queries
             return licenses;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<LicenseDto> PageLicenses(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
             var licenses = licenseHandler.Page<LicenseDtoBuilder, LicenseDto>(pageNumber, count, context);

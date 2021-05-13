@@ -15,6 +15,10 @@ import Profile from "pages/Profile"
 import CustomerAppeals from "pages/CustomerAppeals"
 import Appeal from "pages/Appeal"
 import Users from "pages/Users"
+import Directories from "pages/directories/Directories"
+import Software from "pages/directories/Software"
+import Module from "pages/directories/Module"
+import License from "pages/directories/License"
 
 import { DEVELOPER_ROLE } from "helpers/roleHelper"
 
@@ -47,6 +51,19 @@ const Routes: React.FC = () => {
                 <PrivateRoute exact path="/users">
                     <Users />
                 </PrivateRoute>
+                <PrivateRoute exact path="/directories">
+                    <Directories />
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/softwares">
+                    <Software />
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/modules">
+                    <Module />
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/licenses">
+                    <License />
+                </PrivateRoute>
+
                 <Route exact path="/enter">
                     <Enter />
                 </Route>

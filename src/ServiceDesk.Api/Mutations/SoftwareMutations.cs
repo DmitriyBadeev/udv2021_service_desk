@@ -26,7 +26,7 @@ namespace ServiceDesk.Api.Mutations
             this.softwareHandler = softwareHandler;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public SoftwareDto CreateSoftware(SoftwareCreateDto softwareCreateDto,
             [Service] ServiceDeskDbContext context)
         {
@@ -43,7 +43,7 @@ namespace ServiceDesk.Api.Mutations
             return software;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public SoftwareDto EditSoftware(int id, 
             SoftwareCreateDto softwareCreateDto, [Service] ServiceDeskDbContext context)
         {
@@ -54,7 +54,7 @@ namespace ServiceDesk.Api.Mutations
             return software;
         }
 
-        //[Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public string DeleteSoftware(int id, [Service] ServiceDeskDbContext context)
         {
             bool isSuccess;

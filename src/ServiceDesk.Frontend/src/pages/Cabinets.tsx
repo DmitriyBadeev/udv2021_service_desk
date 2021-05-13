@@ -92,7 +92,7 @@ const Cabinets: React.FC = () => {
                         title="Вы уверены, что хотите удалить заказчика?"
                         onConfirm={() => deleteHandler(item.id)}
                     >
-                        <Button type="link" danger icon={<DeleteOutlined />}>
+                        <Button type="link" danger icon={<DeleteOutlined />} loading={deleteLoading}>
                             Удалить
                         </Button>
                     </Popconfirm>
@@ -108,7 +108,7 @@ const Cabinets: React.FC = () => {
                     title="Личные кабинеты заказчиков"
                     Form={() => <AddCustomer buttonSize="large" reload={() => refetch()} />}
                 />
-                <Table size="middle" dataSource={dataSource} columns={columns} loading={loading || deleteLoading} />
+                <Table size="middle" dataSource={dataSource} columns={columns} loading={loading} />
             </Card>
         </FadePage>
     )

@@ -27,7 +27,7 @@ namespace ServiceDesk.Api.Mutations
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
-        public LicenseDto CreateLicense(LicenseCreateDto licenseCreateDto,
+        public string CreateLicense(LicenseCreateDto licenseCreateDto,
             [Service] ServiceDeskDbContext context)
         {
             var licenseData = new LicenseData()
@@ -40,12 +40,9 @@ namespace ServiceDesk.Api.Mutations
                 SoftwareId = licenseCreateDto.SoftwareId
             };
 
-            var license = licenseHandler.Create<LicenseFactory,
-                LicenseDtoBuilder,
-                LicenseData,
-                LicenseDto>(licenseData, context);
+            licenseHandler.Create<LicenseFactory, LicenseData>(licenseData, context);
 
-            return license;
+            return "Ok";
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]

@@ -27,7 +27,7 @@ namespace ServiceDesk.Api.Mutations
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
-        public SoftwareModuleDto CreateSoftwareModule(SoftwareModuleCreateDto softwareModuleCreateDto,
+        public string CreateSoftwareModule(SoftwareModuleCreateDto softwareModuleCreateDto,
             [Service] ServiceDeskDbContext context)
         {
             var softwareModuleData = new SoftwareModuleData()
@@ -36,12 +36,9 @@ namespace ServiceDesk.Api.Mutations
                 Title = softwareModuleCreateDto.Title
             };
 
-            var softwareModule = softwareModuleHandler.Create<SoftwareModuleFactory,
-                SoftwareModuleDtoBuilder,
-                SoftwareModuleData,
-                SoftwareModuleDto>(softwareModuleData, context);
+            softwareModuleHandler.Create<SoftwareModuleFactory, SoftwareModuleData>(softwareModuleData, context);
 
-            return softwareModule;
+            return "Ok";
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]

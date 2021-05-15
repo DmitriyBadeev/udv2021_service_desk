@@ -10,7 +10,7 @@ namespace ServiceDesk.Api.Systems.DirectorySystem.DtoBuilders.License
             { 
                 Id = license.Id,
                 Number = license.Number,
-                Client = license.Client.Name,
+                Client = license.Client?.Name,
                 CountOfUsers = license.CountOfUsers,
                 ExpiresDate = license.ExpiresDate,
                 Software = license.Software.Title,

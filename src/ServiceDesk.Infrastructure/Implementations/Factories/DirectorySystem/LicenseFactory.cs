@@ -7,11 +7,11 @@ namespace ServiceDesk.Infrastructure.Implementations.Factories.DirectorySystem
 {
     public class LicenseData : IFactoryData
     {
-        public int Number { get; set; }
+        public string Number { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime ExpiresDate { get; set; }
         public int CountOfUsers { get; set; }
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public int SoftwareId { get; set; }
     }
 

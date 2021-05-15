@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Core.Interfaces.Common;
 using ServiceDesk.Core.Interfaces.Factories.PersonalAreaSystem;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using ServiceDesk.Api.Systems.Common.Implemetations.Managers;
 using ServiceDesk.Api.Systems.Common.Interfaces.Dto;
 using ServiceDesk.Api.Systems.Common.Interfaces.DtoBuilder;
@@ -16,21 +17,15 @@ namespace ServiceDesk.Api.Systems.Common.Implemetations.Handler
     public class GenericHandler<TEntity> : IGenericHandler<TEntity>
         where TEntity : class, IEntity
     {
-        public virtual TDto Create<TFactory, TDtoBuilder, TEntityData, TDto>(TEntityData data, ServiceDeskDbContext context)
+        public virtual void Create<TFactory, TEntityData>(TEntityData data, ServiceDeskDbContext context)
             where TFactory : class, IGenericFactory<TEntity, TEntityData>
-            where TDtoBuilder: class, IDtoBuilder<TEntity, TDto>
             where TEntityData : class, IFactoryData
-            where TDto : class, IDto
         {
             var entity = CreateEntity<TFactory, TEntityData>(data);
             
             var entities = context.Set<TEntity>();
             entities.Add(entity);
             context.SaveChanges();
-            
-            var dto = CreateDto<TDtoBuilder, TDto>(entity);
-
-            return dto;
         }
 
         private TEntity CreateEntity<TFactory, TEntityData>(TEntityData data)

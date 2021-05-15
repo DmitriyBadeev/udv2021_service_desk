@@ -8,7 +8,7 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Handlers.RequestAttachment
 {
     public interface IRequestAttachmentHandler : IGenericHandler<Core.Entities.RequestSystem.RequestAttachment>
     {
-        public RequestAttachmentDto Create(Guid requestId, IFile file, ServiceDeskDbContext context);
+        public string Create(Guid requestId, IFile file, ServiceDeskDbContext context);
         public string Delete(int requestAttachmentId, ServiceDeskDbContext context);
     }
 }

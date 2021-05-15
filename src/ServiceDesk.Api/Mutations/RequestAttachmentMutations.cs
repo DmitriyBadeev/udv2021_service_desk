@@ -16,14 +16,14 @@ namespace ServiceDesk.Api.Mutations
             this.requestAttachmentHandler = requestAttachmentHandler;
         }
 
-        public RequestAttachmentDto CreateRequestAttachment(RequestAttachmentCreateDto requestAttachmentCreateDto, 
+        public string CreateRequestAttachment(RequestAttachmentCreateDto requestAttachmentCreateDto, 
             [Service] ServiceDeskDbContext context)
         {
-            var requestAttachmentDto = requestAttachmentHandler.Create(requestAttachmentCreateDto.RequestId, 
+            var response = requestAttachmentHandler.Create(requestAttachmentCreateDto.RequestId, 
                 requestAttachmentCreateDto.File, 
                 context);
 
-            return requestAttachmentDto;
+            return response;
         }
 
         public string DeleteRequestAttachment(int requestAttachmentId,

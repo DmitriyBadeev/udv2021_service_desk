@@ -25,7 +25,7 @@ namespace ServiceDesk.Api.Mutations
         }
         
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
-        public CommentDto CreateComment(CommentCreateDto commentCreateDto, 
+        public string CreateComment(CommentCreateDto commentCreateDto, 
             [Service] ServiceDeskDbContext context, [CurrentUserIdGlobalState] string userId)
         {
             var commentData = new CommentData()
@@ -35,12 +35,9 @@ namespace ServiceDesk.Api.Mutations
                 RequestId = commentCreateDto.RequestId
             };
 
-            var comment = commentHandler.Create<CommentFactory,
-                CommentDtoBuilder,
-                CommentData,
-                CommentDto>(commentData, context);
+            commentHandler.Create<CommentFactory, CommentData>(commentData, context);
 
-            return comment;
+            return "Ok";
         }
         
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]

@@ -12,11 +12,9 @@ namespace ServiceDesk.Api.Systems.Common.Interfaces.Handler
     public interface IGenericHandler<TEntity>
         where TEntity : class, IEntity
     {
-        public TDto Create<TFactory, TDtoBuilder, TEntityData, TDto>(TEntityData data, ServiceDeskDbContext context)
+        public void Create<TFactory, TEntityData>(TEntityData data, ServiceDeskDbContext context)
             where TFactory : class, IGenericFactory<TEntity, TEntityData>
-            where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>
-            where TEntityData : class, IFactoryData
-            where TDto : class, IDto;
+            where TEntityData : class, IFactoryData;
 
         public TDto Get<TDtoBuilder, TDto>(int entityId, ServiceDeskDbContext context)
             where TDtoBuilder : class, IDtoBuilder<TEntity, TDto>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Infrastructure.Migrations
 {
     [DbContext(typeof(ServiceDeskDbContext))]
-    partial class ServiceDeskDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210515114634_license_changes")]
+    partial class license_changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

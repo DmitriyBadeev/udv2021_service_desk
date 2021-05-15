@@ -22,7 +22,7 @@ namespace ServiceDesk.Api.Mutations
         }
 
         [Authorize(Roles = new[] {Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE, Constants.DEVELOPER_ROLE})]
-        public RequestDto CreateRequest(RequestCreateDto requestCreateDto, 
+        public string CreateRequest(RequestCreateDto requestCreateDto, 
             [Service] ServiceDeskDbContext context, [CurrentUserIdGlobalState] string userId)
         {
             var requestData = new RequestData()
@@ -34,12 +34,9 @@ namespace ServiceDesk.Api.Mutations
                 ClientId = requestCreateDto.ClientId
             };
 
-            var request = requestHandler.Create<RequestFactory,
-                RequestDtoBuilder,
-                RequestData,
-                RequestDto>(requestData, context);
+            requestHandler.Create<RequestFactory, RequestData>(requestData, context);
 
-            return request;
+            return "Ok";
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]

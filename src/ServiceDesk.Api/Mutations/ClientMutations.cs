@@ -21,19 +21,16 @@ namespace ServiceDesk.Api.Mutations
         }
         
         [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
-        public ClientDto CreateClient(ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
+        public string CreateClient(ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
             var clientData = new ClientData()
             {
                 Name = clientCreateDto.Name
             };
 
-            var client = clientHandler.Create<ClientFactory, 
-                ClientDtoBuilder,
-                ClientData, 
-                ClientDto>(clientData, context);
+            clientHandler.CreateWithLicenses(clientData, clientCreateDto.LicenseIds, context);
 
-            return client;
+            return "Ok";
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE })]

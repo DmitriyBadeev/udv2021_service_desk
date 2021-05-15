@@ -22,7 +22,7 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Handlers.RequestAttachment
             this.filesManager = filesManager;
         }
 
-        public RequestAttachmentDto Create(Guid requestId, IFile file, ServiceDeskDbContext context)
+        public string Create(Guid requestId, IFile file, ServiceDeskDbContext context)
         {
             var savedFile = filesManager
                 .CreateFile(requestId, file).Result;
@@ -37,10 +37,9 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Handlers.RequestAttachment
                 Reference = savedFile.Reference
             };
 
-            return base.Create<RequestAttachmentFactory, 
-                RequestAttachmentDtoBuilder, 
-                RequestAttachmentData, 
-                RequestAttachmentDto>(data, context);
+            base.Create<RequestAttachmentFactory, RequestAttachmentData>(data, context);
+
+            return "Ok";
         }
 
         public string Delete(int requestAttachmentId, ServiceDeskDbContext context)

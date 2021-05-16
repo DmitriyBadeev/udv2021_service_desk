@@ -10,7 +10,8 @@ namespace ServiceDesk.Api.Systems.DirectorySystem.DtoBuilders.SoftwareModule
             { 
                 Id = softwareModule.Id,
                 Software = softwareModule.Software.Title,
-                Title = softwareModule.Title
+                Title = softwareModule.Title,
+                SoftwareId = softwareModule.SoftwareId
             };
 
             return softwareModuleDto;

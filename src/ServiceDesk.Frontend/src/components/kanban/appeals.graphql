@@ -7,9 +7,7 @@ mutation createRequest($title: String!, $text: String!, $clientId: Int!) {
             softwareModuleId: null
             clientId: $clientId
         }
-    ) {
-        id
-    }
+    )
 }
 
 mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!) {
@@ -89,12 +87,7 @@ query getRequestAttachments($requestId: Uuid!) {
 }
 
 mutation attach($id: Uuid!, $file: Upload!) {
-    createRequestAttachment(requestAttachmentCreateDto: { requestId: $id, file: $file }) {
-        id
-        name
-        sizeMb
-        reference
-    }
+    createRequestAttachment(requestAttachmentCreateDto: { requestId: $id, file: $file })
 }
 
 mutation deleteAttach($attachId: Int!) {
@@ -102,9 +95,7 @@ mutation deleteAttach($attachId: Int!) {
 }
 
 mutation createComment($text: String!, $appealId: Uuid!) {
-    createComment(commentCreateDto: { text: $text, requestId: $appealId }) {
-        id
-    }
+    createComment(commentCreateDto: { text: $text, requestId: $appealId })
 }
 
 mutation toNewStatus($id: Uuid!) {

@@ -2,9 +2,11 @@ import { Table } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
-import AddSoftware from "components/forms/directories/AddSoftware"
 import React from "react"
 import { Link } from "react-router-dom"
+import AddSoftware from "components/forms/directories/AddSoftware"
+import AddModule from "components/forms/directories/AddModule"
+import AddLicense from "components/forms/directories/AddLicense"
 
 const Directories: React.FC = () => {
     const columns = [
@@ -36,13 +38,13 @@ const Directories: React.FC = () => {
             key: "softwareModules",
             name: "Справочник функциональных модулей ПО",
             link: "/directories/modules",
-            form: () => <AddSoftware reload={() => {}} type="link" />,
+            form: () => <AddModule reload={() => {}} type="link" />,
         },
         {
             key: "license",
             name: "Справочник лицензий",
             link: "/directories/licenses",
-            form: () => <AddSoftware reload={() => {}} type="link" />,
+            form: () => <AddLicense reload={() => {}} type="link" />,
         },
     ]
 

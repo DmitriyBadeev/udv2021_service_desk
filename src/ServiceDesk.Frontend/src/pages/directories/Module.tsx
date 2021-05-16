@@ -6,6 +6,7 @@ import FadePage from "components/fade/FadePage"
 import React from "react"
 import { useGetModulesQuery, useDeleteModuleMutation } from "types"
 import AddModule from "components/forms/directories/AddModule"
+import EditModule from "components/forms/directories/EditModule"
 
 const Module: React.FC = () => {
     const [deleteQuery, { loading: deleteLoading }] = useDeleteModuleMutation()
@@ -18,7 +19,6 @@ const Module: React.FC = () => {
     })
 
     if (error) message.error(error.message)
-    console.log(data)
 
     const deleteHandler = (id: number) => {
         deleteQuery({ variables: { id } })
@@ -31,6 +31,7 @@ const Module: React.FC = () => {
                 message.error("Произошла ошибка")
             })
     }
+
     const columns = [
         {
             title: "ID",
@@ -38,9 +39,14 @@ const Module: React.FC = () => {
             key: "id",
         },
         {
-            title: "Название ПО",
+            title: "Название модуля",
             dataIndex: "title",
             key: "title",
+        },
+        {
+            title: "Название ПО",
+            dataIndex: "software",
+            key: "software",
         },
         {
             title: "Действия",
@@ -49,14 +55,14 @@ const Module: React.FC = () => {
             width: 150,
             render: (_items: any, item: any) => {
                 return (
-                    <div></div>
-                    // <EditSoftware
-                    //     buttonSize="middle"
-                    //     id={item.id}
-                    //     title={item.title}
-                    //     type="link"
-                    //     reload={() => refetch()}
-                    // />
+                    <EditModule
+                        buttonSize="middle"
+                        id={item.id}
+                        title={item.title}
+                        defaultSoftwareId={item.softwareId}
+                        type="link"
+                        reload={() => refetch()}
+                    />
                 )
             },
         },
@@ -66,7 +72,10 @@ const Module: React.FC = () => {
             width: 100,
             render: (_items: any, item: any) => {
                 return (
-                    <Popconfirm title="Вы уверены, что хотите удалить ПО?" onConfirm={() => deleteHandler(item.id)}>
+                    <Popconfirm
+                        title="Вы уверены, что хотите удалить модуль ПО?"
+                        onConfirm={() => deleteHandler(item.id)}
+                    >
                         <Button type="link" danger icon={<DeleteOutlined />} loading={deleteLoading}>
                             Удалить
                         </Button>

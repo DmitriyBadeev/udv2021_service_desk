@@ -6,6 +6,8 @@ namespace ServiceDesk.Api.Systems.DirectorySystem.Dtos.SoftwareModule
     {
         public int Id { get; set; }
         public string Title { get; set; }
+
+        public int SoftwareId { get; set; }
         public string Software { get; set; }
     }
 }

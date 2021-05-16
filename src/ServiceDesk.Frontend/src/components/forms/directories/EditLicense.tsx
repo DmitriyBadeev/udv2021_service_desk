@@ -1,9 +1,10 @@
 import React, { useState } from "react"
-import { Drawer, Form, Button, Col, Row, Input, Space, message, DatePicker, InputNumber } from "antd"
-import { PlusOutlined } from "@ant-design/icons"
-import { useCreateLicenseMutation } from "types"
+import { Drawer, Form, Button, Col, Row, Input, Space, message, InputNumber, DatePicker } from "antd"
+import { EditOutlined } from "@ant-design/icons"
+import { useEditLicenseMutation } from "types"
 import SoftwareSelect from "components/selects/SoftwareSelect"
 import CustomerSelect from "components/selects/CustomerSelect"
+import moment from "moment"
 
 const { RangePicker } = DatePicker
 
@@ -11,26 +12,48 @@ type propTypes = {
     buttonSize?: "large" | "middle"
     reload: () => void
     type?: "link" | "primary"
+    id: number
+    number: string
+    countUsers: number
+    startDate: string
+    expiresDate: string
+    defaultClientId: number
+    defaultSoftwareId: number
 }
 
-const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primary", reload }) => {
+const EditLicense: React.FC<propTypes> = ({
+    buttonSize = "middle",
+    type = "link",
+    id,
+    number,
+    countUsers,
+    startDate,
+    expiresDate,
+    defaultClientId,
+    defaultSoftwareId,
+    reload,
+}) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
-    const [query, { loading }] = useCreateLicenseMutation()
+    const [query, { loading }] = useEditLicenseMutation()
+
+    const [softwareId, setSoftwareId] = useState(defaultSoftwareId)
+    const [clientId, setClientId] = useState(defaultClientId)
 
     const onFinish = (data: any) => {
         query({
             variables: {
+                id,
                 number: data.number,
-                clientId: data.clientId,
-                softwareId: data.softwareId,
+                clientId,
+                softwareId,
                 countUsers: data.countUsers,
                 startDate: data.range[0].format(),
                 expiresDate: data.range[1].format(),
             },
         })
             .then(() => {
-                message.success("Лицензия успешно добавлена")
+                message.success("Модуль успешно изменен")
                 reload()
                 setVisible(false)
             })
@@ -43,10 +66,10 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
     return (
         <>
             <Button type={type} onClick={() => setVisible(true)} size={buttonSize}>
-                <PlusOutlined /> Добавить запись
+                <EditOutlined /> Редактировать
             </Button>
             <Drawer
-                title="Добавление лицензии"
+                title="Редактирование модуля ПО"
                 width={720}
                 onClose={() => setVisible(false)}
                 visible={visible}
@@ -54,7 +77,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                 footer={
                     <Space size="large" style={{ padding: "5px 15px" }}>
                         <Button onClick={() => form.submit()} type="primary" size="large" loading={loading}>
-                            Добавить
+                            Редактировать
                         </Button>
                         <Button onClick={() => setVisible(false)} style={{ marginRight: 8 }} size="large">
                             Отмена
@@ -69,6 +92,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                                 name="number"
                                 label="Номер лицензии"
                                 rules={[{ required: true, message: "Введите номер лицензии" }]}
+                                initialValue={number}
                             >
                                 <Input size="large" placeholder="Введите номер лицензии" />
                             </Form.Item>
@@ -87,6 +111,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                                         message: "Введите срок действия лицензии",
                                     },
                                 ]}
+                                initialValue={[moment(startDate), moment(expiresDate)]}
                             >
                                 <RangePicker format="DD.MM.YYYY" />
                             </Form.Item>
@@ -101,7 +126,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                                         message: "Введите кол-во пользователей",
                                     },
                                 ]}
-                                initialValue={0}
+                                initialValue={countUsers}
                             >
                                 <InputNumber min={0} />
                             </Form.Item>
@@ -115,15 +140,21 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                                 label="Название ПО"
                                 rules={[{ required: true, message: "Выберите ПО" }]}
                                 getValueFromEvent={(args) => args}
+                                initialValue={defaultSoftwareId}
                             >
-                                <SoftwareSelect />
+                                <SoftwareSelect initValue={defaultSoftwareId} onChange={(sId) => setSoftwareId(sId)} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item name="clientId" label="Заказчик" getValueFromEvent={(args) => args}>
-                                <CustomerSelect />
+                            <Form.Item
+                                name="clientId"
+                                label="Заказчик"
+                                getValueFromEvent={(args) => args}
+                                initialValue={defaultClientId}
+                            >
+                                <CustomerSelect initValue={defaultClientId} onChange={(cId) => setClientId(cId)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -133,4 +164,4 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
     )
 }
 
-export default AddLicense
+export default EditLicense

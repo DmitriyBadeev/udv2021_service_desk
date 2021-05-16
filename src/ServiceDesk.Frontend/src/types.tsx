@@ -29,6 +29,7 @@ export enum ApplyPolicy {
 
 export type ClientCreateDtoInput = {
   name?: Maybe<Scalars['String']>;
+  licenseIds?: Maybe<Array<Scalars['Int']>>;
 };
 
 export type ClientDto = {
@@ -55,32 +56,34 @@ export type CommentDto = {
 
 
 export type LicenseCreateDtoInput = {
-  number: Scalars['Int'];
+  number?: Maybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
   expiresDate: Scalars['DateTime'];
   countOfUsers: Scalars['Int'];
-  clientId: Scalars['Int'];
+  clientId?: Maybe<Scalars['Int']>;
   softwareId: Scalars['Int'];
 };
 
 export type LicenseDto = {
   __typename?: 'LicenseDto';
   id: Scalars['Int'];
-  number: Scalars['Int'];
+  number?: Maybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
   expiresDate: Scalars['DateTime'];
   countOfUsers: Scalars['Int'];
+  clientId?: Maybe<Scalars['Int']>;
   client?: Maybe<Scalars['String']>;
+  softwareId: Scalars['Int'];
   software?: Maybe<Scalars['String']>;
 };
 
 export type Mutations = {
   __typename?: 'Mutations';
   testMutation?: Maybe<Scalars['String']>;
-  createClient?: Maybe<ClientDto>;
+  createClient?: Maybe<Scalars['String']>;
   editClient?: Maybe<ClientDto>;
   deleteClient?: Maybe<Scalars['String']>;
-  createRequest?: Maybe<RequestDto>;
+  createRequest?: Maybe<Scalars['String']>;
   editRequest?: Maybe<RequestDto>;
   deleteRequest?: Maybe<Scalars['String']>;
   newRequest?: Maybe<Scalars['String']>;
@@ -89,18 +92,18 @@ export type Mutations = {
   closingRequest?: Maybe<Scalars['String']>;
   rejectRequest?: Maybe<Scalars['String']>;
   reopenRequest?: Maybe<Scalars['String']>;
-  createComment?: Maybe<CommentDto>;
+  createComment?: Maybe<Scalars['String']>;
   editComment?: Maybe<CommentDto>;
   deleteComment?: Maybe<Scalars['String']>;
-  createRequestAttachment?: Maybe<RequestAttachmentDto>;
+  createRequestAttachment?: Maybe<Scalars['String']>;
   deleteRequestAttachment?: Maybe<Scalars['String']>;
-  createLicense?: Maybe<LicenseDto>;
+  createLicense?: Maybe<Scalars['String']>;
   editLicense?: Maybe<LicenseDto>;
   deleteLicense?: Maybe<Scalars['String']>;
-  createSoftware?: Maybe<SoftwareDto>;
+  createSoftware?: Maybe<Scalars['String']>;
   editSoftware?: Maybe<SoftwareDto>;
   deleteSoftware?: Maybe<Scalars['String']>;
-  createSoftwareModule?: Maybe<SoftwareModuleDto>;
+  createSoftwareModule?: Maybe<Scalars['String']>;
   editSoftwareModule?: Maybe<SoftwareModuleDto>;
   deleteSoftwareModule?: Maybe<Scalars['String']>;
 };
@@ -233,7 +236,7 @@ export type MutationsCreateSoftwareModuleArgs = {
 
 export type MutationsEditSoftwareModuleArgs = {
   id: Scalars['Int'];
-  commentCreateDto?: Maybe<SoftwareModuleCreateDtoInput>;
+  softwareModuleCreateDto?: Maybe<SoftwareModuleCreateDtoInput>;
 };
 
 
@@ -422,6 +425,7 @@ export type SoftwareModuleDto = {
   __typename?: 'SoftwareModuleDto';
   id: Scalars['Int'];
   title?: Maybe<Scalars['String']>;
+  softwareId: Scalars['Int'];
   software?: Maybe<Scalars['String']>;
 };
 
@@ -458,10 +462,7 @@ export type CreateClientMutationVariables = Exact<{
 
 export type CreateClientMutation = (
   { __typename?: 'Mutations' }
-  & { createClient?: Maybe<(
-    { __typename?: 'ClientDto' }
-    & Pick<ClientDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createClient'>
 );
 
 export type EditClientMutationVariables = Exact<{
@@ -497,10 +498,7 @@ export type CreateRequestMutationVariables = Exact<{
 
 export type CreateRequestMutation = (
   { __typename?: 'Mutations' }
-  & { createRequest?: Maybe<(
-    { __typename?: 'RequestDto' }
-    & Pick<RequestDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createRequest'>
 );
 
 export type EditRequestMutationVariables = Exact<{
@@ -604,10 +602,7 @@ export type AttachMutationVariables = Exact<{
 
 export type AttachMutation = (
   { __typename?: 'Mutations' }
-  & { createRequestAttachment?: Maybe<(
-    { __typename?: 'RequestAttachmentDto' }
-    & Pick<RequestAttachmentDto, 'id' | 'name' | 'sizeMb' | 'reference'>
-  )> }
+  & Pick<Mutations, 'createRequestAttachment'>
 );
 
 export type DeleteAttachMutationVariables = Exact<{
@@ -628,10 +623,7 @@ export type CreateCommentMutationVariables = Exact<{
 
 export type CreateCommentMutation = (
   { __typename?: 'Mutations' }
-  & { createComment?: Maybe<(
-    { __typename?: 'CommentDto' }
-    & Pick<CommentDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createComment'>
 );
 
 export type ToNewStatusMutationVariables = Exact<{
@@ -712,10 +704,7 @@ export type CreateSoftwareMutationVariables = Exact<{
 
 export type CreateSoftwareMutation = (
   { __typename?: 'Mutations' }
-  & { createSoftware?: Maybe<(
-    { __typename?: 'SoftwareDto' }
-    & Pick<SoftwareDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createSoftware'>
 );
 
 export type EditSoftwareMutationVariables = Exact<{
@@ -749,7 +738,7 @@ export type GetModulesQuery = (
   { __typename?: 'Queries' }
   & { softwareModules?: Maybe<Array<Maybe<(
     { __typename?: 'SoftwareModuleDto' }
-    & Pick<SoftwareModuleDto, 'id' | 'title' | 'software'>
+    & Pick<SoftwareModuleDto, 'id' | 'title' | 'software' | 'softwareId'>
   )>>> }
 );
 
@@ -761,10 +750,7 @@ export type CreateModuleMutationVariables = Exact<{
 
 export type CreateModuleMutation = (
   { __typename?: 'Mutations' }
-  & { createSoftwareModule?: Maybe<(
-    { __typename?: 'SoftwareModuleDto' }
-    & Pick<SoftwareModuleDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createSoftwareModule'>
 );
 
 export type EditModuleMutationVariables = Exact<{
@@ -799,12 +785,12 @@ export type GetLicensesQuery = (
   { __typename?: 'Queries' }
   & { licenses?: Maybe<Array<Maybe<(
     { __typename?: 'LicenseDto' }
-    & Pick<LicenseDto, 'id' | 'number' | 'startDate' | 'expiresDate' | 'countOfUsers' | 'client' | 'software'>
+    & Pick<LicenseDto, 'id' | 'number' | 'startDate' | 'expiresDate' | 'countOfUsers' | 'client' | 'clientId' | 'software' | 'softwareId'>
   )>>> }
 );
 
 export type CreateLicenseMutationVariables = Exact<{
-  number: Scalars['Int'];
+  number: Scalars['String'];
   startDate: Scalars['DateTime'];
   expiresDate: Scalars['DateTime'];
   countUsers: Scalars['Int'];
@@ -815,15 +801,12 @@ export type CreateLicenseMutationVariables = Exact<{
 
 export type CreateLicenseMutation = (
   { __typename?: 'Mutations' }
-  & { createLicense?: Maybe<(
-    { __typename?: 'LicenseDto' }
-    & Pick<LicenseDto, 'id'>
-  )> }
+  & Pick<Mutations, 'createLicense'>
 );
 
 export type EditLicenseMutationVariables = Exact<{
   id: Scalars['Int'];
-  number: Scalars['Int'];
+  number: Scalars['String'];
   startDate: Scalars['DateTime'];
   expiresDate: Scalars['DateTime'];
   countUsers: Scalars['Int'];
@@ -933,9 +916,7 @@ export type GetClientsLazyQueryHookResult = ReturnType<typeof useGetClientsLazyQ
 export type GetClientsQueryResult = ApolloReactCommon.QueryResult<GetClientsQuery, GetClientsQueryVariables>;
 export const CreateClientDocument = gql`
     mutation createClient($name: String!) {
-  createClient(clientCreateDto: {name: $name}) {
-    id
-  }
+  createClient(clientCreateDto: {name: $name})
 }
     `;
 export type CreateClientMutationFn = ApolloReactCommon.MutationFunction<CreateClientMutation, CreateClientMutationVariables>;
@@ -1030,9 +1011,7 @@ export const CreateRequestDocument = gql`
     mutation createRequest($title: String!, $text: String!, $clientId: Int!) {
   createRequest(
     requestCreateDto: {theme: $title, text: $text, developerRepresentativeId: null, softwareModuleId: null, clientId: $clientId}
-  ) {
-    id
-  }
+  )
 }
     `;
 export type CreateRequestMutationFn = ApolloReactCommon.MutationFunction<CreateRequestMutation, CreateRequestMutationVariables>;
@@ -1325,12 +1304,7 @@ export const AttachDocument = gql`
     mutation attach($id: Uuid!, $file: Upload!) {
   createRequestAttachment(
     requestAttachmentCreateDto: {requestId: $id, file: $file}
-  ) {
-    id
-    name
-    sizeMb
-    reference
-  }
+  )
 }
     `;
 export type AttachMutationFn = ApolloReactCommon.MutationFunction<AttachMutation, AttachMutationVariables>;
@@ -1391,9 +1365,7 @@ export type DeleteAttachMutationResult = ApolloReactCommon.MutationResult<Delete
 export type DeleteAttachMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteAttachMutation, DeleteAttachMutationVariables>;
 export const CreateCommentDocument = gql`
     mutation createComment($text: String!, $appealId: Uuid!) {
-  createComment(commentCreateDto: {text: $text, requestId: $appealId}) {
-    id
-  }
+  createComment(commentCreateDto: {text: $text, requestId: $appealId})
 }
     `;
 export type CreateCommentMutationFn = ApolloReactCommon.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
@@ -1637,9 +1609,7 @@ export type GetSoftwaresLazyQueryHookResult = ReturnType<typeof useGetSoftwaresL
 export type GetSoftwaresQueryResult = ApolloReactCommon.QueryResult<GetSoftwaresQuery, GetSoftwaresQueryVariables>;
 export const CreateSoftwareDocument = gql`
     mutation createSoftware($title: String!) {
-  createSoftware(softwareCreateDto: {title: $title}) {
-    id
-  }
+  createSoftware(softwareCreateDto: {title: $title})
 }
     `;
 export type CreateSoftwareMutationFn = ApolloReactCommon.MutationFunction<CreateSoftwareMutation, CreateSoftwareMutationVariables>;
@@ -1736,6 +1706,7 @@ export const GetModulesDocument = gql`
     id
     title
     software
+    softwareId
   }
 }
     `;
@@ -1768,9 +1739,7 @@ export const CreateModuleDocument = gql`
     mutation createModule($softwareId: Int!, $title: String!) {
   createSoftwareModule(
     softwareModuleCreateDto: {title: $title, softwareId: $softwareId}
-  ) {
-    id
-  }
+  )
 }
     `;
 export type CreateModuleMutationFn = ApolloReactCommon.MutationFunction<CreateModuleMutation, CreateModuleMutationVariables>;
@@ -1803,7 +1772,7 @@ export const EditModuleDocument = gql`
     mutation editModule($id: Int!, $title: String!, $softwareId: Int!) {
   editSoftwareModule(
     id: $id
-    commentCreateDto: {softwareId: $softwareId, title: $title}
+    softwareModuleCreateDto: {softwareId: $softwareId, title: $title}
   ) {
     id
   }
@@ -1875,7 +1844,9 @@ export const GetLicensesDocument = gql`
     expiresDate
     countOfUsers
     client
+    clientId
     software
+    softwareId
   }
 }
     `;
@@ -1905,12 +1876,10 @@ export type GetLicensesQueryHookResult = ReturnType<typeof useGetLicensesQuery>;
 export type GetLicensesLazyQueryHookResult = ReturnType<typeof useGetLicensesLazyQuery>;
 export type GetLicensesQueryResult = ApolloReactCommon.QueryResult<GetLicensesQuery, GetLicensesQueryVariables>;
 export const CreateLicenseDocument = gql`
-    mutation createLicense($number: Int!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
+    mutation createLicense($number: String!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
   createLicense(
     licenseCreateDto: {number: $number, startDate: $startDate, expiresDate: $expiresDate, countOfUsers: $countUsers, clientId: $clientId, softwareId: $softwareId}
-  ) {
-    id
-  }
+  )
 }
     `;
 export type CreateLicenseMutationFn = ApolloReactCommon.MutationFunction<CreateLicenseMutation, CreateLicenseMutationVariables>;
@@ -1944,7 +1913,7 @@ export type CreateLicenseMutationHookResult = ReturnType<typeof useCreateLicense
 export type CreateLicenseMutationResult = ApolloReactCommon.MutationResult<CreateLicenseMutation>;
 export type CreateLicenseMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateLicenseMutation, CreateLicenseMutationVariables>;
 export const EditLicenseDocument = gql`
-    mutation editLicense($id: Int!, $number: Int!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
+    mutation editLicense($id: Int!, $number: String!, $startDate: DateTime!, $expiresDate: DateTime!, $countUsers: Int!, $clientId: Int!, $softwareId: Int!) {
   editLicense(
     id: $id
     licenseCreateDto: {number: $number, startDate: $startDate, expiresDate: $expiresDate, countOfUsers: $countUsers, clientId: $clientId, softwareId: $softwareId}

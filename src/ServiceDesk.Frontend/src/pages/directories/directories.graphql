@@ -6,9 +6,7 @@ query getSoftwares {
 }
 
 mutation createSoftware($title: String!) {
-    createSoftware(softwareCreateDto: { title: $title }) {
-        id
-    }
+    createSoftware(softwareCreateDto: { title: $title })
 }
 
 mutation editSoftware($id: Int!, $title: String!) {
@@ -26,17 +24,16 @@ query getModules {
         id
         title
         software
+        softwareId
     }
 }
 
 mutation createModule($softwareId: Int!, $title: String!) {
-    createSoftwareModule(softwareModuleCreateDto: { title: $title, softwareId: $softwareId }) {
-        id
-    }
+    createSoftwareModule(softwareModuleCreateDto: { title: $title, softwareId: $softwareId })
 }
 
 mutation editModule($id: Int!, $title: String!, $softwareId: Int!) {
-    editSoftwareModule(id: $id, commentCreateDto: { softwareId: $softwareId, title: $title }) {
+    editSoftwareModule(id: $id, softwareModuleCreateDto: { softwareId: $softwareId, title: $title }) {
         id
     }
 }
@@ -53,12 +50,14 @@ query getLicenses {
         expiresDate
         countOfUsers
         client
+        clientId
         software
+        softwareId
     }
 }
 
 mutation createLicense(
-    $number: Int!
+    $number: String!
     $startDate: DateTime!
     $expiresDate: DateTime!
     $countUsers: Int!
@@ -74,14 +73,12 @@ mutation createLicense(
             clientId: $clientId
             softwareId: $softwareId
         }
-    ) {
-        id
-    }
+    )
 }
 
 mutation editLicense(
     $id: Int!
-    $number: Int!
+    $number: String!
     $startDate: DateTime!
     $expiresDate: DateTime!
     $countUsers: Int!

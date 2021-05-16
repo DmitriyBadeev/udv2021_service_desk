@@ -10,7 +10,9 @@ namespace ServiceDesk.Api.Systems.DirectorySystem.Dtos.License
         public DateTime StartDate { get; set; }
         public DateTime ExpiresDate { get; set; }
         public int CountOfUsers { get; set; }
+        public int? ClientId { get; set; }
         public string Client { get; set; }
+        public int SoftwareId { get; set; }
         public string Software { get; set; }
     }
 }

@@ -18,9 +18,7 @@ query getClients {
 }
 
 mutation createClient($name: String!) {
-    createClient(clientCreateDto: { name: $name }) {
-        id
-    }
+    createClient(clientCreateDto: { name: $name })
 }
 
 mutation editClient($id: Int!, $name: String!) {

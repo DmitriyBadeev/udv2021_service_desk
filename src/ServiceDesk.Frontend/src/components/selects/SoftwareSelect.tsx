@@ -6,9 +6,10 @@ const { Option } = Select
 
 type propTypes = {
     onChange?: (value: number) => void
+    initValue?: number
 }
 
-const SoftwareSelect: React.FC<propTypes> = ({ onChange }) => {
+const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue }) => {
     const { data, loading, error } = useGetSoftwaresQuery()
 
     if (error) message.error(error.message)
@@ -29,7 +30,9 @@ const SoftwareSelect: React.FC<propTypes> = ({ onChange }) => {
             placeholder="Выберите ПО"
             loading={loading}
             onChange={(value) => onChange && onChange(Number.parseInt(value.toString()))}
+            defaultValue={initValue}
         >
+            {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
             {getOptions()}
         </Select>
     )

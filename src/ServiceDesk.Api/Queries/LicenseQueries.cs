@@ -5,8 +5,6 @@ using HotChocolate.Types;
 using ServiceDesk.Api.Systems.DirectorySystem.DtoBuilders.License;
 using ServiceDesk.Api.Systems.DirectorySystem.Dtos.License;
 using ServiceDesk.Api.Systems.DirectorySystem.Handlers.License;
-using ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client;
-using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Queries
@@ -21,7 +19,7 @@ namespace ServiceDesk.Api.Queries
             this.licenseHandler = licenseHandler;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public LicenseDto GetLicense(int licenseId, [Service] ServiceDeskDbContext context)
         {
             var license = licenseHandler.Get<LicenseDtoBuilder, LicenseDto>(licenseId, context);
@@ -29,7 +27,7 @@ namespace ServiceDesk.Api.Queries
             return license;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public IEnumerable<LicenseDto> GetLicenses([Service] ServiceDeskDbContext context)
         {
             var licenses = licenseHandler.GetAll<LicenseDtoBuilder, LicenseDto>(context);
@@ -37,7 +35,7 @@ namespace ServiceDesk.Api.Queries
             return licenses;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public IEnumerable<LicenseDto> PageLicenses(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
             var licenses = licenseHandler.Page<LicenseDtoBuilder, LicenseDto>(pageNumber, count, context);

@@ -7,9 +7,10 @@ const { Option } = Select
 type propTypes = {
     onChange?: (value: number) => void
     initValue?: number
+    removable?: boolean
 }
 
-const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue }) => {
+const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue, removable }) => {
     const { data, loading, error } = useGetSoftwaresQuery()
 
     if (error) message.error(error.message)
@@ -29,8 +30,9 @@ const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue }) => {
             size="large"
             placeholder="Выберите ПО"
             loading={loading}
-            onChange={(value) => onChange && onChange(Number.parseInt(value.toString()))}
+            onChange={(value) => onChange && value && onChange(Number.parseInt(value.toString()))}
             defaultValue={initValue}
+            allowClear={removable}
         >
             {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
             {getOptions()}

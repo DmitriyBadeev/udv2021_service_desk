@@ -27,7 +27,9 @@ namespace ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.Request
                 Text = entity.Text,
                 Theme = entity.Theme,
                 Software = entity.SoftwareModule?.Software?.Title,
+                SoftwareId = entity.SoftwareModule?.SoftwareId,
                 SoftwareModule = entity.SoftwareModule?.Title,
+                SoftwareModuleId = entity.SoftwareModuleId,
                 RequestStatus = requestStatus,
                 ClientId = entity.ClientId,
                 ClientName = entity.Client.Name

@@ -11,6 +11,7 @@ import { getNumericStringDate } from "helpers/dateHelpers"
 import { Link } from "react-router-dom"
 import AddAppeal from "components/forms/AddAppeal"
 import EditAppeal from "components/forms/EditAppeal"
+import { DeleteOutlined } from "@ant-design/icons"
 
 const CustomerAppeals: React.FC = observer(() => {
     const { authService } = useStore()
@@ -47,7 +48,7 @@ const CustomerAppeals: React.FC = observer(() => {
         {
             title: "Тема",
             key: "theme",
-            width: 500,
+            width: 300,
             render: (_items: any, item: any) => {
                 return <Link to={`/appeals/${item.id}`}>{item.theme}</Link>
             },
@@ -85,6 +86,8 @@ const CustomerAppeals: React.FC = observer(() => {
                         theme={item.theme}
                         text={item.text}
                         customerId={customerId}
+                        softwareId={item.softwareId}
+                        moduleId={item.softwareModuleId}
                         type="link"
                         reload={() => refetch()}
                     />
@@ -101,7 +104,7 @@ const CustomerAppeals: React.FC = observer(() => {
                         title="Вы уверены, что хотите удалить обращение?"
                         onConfirm={() => deleteHandler(item.id)}
                     >
-                        <Button type="link" danger>
+                        <Button type="link" danger icon={<DeleteOutlined />} loading={deleteLoading}>
                             Удалить
                         </Button>
                     </Popconfirm>
@@ -118,7 +121,7 @@ const CustomerAppeals: React.FC = observer(() => {
                     Form={() => <AddAppeal buttonSize="large" reload={() => refetch()} customerId={customerId} />}
                 />
 
-                <Table size="middle" dataSource={dataSource} columns={columns} loading={loading || deleteLoading} />
+                <Table size="middle" dataSource={dataSource} columns={columns} loading={loading} />
             </Card>
         </FadePage>
     )

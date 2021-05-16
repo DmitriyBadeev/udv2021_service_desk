@@ -20,7 +20,7 @@ const { Paragraph } = Typography
 
 const Appeal: React.FC = () => {
     const { id } = useParams<paramsTypes>()
-    const { data, loading, error, refetch } = useGetRequestQuery({ variables: { id } })
+    const { data, loading, error, refetch } = useGetRequestQuery({ variables: { id }, fetchPolicy: "no-cache" })
     const appealData = data?.request
 
     if (loading) return <Loading height="70vh" size="big" />
@@ -41,6 +41,8 @@ const Appeal: React.FC = () => {
                                     theme={appealData?.theme || ""}
                                     text={appealData?.text || ""}
                                     customerId={appealData?.clientId || -1}
+                                    moduleId={appealData?.softwareModuleId ?? undefined}
+                                    softwareId={appealData?.softwareId ?? undefined}
                                     type="primary"
                                     reload={() => refetch()}
                                 />

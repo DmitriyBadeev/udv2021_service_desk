@@ -1,16 +1,16 @@
-mutation createRequest($title: String!, $text: String!, $clientId: Int!) {
+mutation createRequest($title: String!, $text: String!, $clientId: Int!, $softwareModuleId: Int) {
     createRequest(
         requestCreateDto: {
             theme: $title
             text: $text
             developerRepresentativeId: null
-            softwareModuleId: null
+            softwareModuleId: $softwareModuleId
             clientId: $clientId
         }
     )
 }
 
-mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!) {
+mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!, $softwareModuleId: Int) {
     editRequest(
         id: $id
         requestCreateDto: {
@@ -18,7 +18,7 @@ mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int
             text: $text
             clientId: $clientId
             developerRepresentativeId: null
-            softwareModuleId: null
+            softwareModuleId: $softwareModuleId
         }
     ) {
         id
@@ -36,6 +36,9 @@ query getCustomerRequests($customerId: Int!) {
         text
         requestStatus
         software
+        softwareId
+        softwareModule
+        softwareModuleId
         creationDate
     }
 }
@@ -62,7 +65,9 @@ query getRequest($id: Uuid!) {
         developerRepresentativeId
         authorId
         software
+        softwareId
         softwareModule
+        softwareModuleId
         requestStatus
         clientId
     }

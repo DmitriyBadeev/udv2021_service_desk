@@ -400,8 +400,10 @@ export type RequestDto = {
   processingDate?: Maybe<Scalars['DateTime']>;
   developerRepresentativeId?: Maybe<Scalars['String']>;
   authorId?: Maybe<Scalars['String']>;
+  softwareId?: Maybe<Scalars['Int']>;
   software?: Maybe<Scalars['String']>;
   softwareModule?: Maybe<Scalars['String']>;
+  softwareModuleId?: Maybe<Scalars['Int']>;
   requestStatus?: Maybe<Scalars['String']>;
   clientId: Scalars['Int'];
   clientName?: Maybe<Scalars['String']>;
@@ -496,6 +498,7 @@ export type CreateRequestMutationVariables = Exact<{
   title: Scalars['String'];
   text: Scalars['String'];
   clientId: Scalars['Int'];
+  softwareModuleId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -509,6 +512,7 @@ export type EditRequestMutationVariables = Exact<{
   theme: Scalars['String'];
   text: Scalars['String'];
   clientId: Scalars['Int'];
+  softwareModuleId?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -539,7 +543,7 @@ export type GetCustomerRequestsQuery = (
   { __typename?: 'Queries' }
   & { clientRequests?: Maybe<Array<Maybe<(
     { __typename?: 'RequestDto' }
-    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'requestStatus' | 'software' | 'creationDate'>
+    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'requestStatus' | 'software' | 'softwareId' | 'softwareModule' | 'softwareModuleId' | 'creationDate'>
   )>>> }
 );
 
@@ -567,7 +571,7 @@ export type GetRequestQuery = (
   { __typename?: 'Queries' }
   & { request?: Maybe<(
     { __typename?: 'RequestDto' }
-    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'creationDate' | 'processingDate' | 'developerRepresentativeId' | 'authorId' | 'software' | 'softwareModule' | 'requestStatus' | 'clientId'>
+    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'creationDate' | 'processingDate' | 'developerRepresentativeId' | 'authorId' | 'software' | 'softwareId' | 'softwareModule' | 'softwareModuleId' | 'requestStatus' | 'clientId'>
   )> }
 );
 
@@ -1015,9 +1019,9 @@ export type DeleteClientMutationHookResult = ReturnType<typeof useDeleteClientMu
 export type DeleteClientMutationResult = ApolloReactCommon.MutationResult<DeleteClientMutation>;
 export type DeleteClientMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteClientMutation, DeleteClientMutationVariables>;
 export const CreateRequestDocument = gql`
-    mutation createRequest($title: String!, $text: String!, $clientId: Int!) {
+    mutation createRequest($title: String!, $text: String!, $clientId: Int!, $softwareModuleId: Int) {
   createRequest(
-    requestCreateDto: {theme: $title, text: $text, developerRepresentativeId: null, softwareModuleId: null, clientId: $clientId}
+    requestCreateDto: {theme: $title, text: $text, developerRepresentativeId: null, softwareModuleId: $softwareModuleId, clientId: $clientId}
   )
 }
     `;
@@ -1039,6 +1043,7 @@ export type CreateRequestMutationFn = ApolloReactCommon.MutationFunction<CreateR
  *      title: // value for 'title'
  *      text: // value for 'text'
  *      clientId: // value for 'clientId'
+ *      softwareModuleId: // value for 'softwareModuleId'
  *   },
  * });
  */
@@ -1049,10 +1054,10 @@ export type CreateRequestMutationHookResult = ReturnType<typeof useCreateRequest
 export type CreateRequestMutationResult = ApolloReactCommon.MutationResult<CreateRequestMutation>;
 export type CreateRequestMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateRequestMutation, CreateRequestMutationVariables>;
 export const EditRequestDocument = gql`
-    mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!) {
+    mutation editRequest($id: Uuid!, $theme: String!, $text: String!, $clientId: Int!, $softwareModuleId: Int) {
   editRequest(
     id: $id
-    requestCreateDto: {theme: $theme, text: $text, clientId: $clientId, developerRepresentativeId: null, softwareModuleId: null}
+    requestCreateDto: {theme: $theme, text: $text, clientId: $clientId, developerRepresentativeId: null, softwareModuleId: $softwareModuleId}
   ) {
     id
   }
@@ -1077,6 +1082,7 @@ export type EditRequestMutationFn = ApolloReactCommon.MutationFunction<EditReque
  *      theme: // value for 'theme'
  *      text: // value for 'text'
  *      clientId: // value for 'clientId'
+ *      softwareModuleId: // value for 'softwareModuleId'
  *   },
  * });
  */
@@ -1124,6 +1130,9 @@ export const GetCustomerRequestsDocument = gql`
     text
     requestStatus
     software
+    softwareId
+    softwareModule
+    softwareModuleId
     creationDate
   }
 }
@@ -1203,7 +1212,9 @@ export const GetRequestDocument = gql`
     developerRepresentativeId
     authorId
     software
+    softwareId
     softwareModule
+    softwareModuleId
     requestStatus
     clientId
   }

@@ -2,12 +2,9 @@
 using HotChocolate;
 using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
-using ServiceDesk.Api.Systems.DirectorySystem.DtoBuilders.Software;
 using ServiceDesk.Api.Systems.DirectorySystem.DtoBuilders.SoftwareModule;
 using ServiceDesk.Api.Systems.DirectorySystem.Dtos.SoftwareModule;
 using ServiceDesk.Api.Systems.DirectorySystem.Handlers.SoftwareModule;
-using ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client;
-using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
 using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api.Queries
@@ -22,7 +19,7 @@ namespace ServiceDesk.Api.Queries
             this.softwareModuleHandler = softwareModuleHandler;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public SoftwareModuleDto GetSoftwareModule(int id, [Service] ServiceDeskDbContext context)
         {
             var softwareModule = softwareModuleHandler
@@ -31,7 +28,7 @@ namespace ServiceDesk.Api.Queries
             return softwareModule;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public IEnumerable<SoftwareModuleDto> GetSoftwareModules([Service] ServiceDeskDbContext context)
         {
             var softwareModules = softwareModuleHandler
@@ -40,7 +37,7 @@ namespace ServiceDesk.Api.Queries
             return softwareModules;
         }
 
-        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
+        [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public IEnumerable<SoftwareModuleDto> PageSoftwareModules(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
             var softwareModules = softwareModuleHandler

@@ -3,6 +3,8 @@ import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { useCreateRequestMutation } from "types"
 import TextArea from "antd/lib/input/TextArea"
+import SoftwareSelect from "components/selects/SoftwareSelect"
+import ModuleSelect from "components/selects/ModuleSelect"
 
 type propTypes = {
     buttonSize?: "large" | "middle"
@@ -15,8 +17,12 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
     const [form] = Form.useForm()
     const [query, { loading }] = useCreateRequestMutation()
 
+    const [selectedSoftwareId, setSelectedSoftwareId] = useState(0)
+
     const onFinish = (data: any) => {
-        query({ variables: { title: data.theme, text: data.text, clientId: customerId } })
+        query({
+            variables: { title: data.theme, text: data.text, clientId: customerId, softwareModuleId: data.moduleId },
+        })
             .then(() => {
                 message.success("Обращение успешно создано")
                 reload()
@@ -26,6 +32,13 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
                 console.log(error)
                 message.error("Произошла ошибка")
             })
+    }
+
+    const handleSoftwareChange = (softwareId: number) => {
+        setSelectedSoftwareId(softwareId)
+
+        form.resetFields(["moduleId"])
+        form.setFields([{ name: "moduleId", touched: false, value: undefined }])
     }
 
     return (
@@ -61,6 +74,24 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
                                 <Input size="large" placeholder="Введите тему обращения" />
                             </Form.Item>
                         </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item name="softwareId" label="Название ПО" getValueFromEvent={(args) => args}>
+                                <SoftwareSelect onChange={(sId) => handleSoftwareChange(sId)} removable />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <ModuleSelect
+                                disabled={selectedSoftwareId === 0}
+                                softwareId={selectedSoftwareId}
+                                removable
+                            />
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
                         <Col span={24}>
                             <Form.Item
                                 name="text"

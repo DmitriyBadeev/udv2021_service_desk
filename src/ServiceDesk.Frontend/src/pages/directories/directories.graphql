@@ -61,7 +61,7 @@ mutation createLicense(
     $startDate: DateTime!
     $expiresDate: DateTime!
     $countUsers: Int!
-    $clientId: Int!
+    $clientId: Int
     $softwareId: Int!
 ) {
     createLicense(
@@ -82,7 +82,7 @@ mutation editLicense(
     $startDate: DateTime!
     $expiresDate: DateTime!
     $countUsers: Int!
-    $clientId: Int!
+    $clientId: Int
     $softwareId: Int!
 ) {
     editLicense(

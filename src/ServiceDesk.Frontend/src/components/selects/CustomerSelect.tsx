@@ -1,15 +1,14 @@
 import React from "react"
-import { message, Select } from "antd"
+import { Form, message, Select } from "antd"
 import { useGetClientsQuery } from "types"
 
 const { Option } = Select
 
 type propTypes = {
-    onChange?: (value: number) => void
     initValue?: number
 }
 
-const CustomerSelect: React.FC<propTypes> = ({ onChange, initValue }) => {
+const CustomerSelect: React.FC<propTypes> = ({ initValue }) => {
     const { data, loading, error } = useGetClientsQuery()
 
     if (error) message.error(error.message)
@@ -25,16 +24,12 @@ const CustomerSelect: React.FC<propTypes> = ({ onChange, initValue }) => {
     }
 
     return (
-        <Select
-            size="large"
-            placeholder="Выберите заказчика"
-            loading={loading}
-            onChange={(value) => onChange && onChange(Number.parseInt(value.toString()))}
-            defaultValue={initValue}
-        >
-            {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
-            {getOptions()}
-        </Select>
+        <Form.Item name="clientId" label="Заказчик" initialValue={initValue}>
+            <Select size="large" placeholder="Выберите заказчика" loading={loading} allowClear>
+                {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
+                {getOptions()}
+            </Select>
+        </Form.Item>
     )
 }
 

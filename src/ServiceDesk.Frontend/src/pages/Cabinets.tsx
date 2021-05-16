@@ -76,6 +76,7 @@ const Cabinets: React.FC = () => {
                         buttonSize="middle"
                         id={item.id}
                         name={item.name}
+                        licenseIds={item.licenseIds}
                         type="link"
                         reload={() => refetch()}
                     />

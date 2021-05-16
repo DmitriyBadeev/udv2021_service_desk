@@ -22,7 +22,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
         query({
             variables: {
                 number: data.number,
-                clientId: data.clientId,
+                clientId: data.clientId ? data.clientId : null,
                 softwareId: data.softwareId,
                 countUsers: data.countUsers,
                 startDate: data.range[0].format(),
@@ -122,9 +122,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item name="clientId" label="Заказчик" getValueFromEvent={(args) => args}>
-                                <CustomerSelect />
-                            </Form.Item>
+                            <CustomerSelect />
                         </Col>
                     </Row>
                 </Form>

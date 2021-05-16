@@ -18,6 +18,7 @@ import { DEVELOPER_ROLE, OWNER_ROLE } from "helpers/roleHelper"
 import useStore from "store/useStore"
 import useDeleteUser from "hooks/useDeleteUser"
 import { DeleteOutlined } from "@ant-design/icons"
+import CustomerLicensesTable from "components/tables/CustomerLicensesTable"
 
 type paramsTypes = {
     id: string
@@ -148,6 +149,7 @@ const Cabinet: React.FC = observer(() => {
                                 buttonSize="large"
                                 id={id}
                                 name={customerData?.name || ""}
+                                licenseIds={customerData?.licenseIds || []}
                                 reload={() => refetch()}
                             />
                         ) : null
@@ -178,6 +180,11 @@ const Cabinet: React.FC = observer(() => {
                 />
 
                 <Table size="middle" loading={usersLoading} dataSource={users} columns={columns} />
+            </Card>
+            <Card isSecondary>
+                <CardHeader title="Список лицензий" Form={() => <div />} size="small" />
+
+                <CustomerLicensesTable customerId={customerData?.id || 0} />
             </Card>
         </FadePage>
     )

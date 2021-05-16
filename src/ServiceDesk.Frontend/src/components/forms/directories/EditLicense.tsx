@@ -38,14 +38,13 @@ const EditLicense: React.FC<propTypes> = ({
     const [query, { loading }] = useEditLicenseMutation()
 
     const [softwareId, setSoftwareId] = useState(defaultSoftwareId)
-    const [clientId, setClientId] = useState(defaultClientId)
 
     const onFinish = (data: any) => {
         query({
             variables: {
                 id,
                 number: data.number,
-                clientId,
+                clientId: data.clientId ? data.clientId : null,
                 softwareId,
                 countUsers: data.countUsers,
                 startDate: data.range[0].format(),
@@ -69,7 +68,7 @@ const EditLicense: React.FC<propTypes> = ({
                 <EditOutlined /> Редактировать
             </Button>
             <Drawer
-                title="Редактирование модуля ПО"
+                title="Редактирование лицензии"
                 width={720}
                 onClose={() => setVisible(false)}
                 visible={visible}
@@ -148,14 +147,7 @@ const EditLicense: React.FC<propTypes> = ({
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item
-                                name="clientId"
-                                label="Заказчик"
-                                getValueFromEvent={(args) => args}
-                                initialValue={defaultClientId}
-                            >
-                                <CustomerSelect initValue={defaultClientId} onChange={(cId) => setClientId(cId)} />
-                            </Form.Item>
+                            <CustomerSelect initValue={defaultClientId} />
                         </Col>
                     </Row>
                 </Form>

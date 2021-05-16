@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { useCreateClientMutation } from "types"
+import LicensesSelectMany from "components/selects/LicensesSelectMany"
 
 type propTypes = {
     buttonSize?: "large" | "middle"
@@ -14,7 +15,7 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
     const [query, { loading }] = useCreateClientMutation()
 
     const onFinish = (data: any) => {
-        query({ variables: { name: data.name } })
+        query({ variables: { name: data.name, licenseIds: data.licenses } })
             .then(() => {
                 message.success("Заказчик успешно создан")
                 reload()
@@ -58,6 +59,11 @@ const AddCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload }) => 
                             >
                                 <Input size="large" placeholder="Название организации" />
                             </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <LicensesSelectMany />
                         </Col>
                     </Row>
                 </Form>

@@ -21,7 +21,6 @@ const License: React.FC = () => {
     })
 
     if (error) message.error(error.message)
-    console.log(data)
 
     const deleteHandler = (id: number) => {
         deleteQuery({ variables: { id } })

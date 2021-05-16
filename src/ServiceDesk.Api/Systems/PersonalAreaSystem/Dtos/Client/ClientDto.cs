@@ -10,5 +10,7 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client
         public bool IsActive { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? LockDate { get; set; }
+        
+        public int[] LicenseIds { get; set; }
     }
 }

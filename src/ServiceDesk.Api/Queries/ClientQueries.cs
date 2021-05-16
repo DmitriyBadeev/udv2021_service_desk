@@ -22,7 +22,6 @@ namespace ServiceDesk.Api.Queries
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE, Constants.CUSTOMER_ROLE })]
         public ClientDto GetClient(int clientId, [Service] ServiceDeskDbContext context)
         {
-
             var client = clientHandler.Get<ClientDtoBuilder, ClientDto>(clientId, context);
 
             return client;
@@ -31,7 +30,6 @@ namespace ServiceDesk.Api.Queries
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<ClientDto> GetClients([Service] ServiceDeskDbContext context)
         {
-
             var clients = clientHandler.GetAll<ClientDtoBuilder, ClientDto>(context);
 
             return clients;
@@ -40,7 +38,6 @@ namespace ServiceDesk.Api.Queries
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]
         public IEnumerable<ClientDto> PageClients(int pageNumber, int count, [Service] ServiceDeskDbContext context)
         {
-
             var clients = clientHandler.Page<ClientDtoBuilder, ClientDto>(pageNumber, count, context);
 
             return clients;

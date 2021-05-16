@@ -5,6 +5,7 @@ query getClient($id: Int!) {
         isActive
         creationDate
         lockDate
+        licenseIds
     }
 }
 
@@ -14,15 +15,16 @@ query getClients {
         name
         isActive
         creationDate
+        licenseIds
     }
 }
 
-mutation createClient($name: String!) {
-    createClient(clientCreateDto: { name: $name })
+mutation createClient($name: String!, $licenseIds: [Int!]) {
+    createClient(clientCreateDto: { name: $name, licenseIds: $licenseIds })
 }
 
-mutation editClient($id: Int!, $name: String!) {
-    editClient(id: $id, clientCreateDto: { name: $name }) {
+mutation editClient($id: Int!, $name: String!, $licenseIds: [Int!]) {
+    editClient(id: $id, clientCreateDto: { name: $name, licenseIds: $licenseIds }) {
         id
     }
 }

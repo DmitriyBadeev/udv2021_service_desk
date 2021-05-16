@@ -2,22 +2,24 @@ import React, { useState } from "react"
 import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import { useEditClientMutation } from "types"
+import LicensesSelectMany from "components/selects/LicensesSelectMany"
 
 type propTypes = {
     buttonSize?: "large" | "middle"
     reload: () => void
+    type: "link" | "primary"
     id: number
     name: string
-    type: "link" | "primary"
+    licenseIds: number[]
 }
 
-const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, name, type }) => {
+const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, name, licenseIds, type }) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
     const [query, { loading }] = useEditClientMutation()
 
     const onFinish = (data: any) => {
-        query({ variables: { name: data.name, id } })
+        query({ variables: { name: data.name, id, licenseIds: data.licenses } })
             .then(() => {
                 message.success("Заказчик успешно изменен")
                 reload()
@@ -62,6 +64,11 @@ const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, 
                             >
                                 <Input size="large" placeholder="Название организации" />
                             </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <LicensesSelectMany initValues={licenseIds} />
                         </Col>
                     </Row>
                 </Form>

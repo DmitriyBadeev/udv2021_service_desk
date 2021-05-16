@@ -1,4 +1,5 @@
-﻿using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
+﻿using System.Linq;
+using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
 
 namespace ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client
 {
@@ -12,7 +13,8 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client
                 CreationDate = client.CreationDate,
                 IsActive = client.IsActive,
                 LockDate = client.LockDate,
-                Name = client.Name
+                Name = client.Name,
+                LicenseIds = client.Licenses.Select(l => l.Id).ToArray()
             };
 
             return clientDto;

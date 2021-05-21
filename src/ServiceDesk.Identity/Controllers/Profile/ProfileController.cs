@@ -223,5 +223,69 @@ namespace ServiceDesk.Identity.Controllers.Profile
             
             return Unauthorized();
         }
+
+        [HttpPost("/profile/ban")]
+        public async Task<ActionResult> UserBan([FromQuery] string userId)
+        {
+            var authUserId = HttpContext.User.GetSubjectId();
+            var authUser = await _userManager.FindByIdAsync(authUserId);
+            var authRole = await _customerService.GetRole(authUser);
+
+            var editedUser = await _userManager.FindByIdAsync(userId);
+            var editedUserRole = await _customerService.GetRole(editedUser);
+            
+            var authClientId = _customerService.GetClientId(authUserId);
+            var editedClientId = _customerService.GetClientId(userId);
+            
+            var canEdit = _customerService.CanEditProfile(authRole, editedUserRole, authClientId,
+                editedClientId, authUserId == userId);
+
+            if (canEdit)
+            {
+                editedUser.IsBanned = true;
+                var result = await _userManager.UpdateAsync(editedUser);
+
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
+                return BadRequest(result.Errors);
+            }
+            
+            return Unauthorized(); 
+        }
+        
+        [HttpPost("/profile/unban")]
+        public async Task<ActionResult> UserUnban([FromQuery] string userId)
+        {
+            var authUserId = HttpContext.User.GetSubjectId();
+            var authUser = await _userManager.FindByIdAsync(authUserId);
+            var authRole = await _customerService.GetRole(authUser);
+
+            var editedUser = await _userManager.FindByIdAsync(userId);
+            var editedUserRole = await _customerService.GetRole(editedUser);
+            
+            var authClientId = _customerService.GetClientId(authUserId);
+            var editedClientId = _customerService.GetClientId(userId);
+            
+            var canEdit = _customerService.CanEditProfile(authRole, editedUserRole, authClientId,
+                editedClientId, authUserId == userId);
+
+            if (canEdit)
+            {
+                editedUser.IsBanned = false;
+                var result = await _userManager.UpdateAsync(editedUser);
+
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+
+                return BadRequest(result.Errors);
+            }
+            
+            return Unauthorized(); 
+        }
     }
 }

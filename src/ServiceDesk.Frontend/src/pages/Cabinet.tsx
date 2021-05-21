@@ -8,7 +8,6 @@ import { Link, useParams } from "react-router-dom"
 import { useGetClientQuery } from "types"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import EditCustomer from "components/forms/EditCustomer"
-import useCustomerUsersData from "hooks/useCustomerUsersData"
 import { getRoleDisplayName } from "helpers/roleHelper"
 import { Text } from "GeneralStyles"
 import EditProfile from "components/forms/EditProfile"
@@ -17,8 +16,11 @@ import { observer } from "mobx-react"
 import { DEVELOPER_ROLE, OWNER_ROLE } from "helpers/roleHelper"
 import useStore from "store/useStore"
 import useDeleteUser from "hooks/useDeleteUser"
-import { DeleteOutlined } from "@ant-design/icons"
+import { DeleteOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons"
 import CustomerLicensesTable from "components/tables/CustomerLicensesTable"
+import useCustomerUsersData from "hooks/useCustomerUsersData"
+import useBanUser from "hooks/useBanUser"
+import useUnbanUser from "hooks/useUnbanUser"
 
 type paramsTypes = {
     id: string
@@ -31,7 +33,9 @@ const Cabinet: React.FC = observer(() => {
 
     const { data: users, loading: usersLoading, reload: reloadUsers } = useCustomerUsersData(id)
     const { authService } = useStore()
-    const { query, loading: deleteLoading } = useDeleteUser()
+    const { query: deleteQuery, loading: deleteLoading } = useDeleteUser()
+    const { query: banQuery, loading: banLoading } = useBanUser()
+    const { query: unbanQuery, loading: unbanLoading } = useUnbanUser()
 
     const userRole = authService.user?.profile.role
     const canEditCustomer = userRole === OWNER_ROLE || userRole === DEVELOPER_ROLE
@@ -49,6 +53,20 @@ const Cabinet: React.FC = observer(() => {
 
     const onErrorDelete = () => {
         message.error("Ошибка при удалении пользователя")
+    }
+
+    const onSuccessBan = () => {
+        reloadUsers()
+        message.success("Пользователь заблокирован")
+    }
+
+    const onSuccessUnban = () => {
+        reloadUsers()
+        message.success("Пользователь разблокирован")
+    }
+
+    const onErrorBan = () => {
+        message.error("Ошибка при блокировке/разблокировке пользователя")
     }
 
     const columns = [
@@ -92,8 +110,8 @@ const Cabinet: React.FC = observer(() => {
 
         {
             title: "Действия",
-            key: "actions",
-            colSpan: 2,
+            key: "actions1",
+            colSpan: 3,
             width: 150,
             render: (_items: any, item: any) => {
                 if (item.canEdit)
@@ -116,12 +134,56 @@ const Cabinet: React.FC = observer(() => {
             colSpan: 0,
             width: 100,
             render: (_items: any, item: any) => {
+                if (item.canEdit) {
+                    if (item.isBanned) {
+                        return (
+                            <Popconfirm
+                                title="Вы уверены, что хотите разблокировать пользователя?"
+                                onConfirm={() =>
+                                    unbanQuery(
+                                        item.userId,
+                                        () => onSuccessUnban(),
+                                        () => onErrorBan()
+                                    )
+                                }
+                            >
+                                <Button type="link" loading={banLoading || unbanLoading} icon={<UnlockOutlined />}>
+                                    Разблокировать
+                                </Button>
+                            </Popconfirm>
+                        )
+                    }
+
+                    return (
+                        <Popconfirm
+                            title="Вы уверены, что хотите заблокировать пользователя?"
+                            onConfirm={() =>
+                                banQuery(
+                                    item.userId,
+                                    () => onSuccessBan(),
+                                    () => onErrorBan()
+                                )
+                            }
+                        >
+                            <Button type="link" loading={banLoading || unbanLoading} icon={<LockOutlined />}>
+                                Заблокировать
+                            </Button>
+                        </Popconfirm>
+                    )
+                }
+            },
+        },
+        {
+            key: "actions3",
+            colSpan: 0,
+            width: 100,
+            render: (_items: any, item: any) => {
                 if (item.canEdit)
                     return (
                         <Popconfirm
                             title="Вы уверены, что хотите удалить пользователя?"
                             onConfirm={() =>
-                                query(
+                                deleteQuery(
                                     item.userId,
                                     () => onSuccessDelete(),
                                     () => onErrorDelete()

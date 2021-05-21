@@ -34,13 +34,11 @@ namespace ServiceDesk.Api.Mutations
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE, Constants.OWNER_ROLE })]
-        public ClientDto EditClient(int id, ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
+        public string EditClient(int id, ClientCreateDto clientCreateDto, [Service] ServiceDeskDbContext context)
         {
-            var client = clientHandler.Edit<ClientDtoBuilder, 
-                ClientDto, 
-                ClientCreateDto>(id, clientCreateDto, context);
+            clientHandler.EditWithLicenses(id, clientCreateDto, context);
 
-            return client;
+            return "Ok";
         }
 
         [Authorize(Roles = new[] { Constants.DEVELOPER_ROLE })]

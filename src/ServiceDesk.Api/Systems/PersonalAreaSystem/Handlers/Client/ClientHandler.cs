@@ -27,6 +27,19 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
             AttachLicenses(client, licenseIds, context);
         }
 
+        public void EditWithLicenses(int clientId, ClientCreateDto clientCreateDto, ServiceDeskDbContext context)
+        {
+            var client = context.Clients.Find(clientId);
+
+            client.Name = clientCreateDto.Name;
+            client.Licenses.Clear();
+
+            AttachLicenses(client, clientCreateDto.LicenseIds, context);
+
+            context.Clients.Update(client);
+            context.SaveChanges();
+        }
+
         private void AttachLicenses(Core.Entities.PersonalAreaSystem.Client client, 
             List<int> licenseIds, 
             ServiceDeskDbContext context)

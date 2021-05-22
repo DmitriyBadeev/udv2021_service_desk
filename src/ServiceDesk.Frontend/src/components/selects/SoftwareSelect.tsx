@@ -11,7 +11,7 @@ type propTypes = {
 }
 
 const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue, removable }) => {
-    const { data, loading, error } = useGetSoftwaresQuery()
+    const { data, loading, error } = useGetSoftwaresQuery({ fetchPolicy: "no-cache" })
 
     if (error) message.error(error.message)
 

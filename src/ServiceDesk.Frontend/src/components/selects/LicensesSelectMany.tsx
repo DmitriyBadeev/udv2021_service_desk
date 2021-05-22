@@ -9,7 +9,7 @@ type propTypes = {
 }
 
 const LicensesSelectMany: React.FC<propTypes> = ({ initValues }) => {
-    const { data, loading, error } = useGetLicensesQuery()
+    const { data, loading, error } = useGetLicensesQuery({ fetchPolicy: "no-cache" })
 
     if (error) message.error(error.message)
 

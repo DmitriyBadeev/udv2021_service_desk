@@ -19,7 +19,7 @@ const ModuleSelect: React.FC<propTypes> = ({
     softwareId,
     removable = false,
 }) => {
-    const { data, loading, error } = useGetModulesQuery()
+    const { data, loading, error } = useGetModulesQuery({ fetchPolicy: "no-cache" })
     const [value, setValue] = useState(initValue)
 
     if (error) message.error(error.message)

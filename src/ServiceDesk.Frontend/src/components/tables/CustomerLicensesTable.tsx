@@ -9,7 +9,7 @@ type propTypes = {
 }
 
 const CustomerLicensesTable: React.FC<propTypes> = ({ customerId }) => {
-    const { data, loading, error } = useGetLicensesQuery()
+    const { data, loading, error } = useGetLicensesQuery({ fetchPolicy: "no-cache" })
     const dataSource = data?.licenses
         ?.filter((l) => l?.clientId === customerId)
         .map((s, i) => {

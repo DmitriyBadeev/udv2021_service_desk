@@ -24,9 +24,7 @@ mutation createClient($name: String!, $licenseIds: [Int!]) {
 }
 
 mutation editClient($id: Int!, $name: String!, $licenseIds: [Int!]) {
-    editClient(id: $id, clientCreateDto: { name: $name, licenseIds: $licenseIds }) {
-        id
-    }
+    editClient(id: $id, clientCreateDto: { name: $name, licenseIds: $licenseIds })
 }
 
 mutation deleteClient($id: Int!) {

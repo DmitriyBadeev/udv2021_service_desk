@@ -19,6 +19,8 @@ const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, 
     const [query, { loading }] = useEditClientMutation()
 
     const onFinish = (data: any) => {
+        console.log(data)
+
         query({ variables: { name: data.name, id, licenseIds: data.licenses } })
             .then(() => {
                 message.success("Заказчик успешно изменен")

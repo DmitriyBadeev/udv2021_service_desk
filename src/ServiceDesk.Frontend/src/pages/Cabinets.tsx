@@ -24,6 +24,8 @@ const Cabinets: React.FC = () => {
     })
 
     const deleteHandler = (id: number) => {
+        console.log(`removing: ${id}`)
+
         deleteQuery({ variables: { id } })
             .then(() => {
                 message.success("Заказчик удален")

@@ -33,11 +33,11 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
 
             client.Name = clientCreateDto.Name;
             client.Licenses.Clear();
-
-            AttachLicenses(client, clientCreateDto.LicenseIds, context);
-
+            
             context.Clients.Update(client);
             context.SaveChanges();
+            
+            AttachLicenses(client, clientCreateDto.LicenseIds, context);
         }
 
         private void AttachLicenses(Core.Entities.PersonalAreaSystem.Client client, 

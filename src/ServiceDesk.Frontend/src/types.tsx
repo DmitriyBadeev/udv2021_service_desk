@@ -82,7 +82,7 @@ export type Mutations = {
   __typename?: 'Mutations';
   testMutation?: Maybe<Scalars['String']>;
   createClient?: Maybe<Scalars['String']>;
-  editClient?: Maybe<ClientDto>;
+  editClient?: Maybe<Scalars['String']>;
   deleteClient?: Maybe<Scalars['String']>;
   createRequest?: Maybe<Scalars['String']>;
   editRequest?: Maybe<RequestDto>;
@@ -478,10 +478,7 @@ export type EditClientMutationVariables = Exact<{
 
 export type EditClientMutation = (
   { __typename?: 'Mutations' }
-  & { editClient?: Maybe<(
-    { __typename?: 'ClientDto' }
-    & Pick<ClientDto, 'id'>
-  )> }
+  & Pick<Mutations, 'editClient'>
 );
 
 export type DeleteClientMutationVariables = Exact<{
@@ -956,9 +953,7 @@ export type CreateClientMutationResult = ApolloReactCommon.MutationResult<Create
 export type CreateClientMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateClientMutation, CreateClientMutationVariables>;
 export const EditClientDocument = gql`
     mutation editClient($id: Int!, $name: String!, $licenseIds: [Int!]) {
-  editClient(id: $id, clientCreateDto: {name: $name, licenseIds: $licenseIds}) {
-    id
-  }
+  editClient(id: $id, clientCreateDto: {name: $name, licenseIds: $licenseIds})
 }
     `;
 export type EditClientMutationFn = ApolloReactCommon.MutationFunction<EditClientMutation, EditClientMutationVariables>;

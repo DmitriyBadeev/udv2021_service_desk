@@ -9,7 +9,7 @@ type propTypes = {
 }
 
 const CustomerSelect: React.FC<propTypes> = ({ initValue }) => {
-    const { data, loading, error } = useGetClientsQuery()
+    const { data, loading, error } = useGetClientsQuery({ fetchPolicy: "no-cache" })
 
     if (error) message.error(error.message)
 

@@ -56,5 +56,22 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
             context.Licenses.UpdateRange(licenses);
             context.SaveChanges();
         }
+
+        public override void Delete(int entityId, ServiceDeskDbContext context, out bool isSuccess)
+        {
+            var licenses = context.Licenses
+                .Where(x => x.ClientId == entityId)
+                .ToList();
+
+            foreach (var license in licenses)
+            {
+                license.ClientId = null;
+            }
+
+            context.Licenses.UpdateRange(licenses);
+            context.SaveChanges();
+
+            base.Delete(entityId, context, out isSuccess);
+        }
     }
 }

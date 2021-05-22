@@ -9,6 +9,6 @@ namespace ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.Request
     public interface IRequestDtoBuilder<TDto> : IDtoBuilder<Core.Entities.RequestSystem.Request, TDto>
         where TDto : class, IDto
     {
-        public List<RequestBoardDto> BuildRequestBoards(ServiceDeskDbContext context);
+        public List<RequestBoardDto> BuildRequestBoards(IEnumerable<Core.Entities.RequestSystem.Request> requests);
     }
 }

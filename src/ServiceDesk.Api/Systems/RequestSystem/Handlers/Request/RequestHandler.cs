@@ -21,11 +21,20 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Handlers.Request
             this.dtoBuilderManager = dtoBuilderManager;
         }
 
-        public List<RequestBoardDto> RequestBoards(ServiceDeskDbContext context)
+        public List<RequestBoardDto> RequestBoards(Expression<Func<Core.Entities.RequestSystem.Request, bool>> sample, 
+            ServiceDeskDbContext context)
         {
             var dtoBuilder = dtoBuilderManager.GetDtoBuilder<RequestDtoBuilder, RequestDto>();
 
-            var boards = dtoBuilder.BuildRequestBoards(context);
+            var requests = context.Requests
+                .Include(x => x.SoftwareModule)
+                .ThenInclude(x => x.Software)
+                .Include(x => x.Client)
+                .AsEnumerable()
+                .Where(x => sample.Compile()(x))
+                .ToList();
+
+            var boards = dtoBuilder.BuildRequestBoards(requests);
 
             return boards;
         }
@@ -36,9 +45,10 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Handlers.Request
             var dtoBuilder = dtoBuilderManager.GetDtoBuilder<TDtoBuilder, TDto>();
 
             var requests = context.Requests
-                .Where(sample)
                 .Include(x => x.SoftwareModule)
                 .ThenInclude(x => x.Software)
+                .AsEnumerable()
+                .Where(x => sample.Compile()(x))
                 .Select(dtoBuilder.Build)
                 .ToList();
 

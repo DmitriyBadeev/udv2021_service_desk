@@ -38,19 +38,13 @@ namespace ServiceDesk.Api.Systems.RequestSystem.DtoBuilders.Request
             return requestDto;
         }
 
-        public List<RequestBoardDto> BuildRequestBoards(ServiceDeskDbContext context)
+        public List<RequestBoardDto> BuildRequestBoards(IEnumerable<Core.Entities.RequestSystem.Request> requests)
         {
             var enumHelper = new EnumHelper();
 
             var rs = Enum
                 .GetValues(typeof(RequestStatuses))
                 .Cast<RequestStatuses>();
-
-            var requests = context.Requests
-                .Include(x => x.SoftwareModule)
-                .ThenInclude(x => x.Software)
-                .Include(x => x.Client)
-                .ToList();
 
             var boards = new List<RequestBoardDto>();
 

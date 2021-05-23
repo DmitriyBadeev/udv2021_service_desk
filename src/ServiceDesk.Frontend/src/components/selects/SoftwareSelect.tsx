@@ -1,5 +1,5 @@
-import React from "react"
-import { message, Select } from "antd"
+import React, { useState } from "react"
+import { Form, message, Select } from "antd"
 import { useGetSoftwaresQuery } from "types"
 
 const { Option } = Select
@@ -7,11 +7,22 @@ const { Option } = Select
 type propTypes = {
     onChange?: (value: number) => void
     initValue?: number
+    label?: string | null
     removable?: boolean
+    size?: "large" | "middle" | "small"
+    placeholder?: string
 }
 
-const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue, removable }) => {
+const SoftwareSelect: React.FC<propTypes> = ({
+    onChange,
+    initValue,
+    removable,
+    size = "large",
+    label = "Название ПО",
+    placeholder = "Выберите ПО",
+}) => {
     const { data, loading, error } = useGetSoftwaresQuery({ fetchPolicy: "no-cache" })
+    const [value, setValue] = useState(initValue)
 
     if (error) message.error(error.message)
 
@@ -26,17 +37,31 @@ const SoftwareSelect: React.FC<propTypes> = ({ onChange, initValue, removable })
     }
 
     return (
-        <Select
-            size="large"
-            placeholder="Выберите ПО"
-            loading={loading}
-            onChange={(value) => onChange && value && onChange(Number.parseInt(value.toString()))}
-            defaultValue={initValue}
-            allowClear={removable}
+        <Form.Item
+            name="softwareId"
+            initialValue={initValue}
+            label={label}
+            onReset={() => setValue(undefined)}
+            rules={[{ required: !removable, message: "Выберите ПО" }]}
         >
-            {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
-            {getOptions()}
-        </Select>
+            <Select
+                size={size}
+                placeholder={placeholder}
+                loading={loading}
+                style={{ minWidth: "200px" }}
+                onChange={(v) => {
+                    if (onChange && v) {
+                        setValue(Number.parseInt(v.toString()))
+                        onChange(Number.parseInt(v.toString()))
+                    }
+                }}
+                allowClear={removable}
+                value={value}
+            >
+                {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
+                {getOptions()}
+            </Select>
+        </Form.Item>
     )
 }
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react"
+import "./index.css"
 import { ThemeProvider } from "styled-components"
 import { ConfigProvider, Spin } from "antd"
 import ru_RU from "antd/es/locale/ru_RU"
@@ -14,7 +15,6 @@ import { BASE_GRAPHQL_API_URL } from "store/Config"
 import { createUploadLink } from "apollo-upload-client"
 import { setContext } from "apollo-link-context"
 
-import "./index.css"
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 32 }} spin />)
 
 const links = from([

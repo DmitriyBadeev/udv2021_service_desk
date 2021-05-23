@@ -8,6 +8,7 @@ namespace ServiceDesk.Api.Systems.RequestSystem.Dtos.Request
     public class RequestFilterDto
     {
         public int? SoftwareId { get; set; }
+        public int? ClientId { get; set; }
         public string AuthorId { get; set; }
         public string DeveloperRepresentativeId { get; set; }
     }

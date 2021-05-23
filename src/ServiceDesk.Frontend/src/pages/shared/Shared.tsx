@@ -3,14 +3,11 @@ import styled from "styled-components"
 import Header from "./Header"
 
 const MainLayout = styled.div`
-    background: ${(props) => props.theme.mainBackground};
-    min-height: 100vh;
+    width: 100%;
 `
 
 const ContentPage = styled.div`
-    padding: 100px 40px 40px 40px;
-    background: ${(props) => props.theme.grey6};
-    min-height: 100vh;
+    padding: 100px 40px 10px 40px;
 `
 
 const Shared: React.FC = (props) => {

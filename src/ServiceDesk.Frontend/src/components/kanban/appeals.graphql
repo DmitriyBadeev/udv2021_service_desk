@@ -43,8 +43,15 @@ query getCustomerRequests($customerId: Int!) {
     }
 }
 
-query requestBoards {
-    requestBoards {
+query requestBoards($softwareId: Int, $clientId: Int, $authorId: String, $developerRepresentativeId: String) {
+    requestBoards(
+        requestFilterDto: {
+            softwareId: $softwareId
+            clientId: $clientId
+            authorId: $authorId
+            developerRepresentativeId: $developerRepresentativeId
+        }
+    ) {
         name
         items {
             id
@@ -70,6 +77,7 @@ query getRequest($id: Uuid!) {
         softwareModuleId
         requestStatus
         clientId
+        clientName
     }
 }
 

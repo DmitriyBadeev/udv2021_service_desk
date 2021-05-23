@@ -102,18 +102,11 @@ const EditAppeal: React.FC<propTypes> = ({
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item
-                                name="softwareId"
-                                label="Название ПО"
-                                getValueFromEvent={(args) => args}
-                                initialValue={softwareId}
-                            >
-                                <SoftwareSelect
-                                    onChange={(sId) => handleSoftwareChange(sId)}
-                                    initValue={softwareId}
-                                    removable
-                                />
-                            </Form.Item>
+                            <SoftwareSelect
+                                onChange={(sId) => handleSoftwareChange(sId)}
+                                initValue={softwareId}
+                                removable
+                            />
                         </Col>
                     </Row>
                     <Row gutter={16}>

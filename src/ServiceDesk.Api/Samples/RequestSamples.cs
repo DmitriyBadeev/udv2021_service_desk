@@ -14,7 +14,7 @@ namespace ServiceDesk.Api.Samples
         public static Sample<Request> BySoftware(int? softwareId)
         {
             return softwareId != null 
-                ? new Sample<Request>(x => x.SoftwareModule.SoftwareId == softwareId)
+                ? new Sample<Request>(x => x?.SoftwareModule?.SoftwareId == softwareId)
                 : new Sample<Request>(x => true);
         }
 
@@ -22,6 +22,13 @@ namespace ServiceDesk.Api.Samples
         {
             return !string.IsNullOrEmpty(authorId)
                 ? new Sample<Request>(x => x.AuthorId == authorId)
+                : new Sample<Request>(x => true);
+        }
+        
+        public static Sample<Request> ByClient(int? clientId)
+        {
+            return clientId != null
+                ? new Sample<Request>(x => x.ClientId == clientId)
                 : new Sample<Request>(x => true);
         }
 

@@ -77,9 +77,7 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
                     </Row>
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item name="softwareId" label="Название ПО" getValueFromEvent={(args) => args}>
-                                <SoftwareSelect onChange={(sId) => handleSoftwareChange(sId)} removable />
-                            </Form.Item>
+                            <SoftwareSelect onChange={(sId) => handleSoftwareChange(sId)} removable />
                         </Col>
                     </Row>
                     <Row gutter={16}>

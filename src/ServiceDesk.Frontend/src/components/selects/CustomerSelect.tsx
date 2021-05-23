@@ -6,9 +6,17 @@ const { Option } = Select
 
 type propTypes = {
     initValue?: number
+    size?: "large" | "middle" | "small"
+    label?: string | null
+    placeholder?: string
 }
 
-const CustomerSelect: React.FC<propTypes> = ({ initValue }) => {
+const CustomerSelect: React.FC<propTypes> = ({
+    initValue,
+    size = "large",
+    label = "Заказчик",
+    placeholder = "Выберите заказчика",
+}) => {
     const { data, loading, error } = useGetClientsQuery({ fetchPolicy: "no-cache" })
 
     if (error) message.error(error.message)
@@ -24,8 +32,8 @@ const CustomerSelect: React.FC<propTypes> = ({ initValue }) => {
     }
 
     return (
-        <Form.Item name="clientId" label="Заказчик" initialValue={initValue}>
-            <Select size="large" placeholder="Выберите заказчика" loading={loading} allowClear>
+        <Form.Item name="clientId" label={label} initialValue={initValue}>
+            <Select size={size} placeholder={placeholder} loading={loading} style={{ minWidth: "200px" }} allowClear>
                 {initValue && loading && <Option value={initValue}>Загрузка...</Option>}
                 {getOptions()}
             </Select>

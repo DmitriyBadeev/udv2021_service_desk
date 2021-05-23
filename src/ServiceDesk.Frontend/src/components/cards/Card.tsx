@@ -7,6 +7,7 @@ type propTypes = {
 }
 
 const CardWrapper = styled.div<propTypes>`
+    z-index: -1;
     background: ${(props) => props.theme.white};
     box-shadow: 0 4px ${(props) => (props.isSecondary ? "3px" : "10px")} rgba(0, 0, 0, 0.05);
     padding: 20px 30px;

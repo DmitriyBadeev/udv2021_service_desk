@@ -1,4 +1,4 @@
-import { Col, Descriptions, Divider, message, Row, Typography } from "antd"
+import { Col, Descriptions, Divider, message, Row, Tag, Typography } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
@@ -58,9 +58,14 @@ const Appeal: React.FC = () => {
                     <Card isSecondary marginBottom={20}>
                         <Descriptions column={1} labelStyle={{ fontWeight: 600 }} size="small">
                             <Descriptions.Item label="Идентификатор">{appealData?.id}</Descriptions.Item>
-                            <Descriptions.Item label="Статус">{appealData?.requestStatus}</Descriptions.Item>
+                            <Descriptions.Item label="Статус">
+                                <Tag color="geekblue">{appealData?.requestStatus}</Tag>{" "}
+                            </Descriptions.Item>
                             <Descriptions.Item label="Дата создания">
                                 {getNumericStringDate(appealData?.creationDate)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Заказчик">
+                                <Link to={`/cabinets/${appealData?.clientId}`}>{appealData?.clientName}</Link>
                             </Descriptions.Item>
                             <Descriptions.Item label="Автор">
                                 <Link to={`/profile/${appealData?.authorId}`}>

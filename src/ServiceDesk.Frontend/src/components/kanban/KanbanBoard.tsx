@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
-import { Row, Col, Typography, message } from "antd"
+import { Typography, message, Form, Space, Tag } from "antd"
 import styled from "styled-components"
 import { SmallText } from "GeneralStyles"
 import { Link } from "react-router-dom"
@@ -14,20 +14,42 @@ import {
     useToReopenStatusMutation,
 } from "types"
 import Loading from "components/loading/Loading"
+import KanbanFilters from "components/kanban/KanbanFilters"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 const { Paragraph } = Typography
+
+const CardIcon = styled(ExclamationCircleOutlined)`
+    color: ${(props) => props.theme.primary};
+`
+
+const PageContainer = styled.div`
+    margin: 30px 0 -40px -30px;
+`
+
+const BoardContainer = styled.div`
+    display: flex;
+    width: 1750px;
+`
+
+const ColumnWrapper = styled.div`
+    width: 280px;
+    margin: 20px 5px 0;
+    flex-shrink: 0;
+`
 
 const HeaderColumn = styled.div`
     background: ${(props) => props.theme.white};
     padding: 8px 16px;
     border-radius: 5px 5px 0 0;
+    border: solid 1px rgba(0, 0, 0, 0.1);
 `
 
 const Column = styled.div<{ isDraggingOver: boolean }>`
     background: ${(props) => (props.isDraggingOver ? props.theme.inputShadowColor : props.theme.grey5)};
     border-radius: 2px;
     padding: 12px 7px;
-    height: 600px;
+    height: calc(100vh - 210px);
     overflow-y: auto;
     overflow-x: hidden;
 `
@@ -38,6 +60,7 @@ const Card = styled.div<{ isDragging: boolean }>`
     padding: 8px;
     user-select: none;
     margin: 0 0 6px 0;
+    border: solid 1px rgba(0, 0, 0, 0.2);
 
     &:hover {
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -56,8 +79,14 @@ const Number = styled.div`
     height: 18px;
 `
 
+const TagsContainer = styled.div`
+    margin: 5px 0;
+`
+
 const KanbanBoard: React.FC = () => {
-    const { data, loading, error } = useRequestBoardsQuery({ fetchPolicy: "no-cache" })
+    const { data, loading, error, refetch } = useRequestBoardsQuery({
+        fetchPolicy: "no-cache",
+    })
     const [columns, setColumns] = useState(data?.requestBoards)
 
     const [toNew] = useToNewStatusMutation()
@@ -70,6 +99,8 @@ const KanbanBoard: React.FC = () => {
     useEffect(() => {
         setColumns(data?.requestBoards)
     }, [data, setColumns])
+
+    const [form] = Form.useForm()
 
     if (loading) return <Loading height="70vh" size="big" />
     if (error) message.error(error.message)
@@ -122,76 +153,100 @@ const KanbanBoard: React.FC = () => {
         if (columnId === "5") toClosing({ variables: { id: appeal.id } })
     }
 
+    const filterHandler = () => {
+        const values = form.getFieldsValue()
+
+        refetch({
+            authorId: null,
+            clientId: values.clientId ? values.clientId : null,
+            developerRepresentativeId: null,
+            softwareId: values.softwareId ? values.softwareId : null,
+        })
+    }
+
     return (
-        <Row gutter={[12, 12]}>
-            <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)}>
-                {Object.entries(columns || {}).map(([columnId, column]) => {
-                    return (
-                        <Col span={4} key={columnId}>
-                            <HeaderColumn>
-                                <SmallText $bold>
-                                    <Number>{column?.items?.length || 0}</Number> {column?.name}
-                                </SmallText>
-                            </HeaderColumn>
+        <PageContainer>
+            <KanbanFilters filterHandler={filterHandler} form={form} />
+            <BoardContainer>
+                <DragDropContext onDragEnd={(result) => onDragEnd(result, columns, setColumns)}>
+                    {Object.entries(columns || {}).map(([columnId, column]) => {
+                        return (
+                            <ColumnWrapper key={columnId}>
+                                <HeaderColumn>
+                                    <SmallText $bold>
+                                        <Number>{column?.items?.length || 0}</Number> {column?.name}
+                                    </SmallText>
+                                </HeaderColumn>
 
-                            <Droppable droppableId={columnId} key={columnId}>
-                                {(provided, snapshot) => {
-                                    return (
-                                        <Column
-                                            {...provided.droppableProps}
-                                            ref={provided.innerRef}
-                                            isDraggingOver={snapshot.isDraggingOver}
-                                        >
-                                            {column?.items?.map((item, index) => {
-                                                return (
-                                                    <Draggable key={item?.id} draggableId={item?.id} index={index}>
-                                                        {(provided, snapshot) => {
-                                                            return (
-                                                                <Card
-                                                                    isDragging={snapshot.isDragging}
-                                                                    ref={provided.innerRef}
-                                                                    {...provided.draggableProps}
-                                                                    {...provided.dragHandleProps}
-                                                                    style={{
-                                                                        ...provided.draggableProps.style,
-                                                                    }}
-                                                                >
-                                                                    <SmallText $color="grey3">
-                                                                        {item?.software && `#${item?.software}`}
-                                                                    </SmallText>
-
-                                                                    <Paragraph
-                                                                        ellipsis={{
-                                                                            rows: 3,
-                                                                            expandable: false,
+                                <Droppable droppableId={columnId} key={columnId}>
+                                    {(provided, snapshot) => {
+                                        return (
+                                            <Column
+                                                {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                                isDraggingOver={snapshot.isDraggingOver}
+                                            >
+                                                {column?.items?.map((item, index) => {
+                                                    return (
+                                                        <Draggable key={item?.id} draggableId={item?.id} index={index}>
+                                                            {(provided, snapshot) => {
+                                                                return (
+                                                                    <Card
+                                                                        isDragging={snapshot.isDragging}
+                                                                        ref={provided.innerRef}
+                                                                        {...provided.draggableProps}
+                                                                        {...provided.dragHandleProps}
+                                                                        style={{
+                                                                            ...provided.draggableProps.style,
                                                                         }}
-                                                                        strong
-                                                                        title={item?.theme ?? ""}
-                                                                        style={{ marginBottom: 5 }}
                                                                     >
-                                                                        <Link to={`/appeals/${item?.id}`}>
-                                                                            {item?.theme}
-                                                                        </Link>
-                                                                    </Paragraph>
-                                                                    <SmallText $color="grey3">
-                                                                        {item?.clientName}
-                                                                    </SmallText>
-                                                                </Card>
-                                                            )
-                                                        }}
-                                                    </Draggable>
-                                                )
-                                            })}
-                                            {provided.placeholder}
-                                        </Column>
-                                    )
-                                }}
-                            </Droppable>
-                        </Col>
-                    )
-                })}
-            </DragDropContext>
-        </Row>
+                                                                        <Space align="start">
+                                                                            <CardIcon />
+                                                                            <div>
+                                                                                <Paragraph
+                                                                                    ellipsis={{
+                                                                                        rows: 3,
+                                                                                        expandable: false,
+                                                                                    }}
+                                                                                    strong
+                                                                                    title={item?.theme ?? ""}
+                                                                                    style={{ marginBottom: 2 }}
+                                                                                >
+                                                                                    <Link to={`/appeals/${item?.id}`}>
+                                                                                        {item?.theme}
+                                                                                    </Link>
+                                                                                </Paragraph>
+
+                                                                                <SmallText $color="grey3">
+                                                                                    {item?.clientName}
+                                                                                </SmallText>
+
+                                                                                <TagsContainer>
+                                                                                    {item?.software && (
+                                                                                        <Tag color="purple">
+                                                                                            {item?.software}
+                                                                                        </Tag>
+                                                                                    )}
+                                                                                </TagsContainer>
+                                                                            </div>
+                                                                        </Space>
+                                                                    </Card>
+                                                                )
+                                                            }}
+                                                        </Draggable>
+                                                    )
+                                                })}
+                                                {provided.placeholder}
+                                            </Column>
+                                        )
+                                    }}
+                                </Droppable>
+                            </ColumnWrapper>
+                        )
+                    })}
+                </DragDropContext>
+            </BoardContainer>
+        </PageContainer>
     )
 }
 

@@ -301,6 +301,11 @@ export type QueriesPageRequestsArgs = {
 };
 
 
+export type QueriesRequestBoardsArgs = {
+  requestFilterDto?: Maybe<RequestFilterDtoInput>;
+};
+
+
 export type QueriesClientRequestsArgs = {
   clientId: Scalars['Int'];
 };
@@ -407,6 +412,13 @@ export type RequestDto = {
   requestStatus?: Maybe<Scalars['String']>;
   clientId: Scalars['Int'];
   clientName?: Maybe<Scalars['String']>;
+};
+
+export type RequestFilterDtoInput = {
+  softwareId?: Maybe<Scalars['Int']>;
+  clientId?: Maybe<Scalars['Int']>;
+  authorId?: Maybe<Scalars['String']>;
+  developerRepresentativeId?: Maybe<Scalars['String']>;
 };
 
 export type SoftwareCreateDtoInput = {
@@ -544,7 +556,12 @@ export type GetCustomerRequestsQuery = (
   )>>> }
 );
 
-export type RequestBoardsQueryVariables = Exact<{ [key: string]: never; }>;
+export type RequestBoardsQueryVariables = Exact<{
+  softwareId?: Maybe<Scalars['Int']>;
+  clientId?: Maybe<Scalars['Int']>;
+  authorId?: Maybe<Scalars['String']>;
+  developerRepresentativeId?: Maybe<Scalars['String']>;
+}>;
 
 
 export type RequestBoardsQuery = (
@@ -568,7 +585,7 @@ export type GetRequestQuery = (
   { __typename?: 'Queries' }
   & { request?: Maybe<(
     { __typename?: 'RequestDto' }
-    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'creationDate' | 'processingDate' | 'developerRepresentativeId' | 'authorId' | 'software' | 'softwareId' | 'softwareModule' | 'softwareModuleId' | 'requestStatus' | 'clientId'>
+    & Pick<RequestDto, 'id' | 'theme' | 'text' | 'creationDate' | 'processingDate' | 'developerRepresentativeId' | 'authorId' | 'software' | 'softwareId' | 'softwareModule' | 'softwareModuleId' | 'requestStatus' | 'clientId' | 'clientName'>
   )> }
 );
 
@@ -1159,8 +1176,10 @@ export type GetCustomerRequestsQueryHookResult = ReturnType<typeof useGetCustome
 export type GetCustomerRequestsLazyQueryHookResult = ReturnType<typeof useGetCustomerRequestsLazyQuery>;
 export type GetCustomerRequestsQueryResult = ApolloReactCommon.QueryResult<GetCustomerRequestsQuery, GetCustomerRequestsQueryVariables>;
 export const RequestBoardsDocument = gql`
-    query requestBoards {
-  requestBoards {
+    query requestBoards($softwareId: Int, $clientId: Int, $authorId: String, $developerRepresentativeId: String) {
+  requestBoards(
+    requestFilterDto: {softwareId: $softwareId, clientId: $clientId, authorId: $authorId, developerRepresentativeId: $developerRepresentativeId}
+  ) {
     name
     items {
       id
@@ -1184,6 +1203,10 @@ export const RequestBoardsDocument = gql`
  * @example
  * const { data, loading, error } = useRequestBoardsQuery({
  *   variables: {
+ *      softwareId: // value for 'softwareId'
+ *      clientId: // value for 'clientId'
+ *      authorId: // value for 'authorId'
+ *      developerRepresentativeId: // value for 'developerRepresentativeId'
  *   },
  * });
  */
@@ -1212,6 +1235,7 @@ export const GetRequestDocument = gql`
     softwareModuleId
     requestStatus
     clientId
+    clientName
   }
 }
     `;

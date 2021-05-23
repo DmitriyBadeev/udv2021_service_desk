@@ -110,14 +110,7 @@ const AddLicense: React.FC<propTypes> = ({ buttonSize = "middle", type = "primar
 
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item
-                                name="softwareId"
-                                label="Название ПО"
-                                rules={[{ required: true, message: "Выберите ПО" }]}
-                                getValueFromEvent={(args) => args}
-                            >
-                                <SoftwareSelect />
-                            </Form.Item>
+                            <SoftwareSelect />
                         </Col>
                     </Row>
                     <Row gutter={16}>

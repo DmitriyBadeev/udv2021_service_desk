@@ -11,13 +11,14 @@ import { Flex } from "GeneralStyles"
 const HeaderContainer = styled.div`
     display: flex;
     height: 60px;
-    position: absolute;
+    position: fixed;
     background: ${(props) => props.theme.black};
     color: ${(props) => props.theme.white};
     width: 100%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 0 60px;
     justify-content: space-between;
+    z-index: 1;
 `
 
 const MenuContainer = styled.div`

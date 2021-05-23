@@ -36,6 +36,33 @@ const Routes: React.FC = () => {
                         <Cabinets />
                     </DeveloperRoute>
                 </PrivateRoute>
+                <PrivateRoute exact path="/users">
+                    <DeveloperRoute>
+                        <Users />
+                    </DeveloperRoute>
+                </PrivateRoute>
+
+                <PrivateRoute exact path="/directories">
+                    <DeveloperRoute>
+                        <Directories />
+                    </DeveloperRoute>
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/softwares">
+                    <DeveloperRoute>
+                        <Software />
+                    </DeveloperRoute>
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/modules">
+                    <DeveloperRoute>
+                        <Module />
+                    </DeveloperRoute>
+                </PrivateRoute>
+                <PrivateRoute exact path="/directories/licenses">
+                    <DeveloperRoute>
+                        <License />
+                    </DeveloperRoute>
+                </PrivateRoute>
+
                 <PrivateRoute exact path="/cabinets/:id">
                     <Cabinet />
                 </PrivateRoute>
@@ -47,21 +74,6 @@ const Routes: React.FC = () => {
                 </PrivateRoute>
                 <PrivateRoute exact path="/appeals/:id">
                     <Appeal />
-                </PrivateRoute>
-                <PrivateRoute exact path="/users">
-                    <Users />
-                </PrivateRoute>
-                <PrivateRoute exact path="/directories">
-                    <Directories />
-                </PrivateRoute>
-                <PrivateRoute exact path="/directories/softwares">
-                    <Software />
-                </PrivateRoute>
-                <PrivateRoute exact path="/directories/modules">
-                    <Module />
-                </PrivateRoute>
-                <PrivateRoute exact path="/directories/licenses">
-                    <License />
                 </PrivateRoute>
 
                 <Route exact path="/enter">

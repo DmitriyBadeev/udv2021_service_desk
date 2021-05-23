@@ -134,15 +134,7 @@ const EditLicense: React.FC<propTypes> = ({
 
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Form.Item
-                                name="softwareId"
-                                label="Название ПО"
-                                rules={[{ required: true, message: "Выберите ПО" }]}
-                                getValueFromEvent={(args) => args}
-                                initialValue={defaultSoftwareId}
-                            >
-                                <SoftwareSelect initValue={defaultSoftwareId} onChange={(sId) => setSoftwareId(sId)} />
-                            </Form.Item>
+                            <SoftwareSelect initValue={defaultSoftwareId} onChange={(sId) => setSoftwareId(sId)} />
                         </Col>
                     </Row>
                     <Row gutter={16}>

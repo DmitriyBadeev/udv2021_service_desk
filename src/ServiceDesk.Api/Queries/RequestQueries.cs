@@ -56,6 +56,7 @@ namespace ServiceDesk.Api.Queries
                 RequestSamples.BySoftware(requestFilterDto.SoftwareId)
                     .And(RequestSamples.ByAuthor(requestFilterDto.AuthorId))
                     .And(RequestSamples.ByDeveloperRepresentative(requestFilterDto.DeveloperRepresentativeId))
+                    .And(RequestSamples.ByClient(requestFilterDto.ClientId))
                     .GetExpression();
 
             var boards = requestHandler.RequestBoards(filterRequests, context);

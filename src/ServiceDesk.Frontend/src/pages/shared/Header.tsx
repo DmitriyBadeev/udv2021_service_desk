@@ -7,6 +7,7 @@ import useStore from "store/useStore"
 import { useSecretLazyQuery } from "types"
 import Logo from "components/logo/Logo"
 import { Flex } from "GeneralStyles"
+import { UserOutlined } from "@ant-design/icons"
 
 const HeaderContainer = styled.div`
     display: flex;
@@ -26,6 +27,10 @@ const MenuContainer = styled.div`
     height: 60px;
     display: flex;
     align-items: center;
+`
+
+const UserIcon = styled(UserOutlined)`
+    margin-right: 8px;
 `
 
 const Header: React.FC = observer(() => {
@@ -83,7 +88,7 @@ const Header: React.FC = observer(() => {
                 <MenuContainer>
                     <MenuItem>
                         <MenuLink to={`/profile/${userId}`} $active={false}>
-                            {fullName}
+                            <UserIcon /> {fullName}
                         </MenuLink>
                     </MenuItem>
                     <MenuItem>
@@ -144,19 +149,23 @@ const MenuLink = styled(Link)<linkTypes>`
     display: flex;
     align-items: center;
     padding: 0 15px;
+
+    &:hover {
+        text-decoration: none;
+    }
 `
 
 const DeveloperMenu = (location: string) => {
     return (
         <>
             <MenuItem>
-                <MenuLink to="/" $active={location === "/"}>
+                <MenuLink to="/" $active={location === "/" || location.startsWith("/appeals")}>
                     Обращения
                 </MenuLink>
             </MenuItem>
             <MenuItem>
                 <MenuLink to="/cabinets" $active={location.startsWith("/cabinets")}>
-                    Личные кабинеты
+                    Личные кабинеты заказчиков
                 </MenuLink>
             </MenuItem>
             <MenuItem>

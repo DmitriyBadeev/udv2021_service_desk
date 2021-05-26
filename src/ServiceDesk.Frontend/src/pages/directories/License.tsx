@@ -49,6 +49,9 @@ const License: React.FC = () => {
             title: "Заказчик",
             dataIndex: "client",
             key: "client",
+            render: (_items: any, item: any) => {
+                return <Text>{item.client ? item.client : "—"}</Text>
+            },
         },
         {
             title: "Название ПО",

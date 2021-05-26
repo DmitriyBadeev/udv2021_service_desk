@@ -1,4 +1,4 @@
-import { Button, Descriptions, Table, message, Popconfirm } from "antd"
+import { Button, Descriptions, Table, message, Popconfirm, Tooltip } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import FadePage from "components/fade/FadePage"
@@ -112,13 +112,13 @@ const Cabinet: React.FC = observer(() => {
             title: "Действия",
             key: "actions1",
             colSpan: 3,
-            width: 150,
+            width: 40,
             render: (_items: any, item: any) => {
                 if (item.canEdit)
                     return (
                         <EditProfile
                             buttonSize="middle"
-                            buttonType="link"
+                            buttonType="circle"
                             name={item.firstName}
                             lastName={item.lastName}
                             patronymic={item.patronymic}
@@ -132,7 +132,7 @@ const Cabinet: React.FC = observer(() => {
         {
             key: "actions2",
             colSpan: 0,
-            width: 100,
+            width: 40,
             render: (_items: any, item: any) => {
                 if (item.canEdit) {
                     if (item.isBanned) {
@@ -147,9 +147,14 @@ const Cabinet: React.FC = observer(() => {
                                     )
                                 }
                             >
-                                <Button type="link" loading={banLoading || unbanLoading} icon={<UnlockOutlined />}>
-                                    Разблокировать
-                                </Button>
+                                <Tooltip title="Разблокировать">
+                                    <Button
+                                        shape="circle"
+                                        type="link"
+                                        icon={<UnlockOutlined />}
+                                        loading={banLoading || unbanLoading}
+                                    />
+                                </Tooltip>
                             </Popconfirm>
                         )
                     }
@@ -165,9 +170,14 @@ const Cabinet: React.FC = observer(() => {
                                 )
                             }
                         >
-                            <Button type="link" loading={banLoading || unbanLoading} icon={<LockOutlined />}>
-                                Заблокировать
-                            </Button>
+                            <Tooltip title="Заблокировать">
+                                <Button
+                                    type="link"
+                                    shape="circle"
+                                    icon={<LockOutlined />}
+                                    loading={banLoading || unbanLoading}
+                                />
+                            </Tooltip>
                         </Popconfirm>
                     )
                 }
@@ -176,7 +186,7 @@ const Cabinet: React.FC = observer(() => {
         {
             key: "actions3",
             colSpan: 0,
-            width: 100,
+            width: 40,
             render: (_items: any, item: any) => {
                 if (item.canEdit)
                     return (
@@ -190,9 +200,15 @@ const Cabinet: React.FC = observer(() => {
                                 )
                             }
                         >
-                            <Button type="link" danger loading={deleteLoading} icon={<DeleteOutlined />}>
-                                Удалить
-                            </Button>
+                            <Tooltip title="Удалить">
+                                <Button
+                                    shape="circle"
+                                    danger
+                                    type="link"
+                                    icon={<DeleteOutlined />}
+                                    loading={deleteLoading}
+                                />
+                            </Tooltip>
                         </Popconfirm>
                     )
             },

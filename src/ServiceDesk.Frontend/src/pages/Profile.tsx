@@ -37,6 +37,8 @@ const Profile: React.FC = () => {
     const profileUserId = data?.userId
     const canEdit = data?.canEdit || false
 
+    const FIO = `${lastName} ${firstName} ${patronymic}`
+
     return (
         <FadePage>
             <Card>
@@ -59,9 +61,8 @@ const Profile: React.FC = () => {
 
                 <Descriptions column={2} labelStyle={{ fontWeight: 600 }}>
                     <Descriptions.Item label="Идентификатор">{profileUserId}</Descriptions.Item>
-                    <Descriptions.Item label="Фамилия">{lastName}</Descriptions.Item>
-                    <Descriptions.Item label="Имя">{firstName}</Descriptions.Item>
-                    <Descriptions.Item label="Отчество">{patronymic}</Descriptions.Item>
+                    <Descriptions.Item label="ФИО">{FIO}</Descriptions.Item>
+
                     <Descriptions.Item label="Эл. почта">{email}</Descriptions.Item>
                     <Descriptions.Item label="Дата регистрации">{getNumericStringDate(registerDate)}</Descriptions.Item>
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
+import { Drawer, Form, Button, Col, Row, Input, Space, message, Tooltip } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import useEditProfileData, { EditUserData } from "hooks/useEditProfileData"
 
@@ -10,7 +10,7 @@ type propTypes = {
     patronymic: string
     email: string
     userId: string
-    buttonType?: "primary" | "link"
+    buttonType?: "primary" | "link" | "circle"
     reload: () => void
 }
 
@@ -59,9 +59,22 @@ const EditProfile: React.FC<propTypes> = ({
 
     return (
         <>
-            <Button type={buttonType} onClick={() => setVisible(true)} size={buttonSize}>
-                <EditOutlined /> Редактировать профиль
-            </Button>
+            {buttonType === "circle" ? (
+                <Tooltip title="Редактировать профиль">
+                    <Button
+                        type="link"
+                        shape="circle"
+                        icon={<EditOutlined />}
+                        onClick={() => setVisible(true)}
+                        size={buttonSize}
+                    />
+                </Tooltip>
+            ) : (
+                <Button type={buttonType} onClick={() => setVisible(true)} size={buttonSize}>
+                    <EditOutlined /> Редактировать профиль
+                </Button>
+            )}
+
             <Drawer
                 title="Редактирование профиля"
                 width={720}

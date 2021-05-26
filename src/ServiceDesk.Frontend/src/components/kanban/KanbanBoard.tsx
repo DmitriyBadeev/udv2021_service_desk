@@ -24,12 +24,15 @@ const CardIcon = styled(ExclamationCircleOutlined)`
 `
 
 const PageContainer = styled.div`
-    margin: 30px 0 -40px -30px;
+    margin: 50px 0 -40px -40px;
 `
 
 const BoardContainer = styled.div`
     display: flex;
     width: 1750px;
+    background: ${(props) => props.theme.white};
+    padding: 0 5px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 `
 
 const ColumnWrapper = styled.div`
@@ -46,12 +49,13 @@ const HeaderColumn = styled.div`
 `
 
 const Column = styled.div<{ isDraggingOver: boolean }>`
-    background: ${(props) => (props.isDraggingOver ? props.theme.inputShadowColor : props.theme.grey5)};
-    border-radius: 2px;
+    background: ${(props) => (props.isDraggingOver ? props.theme.inputShadowColor : props.theme.primaryGray)};
     padding: 12px 7px;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 230px);
     overflow-y: auto;
     overflow-x: hidden;
+    border-left: solid 1px rgba(0, 0, 0, 0.05);
+    border-right: solid 1px rgba(0, 0, 0, 0.05);
 `
 
 const Card = styled.div<{ isDragging: boolean }>`

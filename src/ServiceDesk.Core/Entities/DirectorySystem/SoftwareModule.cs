@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ServiceDesk.Core.Entities.RequestSystem;
 using ServiceDesk.Core.Interfaces.Common;
 
 namespace ServiceDesk.Core.Entities.DirectorySystem
@@ -12,5 +13,7 @@ namespace ServiceDesk.Core.Entities.DirectorySystem
 
         public int SoftwareId { get; set; }
         public virtual Software Software { get; set; }
+
+        public virtual ICollection<Request> Requests { get; set; }
     }
 }

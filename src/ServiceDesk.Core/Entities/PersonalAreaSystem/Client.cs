@@ -16,8 +16,8 @@ namespace ServiceDesk.Core.Entities.PersonalAreaSystem
         public bool IsActive { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime? LockDate { get; set; }
+
         public virtual ICollection<License> Licenses { get; set; }
-        
         public virtual ICollection<Request> Requests { get; set; }
     }
 }

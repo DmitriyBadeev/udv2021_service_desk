@@ -22,6 +22,7 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         public virtual ICollection<RequestAttachment> RequestAttachments { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public string AuthorId { get; set; }
+
         public int? SoftwareModuleId { get; set; }
         public virtual SoftwareModule SoftwareModule { get; set; }
         

@@ -25,6 +25,26 @@ namespace ServiceDesk.Identity.Services
             return roles.FirstOrDefault();
         }
 
+        public async Task<bool> ChangeRoleToOwner(ApplicationUser user)
+        {
+            var resultRemove = await _userManager.RemoveFromRoleAsync(user, SeedConfig.CUSTOMER_ROLE);
+
+            if (!resultRemove.Succeeded) return false;
+            
+            var resultAdd = await _userManager.AddToRoleAsync(user, SeedConfig.OWNER_ROLE);
+            return resultAdd.Succeeded;
+        }
+
+        public async Task<bool> ChangeRoleToCustomer(ApplicationUser user)
+        {
+            var resultRemove = await _userManager.RemoveFromRoleAsync(user, SeedConfig.OWNER_ROLE);
+
+            if (!resultRemove.Succeeded) return false;
+            
+            var resultAdd = await _userManager.AddToRoleAsync(user, SeedConfig.CUSTOMER_ROLE);
+            return resultAdd.Succeeded;
+        }
+
         public int? GetClientId(string userId)
         {
             return _applicationDbContext.ClientUsers

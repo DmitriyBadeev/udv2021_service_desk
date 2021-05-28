@@ -90,6 +90,7 @@ const Users: React.FC = () => {
                             buttonSize="middle"
                             buttonType="link"
                             name={item.firstName}
+                            role={item.role}
                             lastName={item.lastName}
                             patronymic={item.patronymic}
                             email={item.email}

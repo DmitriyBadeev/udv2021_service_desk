@@ -49,6 +49,7 @@ const Profile: React.FC = () => {
                             <EditProfile
                                 buttonSize="large"
                                 name={firstName}
+                                role={role}
                                 lastName={lastName}
                                 patronymic={patronymic}
                                 email={email}

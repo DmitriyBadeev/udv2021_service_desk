@@ -6,6 +6,10 @@ namespace ServiceDesk.Identity.Services
 {
     public interface ICustomerService
     {
+        Task<bool> ChangeRoleToOwner(ApplicationUser user);
+
+        Task<bool> ChangeRoleToCustomer(ApplicationUser user);
+
         Task<string> GetRole(ApplicationUser authUser);
 
         int? GetClientId(string userId);

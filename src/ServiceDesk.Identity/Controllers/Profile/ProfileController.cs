@@ -147,7 +147,21 @@ namespace ServiceDesk.Identity.Controllers.Profile
 
                 if (result.Succeeded)
                 {
-                    return Ok();
+                    var isSuccess = false;
+                    if (editUserData.Role == SeedConfig.CUSTOMER_ROLE)
+                    {
+                        isSuccess = await _customerService.ChangeRoleToCustomer(editedUser);
+                    }
+
+                    if (editUserData.Role == SeedConfig.OWNER_ROLE)
+                    {
+                        isSuccess = await _customerService.ChangeRoleToOwner(editedUser);
+                    }
+                    
+                    if (isSuccess) 
+                        return Ok();
+
+                    return BadRequest("Неверно указана роль");
                 }
                 
                 return BadRequest(result.Errors);

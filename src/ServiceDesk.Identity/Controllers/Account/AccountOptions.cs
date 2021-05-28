@@ -21,5 +21,6 @@ namespace ServiceDesk.Identity.Controllers.Account
         public static bool IncludeWindowsGroups = false;
 
         public static string InvalidCredentialsErrorMessage = "Неверный логин или пароль";
+        public static string UserBanErrorMessage = "Аккаунт заблокирован";
     }
 }

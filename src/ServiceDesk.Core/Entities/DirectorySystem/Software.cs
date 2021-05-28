@@ -11,5 +11,6 @@ namespace ServiceDesk.Core.Entities.DirectorySystem
         public string Title { get; set; }
 
         public virtual ICollection<SoftwareModule> SoftwareModules { get; set; }
+        public virtual ICollection<License> Licenses { get; set; }
     }
 }

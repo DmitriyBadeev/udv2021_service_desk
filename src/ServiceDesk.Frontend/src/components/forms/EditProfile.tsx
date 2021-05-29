@@ -1,7 +1,10 @@
 import React, { useState } from "react"
-import { Drawer, Form, Button, Col, Row, Input, Space, message, Tooltip } from "antd"
+import { Drawer, Form, Button, Col, Row, Input, Space, message, Tooltip, Select } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import useEditProfileData, { EditUserData } from "hooks/useEditProfileData"
+import { CUSTOMER_ROLE, OWNER_ROLE } from "helpers/roleHelper"
+
+const { Option } = Select
 
 type propTypes = {
     buttonSize?: "large" | "middle"
@@ -10,6 +13,7 @@ type propTypes = {
     patronymic: string
     email: string
     userId: string
+    role: string
     buttonType?: "primary" | "link" | "circle"
     reload: () => void
 }
@@ -22,6 +26,7 @@ const EditProfile: React.FC<propTypes> = ({
     patronymic,
     email,
     userId,
+    role,
     reload,
 }) => {
     const [visible, setVisible] = useState(false)
@@ -34,6 +39,7 @@ const EditProfile: React.FC<propTypes> = ({
             FirstName: data.firstName,
             LastName: data.lastName,
             Patronymic: data.patronymic,
+            Role: data.role,
             UserId: userId,
         }
 
@@ -142,6 +148,23 @@ const EditProfile: React.FC<propTypes> = ({
                             </Form.Item>
                         </Col>
                     </Row>
+                    {(role === CUSTOMER_ROLE || role === OWNER_ROLE) && (
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="role"
+                                    label="Роль"
+                                    rules={[{ required: true, message: "Выберите роль" }]}
+                                    initialValue={role}
+                                >
+                                    <Select size="large">
+                                        <Option value={CUSTOMER_ROLE}>Представитель заказчика</Option>
+                                        <Option value={OWNER_ROLE}>Владелец личного кабинета</Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    )}
                 </Form>
             </Drawer>
         </>

@@ -123,6 +123,7 @@ const Cabinet: React.FC = observer(() => {
                             lastName={item.lastName}
                             patronymic={item.patronymic}
                             email={item.email}
+                            role={item.role}
                             userId={item.userId}
                             reload={reloadUsers}
                         />

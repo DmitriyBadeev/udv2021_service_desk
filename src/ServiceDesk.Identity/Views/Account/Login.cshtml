@@ -7,29 +7,29 @@
 <div class="login-form">
     <h1>Вход</h1>
     
-    <partial name="_ValidationSummary" />
     @if (Model.EnableLocalLogin)
     {
         <div class="local-login">
             <form asp-route="Login">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div class="form-group">
-                        <label asp-for="Username">Эл. почта</label>
-                        <input class="form-control" placeholder="Эл. почта" asp-for="Username" autofocus>
+                    <label asp-for="Username">Эл. почта</label>
+                    <input class="form-control" placeholder="Эл. почта" asp-for="Username" autofocus>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Пароль</label>
+                    <input type="password" class="form-control" placeholder="Пароль" asp-for="Password" autocomplete="off">
+                </div>
+                @if (Model.AllowRememberLogin)
+                {
+                    <div class="form-group login-remember">
+                        <label asp-for="RememberLogin">
+                            <input asp-for="RememberLogin">
+                            <span>Запомнить</span>
+                        </label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Password">Пароль</label>
-                        <input type="password" class="form-control" placeholder="Пароль" asp-for="Password" autocomplete="off">
-                    </div>
-                    @if (Model.AllowRememberLogin)
-                    {
-                        <div class="form-group login-remember">
-                            <label asp-for="RememberLogin">
-                                <input asp-for="RememberLogin">
-                                <span>Запомнить</span>
-                            </label>
-                        </div>
-                    }
+                }
+                <partial name="_ValidationSummary" />
                 
                 <div class="form-group">
                         <button class="form-button primary" name="button" value="login">Войти</button>

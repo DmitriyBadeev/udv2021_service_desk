@@ -57,7 +57,8 @@ const theme = {
     hoverColor: "#19e6b2",
     inputShadowFocus: "rgba(3, 214, 161, 0.3) 0px 0px 0px 2.8px",
     inputShadowColor: "rgba(58, 211, 173, 0.3)",
-    primaryGray: "#F2F7FF",
+    primaryGray: "#f6f8fa",
+    linkColor: "#01B286",
 }
 
 const App: React.FC = observer(() => {

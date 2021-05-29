@@ -7,6 +7,7 @@ export type EditUserData = {
     FirstName: string
     LastName: string
     Patronymic: string
+    Role: string
     Email: string
 }
 

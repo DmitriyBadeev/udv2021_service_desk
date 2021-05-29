@@ -8,6 +8,11 @@ body {
     padding: 0;
 }
 
+ul {
+    padding: 0;
+    list-style: none;
+}
+
 input {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -276,4 +281,12 @@ a {
 }
 .grants .grant li:last-child:after {
     content: "";
+}
+
+.alert {
+    list-style: none;
+}
+
+.alert-danger {
+    color: #FF4D4F;
 }

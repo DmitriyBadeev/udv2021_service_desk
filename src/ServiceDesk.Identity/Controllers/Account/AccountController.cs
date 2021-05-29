@@ -105,7 +105,7 @@ namespace ServiceDesk.Identity.Controllers.Account
             {
                 var user = await _userManager.FindByEmailAsync(model.Username);
 
-                if (user != null)
+                if (user != null && !user.IsBanned)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberLogin, lockoutOnFailure: false);
                     if (result.Succeeded)
@@ -144,7 +144,14 @@ namespace ServiceDesk.Identity.Controllers.Account
 
                 
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.ClientId));
-                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                if (user != null && user.IsBanned)
+                {
+                    ModelState.AddModelError(string.Empty, AccountOptions.UserBanErrorMessage);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                }
             }
 
             // something went wrong, show form with error

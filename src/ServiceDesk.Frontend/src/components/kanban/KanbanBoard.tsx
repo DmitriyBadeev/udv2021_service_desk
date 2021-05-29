@@ -20,7 +20,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons"
 const { Paragraph } = Typography
 
 const CardIcon = styled(ExclamationCircleOutlined)`
-    color: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.linkColor};
 `
 
 const PageContainer = styled.div`

@@ -10,5 +10,6 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
     {
         public void CreateWithLicenses(ClientData data, List<int> licenseIds, ServiceDeskDbContext context);
         public void EditWithLicenses(int clientId, ClientCreateDto clientCreateDto, ServiceDeskDbContext context);
+        public void Block(int clientId, ServiceDeskDbContext context);
     }
 }

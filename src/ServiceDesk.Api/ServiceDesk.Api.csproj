@@ -7,11 +7,15 @@
     <ItemGroup>
       <PackageReference Include="GraphQL.Server.Ui.Altair" Version="5.0.2" />
       <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="5.0.2" />
+      <PackageReference Include="Hangfire.AspNetCore" Version="1.7.23" />
+      <PackageReference Include="Hangfire.Core" Version="1.7.23" />
+      <PackageReference Include="Hangfire.SqlServer" Version="1.7.23" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.1.0" />
       <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
       <PackageReference Include="HotChocolate.Data.EntityFramework" Version="11.1.0" />
       <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

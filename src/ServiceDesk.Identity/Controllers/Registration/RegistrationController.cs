@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +16,15 @@ namespace ServiceDesk.Identity.Controllers.Registration
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _applicationDbContext;
+        private readonly ICustomerService _customerService;
 
-        public RegistrationController(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext)
+        public RegistrationController(UserManager<ApplicationUser> userManager, 
+            ApplicationDbContext applicationDbContext, 
+            ICustomerService customerService)
         {
             _userManager = userManager;
             _applicationDbContext = applicationDbContext;
+            _customerService = customerService;
         }
         
         [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
@@ -30,6 +36,11 @@ namespace ServiceDesk.Identity.Controllers.Registration
                 return BadRequest("Неверная роль");
             }
             
+            if (!_customerService.IsCreatePossible(data.ClientId, data.LicenseId))
+            {
+                return BadRequest("Невозможно создать представителя заказчика.\nДостигнут лимит по количеству пользователей лицензии");
+            }
+
             var userCustomerEntity = new ApplicationUser
             {
                 Email = data.Email,
@@ -55,7 +66,8 @@ namespace ServiceDesk.Identity.Controllers.Registration
                     {
                         User = createdCustomerUser, 
                         ClientId = data.ClientId, 
-                        UserId = createdCustomerUser.Id
+                        UserId = createdCustomerUser.Id,
+                        LicenseId = data.LicenseId
                     };
                 
                     await _applicationDbContext.ClientUsers.AddAsync(clientUser);

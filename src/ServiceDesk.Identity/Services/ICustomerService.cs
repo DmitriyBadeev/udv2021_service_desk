@@ -20,5 +20,7 @@ namespace ServiceDesk.Identity.Services
             int? editedClientId, bool isMyProfile);
 
         Task RemoveUserFromCustomer(int? customerId, string userId);
+
+        bool IsCreatePossible(int clientId, int licenseId);
     }
 }

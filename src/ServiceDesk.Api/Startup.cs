@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Interceptors;
@@ -105,7 +106,10 @@ namespace ServiceDesk.Api
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
             
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions()
+            {
+                IsReadOnlyFunc = context => true
+            });
             app.UseHangfireServer();
 
             app.UseStaticFiles();
@@ -116,6 +120,7 @@ namespace ServiceDesk.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGraphQL();
+                endpoints.MapHangfireDashboard();
             });
             app.UseGraphQLAltair();
 

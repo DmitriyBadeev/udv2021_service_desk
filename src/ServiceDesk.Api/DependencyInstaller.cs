@@ -42,7 +42,7 @@ namespace ServiceDesk.Api
                 QueuePollInterval = TimeSpan.Zero,
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                 UseRecommendedIsolationLevel = true,
-                DisableGlobalLocks = true
+                DisableGlobalLocks = true,
             };
 
             services.AddHangfire(x => x

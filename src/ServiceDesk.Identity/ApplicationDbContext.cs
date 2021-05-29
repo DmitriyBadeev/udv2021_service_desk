@@ -8,8 +8,10 @@ namespace ServiceDesk.Identity
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+            
         }
-        
+
         public DbSet<ClientUser> ClientUsers { get; set; }
+        public DbSet<ClientLicense> ClientLicenses { get; set; }
     }
 }

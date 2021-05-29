@@ -54,5 +54,13 @@ namespace ServiceDesk.Api.Mutations
 
             return "Error";
         }
+
+        [Authorize(Roles = new[] {Constants.DEVELOPER_ROLE})]
+        public string BlockClient(int id, [Service] ServiceDeskDbContext context)
+        {
+            clientHandler.Block(id, context);
+
+            return "Ok";
+        }
     }
 }

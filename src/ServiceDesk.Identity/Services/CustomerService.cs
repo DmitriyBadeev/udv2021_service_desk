@@ -96,5 +96,17 @@ namespace ServiceDesk.Identity.Services
             _applicationDbContext.ClientUsers.RemoveRange(clientUsers);
             await _applicationDbContext.SaveChangesAsync();
         }
+
+        public bool IsCreatePossible(int clientId, int licenseId)
+        {
+            var clientLicense = _applicationDbContext.ClientLicenses
+                .FirstOrDefault(x => x.ClientId == clientId && x.LicenseId == licenseId);
+
+            var clientUsers = _applicationDbContext.ClientUsers
+                .Where(x => x.ClientId == clientId && x.LicenseId == licenseId)
+                .ToList();
+
+            return (clientLicense?.CountOfUsers ?? 0) > clientUsers.Count;
+        }
     }
 }

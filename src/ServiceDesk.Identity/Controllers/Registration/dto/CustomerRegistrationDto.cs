@@ -9,5 +9,6 @@
         public string Password { get; set; }
         public string Role { get; set; }
         public int ClientId { get; set; }
+        public int LicenseId { get; set; }
     }
 }

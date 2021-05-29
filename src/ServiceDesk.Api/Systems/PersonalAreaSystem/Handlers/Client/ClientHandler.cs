@@ -73,5 +73,18 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
 
             base.Delete(entityId, context, out isSuccess);
         }
+
+        public void Block(int clientId, ServiceDeskDbContext context)
+        {
+            var client = context.Clients.Find(clientId);
+
+            if (client != null)
+            {
+                client.IsActive = false;
+
+                context.Clients.Update(client);
+                context.SaveChanges();
+            }
+        }
     }
 }

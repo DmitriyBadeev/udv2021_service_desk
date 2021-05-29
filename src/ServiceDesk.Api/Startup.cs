@@ -1,6 +1,9 @@
+using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.SqlServer;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Interceptors;
 using HotChocolate.Execution;
@@ -12,9 +15,12 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using ServiceDesk.Api.Queries;
 using ServiceDesk.Api.Mutations;
 using ServiceDesk.Api.Services;
+using ServiceDesk.Api.Services.BackgroundTasks;
+using ServiceDesk.Infrastructure;
 
 namespace ServiceDesk.Api
 {
@@ -66,7 +72,8 @@ namespace ServiceDesk.Api
                     options.Authority = "https://identity-desk.badeev.info";
                     options.ApiName = "ServiceDesk.Api";
                 });
-            
+
+
             services.AddScoped<ISeedDataService, SeedService>();
             new DependencyInstaller(Configuration).Install(services);
         }
@@ -98,6 +105,9 @@ namespace ServiceDesk.Api
                 .AllowAnyMethod()
                 .AllowAnyOrigin());
             
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+
             app.UseStaticFiles();
 
             app.UseAuthentication();
@@ -108,6 +118,7 @@ namespace ServiceDesk.Api
                 endpoints.MapGraphQL();
             });
             app.UseGraphQLAltair();
+
         }
     }
 }

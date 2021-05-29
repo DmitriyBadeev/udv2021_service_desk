@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using ServiceDesk.Core.Entities.DirectorySystem;
 using ServiceDesk.Core.Entities.PersonalAreaSystem;
 using ServiceDesk.Core.Enums;
@@ -11,7 +13,6 @@ namespace ServiceDesk.Core.Entities.RequestSystem
 {
     public class Request : IEntity
     {
-        [Key]
         public Guid Id { get; set; }
         public string Theme { get; set; }
         public string Text { get; set; }
@@ -19,8 +20,6 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         public DateTime? ProcessingDate { get; set; }
         public string DeveloperRepresentativeId { get; set; }
         public RequestStatuses RequestStatus { get; set; }
-        public virtual ICollection<RequestAttachment> RequestAttachments { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
         public string AuthorId { get; set; }
 
         public int? SoftwareModuleId { get; set; }
@@ -28,6 +27,12 @@ namespace ServiceDesk.Core.Entities.RequestSystem
         
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }
+
+        [IgnoreDataMember]
+        public virtual ICollection<RequestAttachment> RequestAttachments { get; set; }
+
+        [IgnoreDataMember]
+        public virtual ICollection<Comment> Comments { get; set; }
 
         public void ChangeStatus(RequestStatuses toStatus)
         {

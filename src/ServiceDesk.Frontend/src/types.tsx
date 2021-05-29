@@ -39,6 +39,7 @@ export type ClientDto = {
   isActive: Scalars['Boolean'];
   creationDate: Scalars['DateTime'];
   lockDate?: Maybe<Scalars['DateTime']>;
+  maxUsers: Scalars['Int'];
   licenseIds?: Maybe<Array<Scalars['Int']>>;
 };
 
@@ -84,6 +85,8 @@ export type Mutations = {
   createClient?: Maybe<Scalars['String']>;
   editClient?: Maybe<Scalars['String']>;
   deleteClient?: Maybe<Scalars['String']>;
+  blockClient?: Maybe<Scalars['String']>;
+  unblockClient?: Maybe<Scalars['String']>;
   createRequest?: Maybe<Scalars['String']>;
   editRequest?: Maybe<RequestDto>;
   deleteRequest?: Maybe<Scalars['String']>;
@@ -122,6 +125,16 @@ export type MutationsEditClientArgs = {
 
 
 export type MutationsDeleteClientArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationsBlockClientArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationsUnblockClientArgs = {
   id: Scalars['Int'];
 };
 
@@ -455,7 +468,7 @@ export type GetClientQuery = (
   { __typename?: 'Queries' }
   & { client?: Maybe<(
     { __typename?: 'ClientDto' }
-    & Pick<ClientDto, 'id' | 'name' | 'isActive' | 'creationDate' | 'lockDate' | 'licenseIds'>
+    & Pick<ClientDto, 'id' | 'name' | 'isActive' | 'creationDate' | 'lockDate' | 'licenseIds' | 'maxUsers'>
   )> }
 );
 
@@ -501,6 +514,39 @@ export type DeleteClientMutationVariables = Exact<{
 export type DeleteClientMutation = (
   { __typename?: 'Mutations' }
   & Pick<Mutations, 'deleteClient'>
+);
+
+export type BlockClientMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type BlockClientMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'blockClient'>
+);
+
+export type UnblockClientMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type UnblockClientMutation = (
+  { __typename?: 'Mutations' }
+  & Pick<Mutations, 'unblockClient'>
+);
+
+export type IsBlockClientQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type IsBlockClientQuery = (
+  { __typename?: 'Queries' }
+  & { client?: Maybe<(
+    { __typename?: 'ClientDto' }
+    & Pick<ClientDto, 'id' | 'isActive' | 'lockDate'>
+  )> }
 );
 
 export type CreateRequestMutationVariables = Exact<{
@@ -872,6 +918,7 @@ export const GetClientDocument = gql`
     creationDate
     lockDate
     licenseIds
+    maxUsers
   }
 }
     `;
@@ -1030,6 +1077,101 @@ export function useDeleteClientMutation(baseOptions?: ApolloReactHooks.MutationH
 export type DeleteClientMutationHookResult = ReturnType<typeof useDeleteClientMutation>;
 export type DeleteClientMutationResult = ApolloReactCommon.MutationResult<DeleteClientMutation>;
 export type DeleteClientMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteClientMutation, DeleteClientMutationVariables>;
+export const BlockClientDocument = gql`
+    mutation blockClient($id: Int!) {
+  blockClient(id: $id)
+}
+    `;
+export type BlockClientMutationFn = ApolloReactCommon.MutationFunction<BlockClientMutation, BlockClientMutationVariables>;
+
+/**
+ * __useBlockClientMutation__
+ *
+ * To run a mutation, you first call `useBlockClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBlockClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [blockClientMutation, { data, loading, error }] = useBlockClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBlockClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<BlockClientMutation, BlockClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<BlockClientMutation, BlockClientMutationVariables>(BlockClientDocument, baseOptions);
+      }
+export type BlockClientMutationHookResult = ReturnType<typeof useBlockClientMutation>;
+export type BlockClientMutationResult = ApolloReactCommon.MutationResult<BlockClientMutation>;
+export type BlockClientMutationOptions = ApolloReactCommon.BaseMutationOptions<BlockClientMutation, BlockClientMutationVariables>;
+export const UnblockClientDocument = gql`
+    mutation unblockClient($id: Int!) {
+  unblockClient(id: $id)
+}
+    `;
+export type UnblockClientMutationFn = ApolloReactCommon.MutationFunction<UnblockClientMutation, UnblockClientMutationVariables>;
+
+/**
+ * __useUnblockClientMutation__
+ *
+ * To run a mutation, you first call `useUnblockClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnblockClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unblockClientMutation, { data, loading, error }] = useUnblockClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnblockClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UnblockClientMutation, UnblockClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<UnblockClientMutation, UnblockClientMutationVariables>(UnblockClientDocument, baseOptions);
+      }
+export type UnblockClientMutationHookResult = ReturnType<typeof useUnblockClientMutation>;
+export type UnblockClientMutationResult = ApolloReactCommon.MutationResult<UnblockClientMutation>;
+export type UnblockClientMutationOptions = ApolloReactCommon.BaseMutationOptions<UnblockClientMutation, UnblockClientMutationVariables>;
+export const IsBlockClientDocument = gql`
+    query isBlockClient($id: Int!) {
+  client(clientId: $id) {
+    id
+    isActive
+    lockDate
+  }
+}
+    `;
+
+/**
+ * __useIsBlockClientQuery__
+ *
+ * To run a query within a React component, call `useIsBlockClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsBlockClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsBlockClientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useIsBlockClientQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IsBlockClientQuery, IsBlockClientQueryVariables>) {
+        return ApolloReactHooks.useQuery<IsBlockClientQuery, IsBlockClientQueryVariables>(IsBlockClientDocument, baseOptions);
+      }
+export function useIsBlockClientLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IsBlockClientQuery, IsBlockClientQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IsBlockClientQuery, IsBlockClientQueryVariables>(IsBlockClientDocument, baseOptions);
+        }
+export type IsBlockClientQueryHookResult = ReturnType<typeof useIsBlockClientQuery>;
+export type IsBlockClientLazyQueryHookResult = ReturnType<typeof useIsBlockClientLazyQuery>;
+export type IsBlockClientQueryResult = ApolloReactCommon.QueryResult<IsBlockClientQuery, IsBlockClientQueryVariables>;
 export const CreateRequestDocument = gql`
     mutation createRequest($title: String!, $text: String!, $clientId: Int!, $softwareModuleId: Int) {
   createRequest(

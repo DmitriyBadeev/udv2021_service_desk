@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
-import { useCreateRequestMutation } from "types"
+import { useCreateRequestMutation, useIsBlockClientQuery } from "types"
 import TextArea from "antd/lib/input/TextArea"
 import SoftwareSelect from "components/selects/SoftwareSelect"
 import ModuleSelect from "components/selects/ModuleSelect"
@@ -16,6 +16,7 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
     const [query, { loading }] = useCreateRequestMutation()
+    const { data, loading: isBlockLoading } = useIsBlockClientQuery({ variables: { id: customerId } })
 
     const [selectedSoftwareId, setSelectedSoftwareId] = useState(0)
 
@@ -41,9 +42,19 @@ const AddAppeal: React.FC<propTypes> = ({ buttonSize = "middle", customerId, rel
         form.setFields([{ name: "moduleId", touched: false, value: undefined }])
     }
 
+    const isBlockClient = !data?.client?.isActive
+    console.log(data?.client)
+
     return (
         <>
-            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize}>
+            <Button
+                type="primary"
+                onClick={() => setVisible(true)}
+                size={buttonSize}
+                loading={isBlockLoading}
+                disabled={isBlockClient}
+                title={isBlockClient ? "Личный кабинет заблокирован" : ""}
+            >
                 <PlusOutlined /> Создать
             </Button>
             <Drawer

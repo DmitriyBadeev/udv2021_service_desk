@@ -16,15 +16,12 @@ namespace ServiceDesk.Identity.Controllers.Registration
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _applicationDbContext;
-        private readonly ICustomerService _customerService;
 
         public RegistrationController(UserManager<ApplicationUser> userManager, 
-            ApplicationDbContext applicationDbContext, 
-            ICustomerService customerService)
+            ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _applicationDbContext = applicationDbContext;
-            _customerService = customerService;
         }
         
         [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
@@ -34,11 +31,6 @@ namespace ServiceDesk.Identity.Controllers.Registration
             if (data.Role != SeedConfig.OWNER_ROLE && data.Role != SeedConfig.CUSTOMER_ROLE)
             {
                 return BadRequest("Неверная роль");
-            }
-            
-            if (!_customerService.IsCreatePossible(data.ClientId, data.LicenseId))
-            {
-                return BadRequest("Невозможно создать представителя заказчика.\nДостигнут лимит по количеству пользователей лицензии");
             }
 
             var userCustomerEntity = new ApplicationUser

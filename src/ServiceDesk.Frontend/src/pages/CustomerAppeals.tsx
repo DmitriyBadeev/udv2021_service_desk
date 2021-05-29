@@ -30,8 +30,6 @@ const CustomerAppeals: React.FC = observer(() => {
         }
     })
 
-    dataSource?.map((el) => el.software)
-
     const deleteHandler = (id: string) => {
         deleteQuery({ variables: { id } })
             .then(() => {

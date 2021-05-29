@@ -29,6 +29,18 @@ namespace ServiceDesk.Api.Services.BackgroundTasks
                 {
                     client.IsActive = false;
                 }
+
+                var lockDate = DateTime.MinValue;
+
+                foreach (var license in client.Licenses)
+                {
+                    if (license.ExpiresDate > lockDate)
+                    {
+                        lockDate = license.ExpiresDate;
+                    }
+                }
+
+                client.LockDate = lockDate;
             }
 
             context.Clients.UpdateRange(clients);

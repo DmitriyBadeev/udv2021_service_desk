@@ -14,7 +14,8 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.DtoBuilders.Client
                 IsActive = client.IsActive,
                 LockDate = client.LockDate,
                 Name = client.Name,
-                LicenseIds = client.Licenses.Select(l => l.Id).ToArray()
+                LicenseIds = client.Licenses.Select(l => l.Id).ToArray(),
+                MaxUsers = client.Licenses.Aggregate(0, (sum, license) => sum + license.CountOfUsers)
             };
 
             return clientDto;

@@ -243,17 +243,33 @@ const Cabinet: React.FC = observer(() => {
                     <Descriptions.Item label="Дата создания">
                         {getNumericStringDate(customerData?.creationDate)}
                     </Descriptions.Item>
-                    {/* <Descriptions.Item label="Дата блокировки">
+                    <Descriptions.Item label="Дата блокировки">
                         {getNumericStringDate(customerData?.lockDate)}
-                    </Descriptions.Item> */}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Лимит пользователей">{customerData?.maxUsers}</Descriptions.Item>
                 </Descriptions>
             </Card>
 
             <Card isSecondary>
                 <CardHeader
-                    title="Представители заказчика"
+                    title={
+                        <span>
+                            Представители заказчика{" "}
+                            <Text $color="grey4" $large $bold>
+                                ({users.length}
+                                {"\u2009"}/{"\u2009"}
+                                {customerData?.maxUsers})
+                            </Text>
+                        </span>
+                    }
                     Form={() =>
-                        canCreateCustomer ? <AddUserCustomer customerId={id} reload={() => reloadUsers()} /> : null
+                        canCreateCustomer ? (
+                            <AddUserCustomer
+                                customerId={id}
+                                reload={() => reloadUsers()}
+                                disabled={users.length >= (customerData?.maxUsers || 0)}
+                            />
+                        ) : null
                     }
                     size="small"
                 />

@@ -1,19 +1,21 @@
-import { Button, Table, message, Popconfirm } from "antd"
+import { Button, Table, message, Popconfirm, Tooltip } from "antd"
 import Card from "components/cards/Card"
 import CardHeader from "components/cards/CardHeader"
 import AddCustomer from "components/forms/AddCustomer"
 import FadePage from "components/fade/FadePage"
 import React from "react"
 import { Link } from "react-router-dom"
-import { useGetClientsQuery, useDeleteClientMutation } from "types"
+import { useGetClientsQuery, useDeleteClientMutation, useBlockClientMutation, useUnblockClientMutation } from "types"
 import { Text } from "GeneralStyles"
 import { getNumericStringDate } from "helpers/dateHelpers"
 import EditCustomer from "components/forms/EditCustomer"
-import { DeleteOutlined } from "@ant-design/icons"
+import { DeleteOutlined, LockOutlined, UnlockOutlined } from "@ant-design/icons"
 
 const Cabinets: React.FC = () => {
     const { loading, data, error, refetch } = useGetClientsQuery()
     const [deleteQuery, { loading: deleteLoading }] = useDeleteClientMutation()
+    const [blockQuery, { loading: blockLoading }] = useBlockClientMutation()
+    const [unblockQuery, { loading: unblockLoading }] = useUnblockClientMutation()
     if (error) message.error(error.message)
 
     const dataSource = data?.clients?.map((s, i) => {
@@ -29,6 +31,34 @@ const Cabinets: React.FC = () => {
         deleteQuery({ variables: { id } })
             .then(() => {
                 message.success("Заказчик удален")
+                refetch()
+            })
+            .catch((error) => {
+                console.log(error)
+                message.error("Произошла ошибка")
+            })
+    }
+
+    const blockHandler = (id: number) => {
+        console.log(`blocking: ${id}`)
+
+        blockQuery({ variables: { id } })
+            .then(() => {
+                message.success("Заказчик заблокирован")
+                refetch()
+            })
+            .catch((error) => {
+                console.log(error)
+                message.error("Произошла ошибка")
+            })
+    }
+
+    const unblockHandler = (id: number) => {
+        console.log(`unblocking: ${id}`)
+
+        unblockQuery({ variables: { id } })
+            .then(() => {
+                message.success("Заказчик разблокирован")
                 refetch()
             })
             .catch((error) => {
@@ -69,8 +99,8 @@ const Cabinets: React.FC = () => {
         },
         {
             title: "Действия",
-            key: "actions",
-            colSpan: 2,
+            key: "actions1",
+            colSpan: 3,
             width: 150,
             render: (_items: any, item: any) => {
                 return (
@@ -88,16 +118,51 @@ const Cabinets: React.FC = () => {
         {
             key: "actions2",
             colSpan: 0,
-            width: 100,
+            width: 40,
+            render: (_items: any, item: any) => {
+                if (item.isActive)
+                    return (
+                        <Popconfirm
+                            title="Вы уверены, что хотите заблокировать заказчика?"
+                            onConfirm={() => blockHandler(item.id)}
+                        >
+                            <Tooltip title="Заблокировать">
+                                <Button shape="circle" type="link" icon={<LockOutlined />} loading={blockLoading} />
+                            </Tooltip>
+                        </Popconfirm>
+                    )
+
+                return (
+                    <Popconfirm
+                        title="Вы уверены, что хотите разблокировать заказчика?"
+                        onConfirm={() => unblockHandler(item.id)}
+                    >
+                        <Tooltip title="Разблокировать">
+                            <Button shape="circle" type="link" icon={<UnlockOutlined />} loading={unblockLoading} />
+                        </Tooltip>
+                    </Popconfirm>
+                )
+            },
+        },
+        {
+            key: "actions3",
+            colSpan: 0,
+            width: 40,
             render: (_items: any, item: any) => {
                 return (
                     <Popconfirm
                         title="Вы уверены, что хотите удалить заказчика?"
                         onConfirm={() => deleteHandler(item.id)}
                     >
-                        <Button type="link" danger icon={<DeleteOutlined />} loading={deleteLoading}>
-                            Удалить
-                        </Button>
+                        <Tooltip title="Удалить">
+                            <Button
+                                shape="circle"
+                                danger
+                                type="link"
+                                icon={<DeleteOutlined />}
+                                loading={deleteLoading}
+                            />
+                        </Tooltip>
                     </Popconfirm>
                 )
             },

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ServiceDesk.Api.Systems.Common.Implemetations.Handler;
 using ServiceDesk.Api.Systems.PersonalAreaSystem.Dtos.Client;
@@ -48,12 +49,21 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
                 .Where(x => licenseIds.Contains(x.Id))
                 .ToList();
 
+            var lockDate = DateTime.MinValue;
             foreach (var license in licenses)
             {
                 license.ClientId = client.Id;
-            }
 
+                if (license.ExpiresDate > lockDate)
+                {
+                    lockDate = license.ExpiresDate;
+                }
+            }
+            
             context.Licenses.UpdateRange(licenses);
+            context.SaveChanges();
+
+            client.LockDate = lockDate;
             context.SaveChanges();
         }
 
@@ -81,6 +91,19 @@ namespace ServiceDesk.Api.Systems.PersonalAreaSystem.Handlers.Client
             if (client != null)
             {
                 client.IsActive = false;
+
+                context.Clients.Update(client);
+                context.SaveChanges();
+            }
+        }
+
+        public void Unblock(int clientId, ServiceDeskDbContext context)
+        {
+            var client = context.Clients.Find(clientId);
+
+            if (client != null)
+            {
+                client.IsActive = true;
 
                 context.Clients.Update(client);
                 context.SaveChanges();

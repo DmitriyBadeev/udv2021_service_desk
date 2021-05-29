@@ -4,7 +4,7 @@ import React from "react"
 import styled from "styled-components"
 
 type propTypes = {
-    title: string
+    title: string | React.ReactNode
     Form: React.FC<{ buttonSize?: "large" | "middle" }>
     size?: "default" | "small"
 }

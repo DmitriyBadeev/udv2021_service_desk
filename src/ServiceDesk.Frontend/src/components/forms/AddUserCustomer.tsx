@@ -10,9 +10,10 @@ type propTypes = {
     buttonSize?: "large" | "middle"
     reload: () => void
     customerId: number
+    disabled?: boolean
 }
 
-const AddUserCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, customerId }) => {
+const AddUserCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, customerId, disabled }) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
     const { loading, query } = useAddCustomerUser()
@@ -45,7 +46,7 @@ const AddUserCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, c
 
     return (
         <>
-            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize}>
+            <Button type="primary" onClick={() => setVisible(true)} size={buttonSize} disabled={disabled}>
                 <PlusOutlined /> Добавить
             </Button>
             <Drawer

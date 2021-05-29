@@ -6,6 +6,7 @@ query getClient($id: Int!) {
         creationDate
         lockDate
         licenseIds
+        maxUsers
     }
 }
 
@@ -29,4 +30,20 @@ mutation editClient($id: Int!, $name: String!, $licenseIds: [Int!]) {
 
 mutation deleteClient($id: Int!) {
     deleteClient(id: $id)
+}
+
+mutation blockClient($id: Int!) {
+    blockClient(id: $id)
+}
+
+mutation unblockClient($id: Int!) {
+    unblockClient(id: $id)
+}
+
+query isBlockClient($id: Int!) {
+    client(clientId: $id) {
+        id
+        isActive
+        lockDate
+    }
 }

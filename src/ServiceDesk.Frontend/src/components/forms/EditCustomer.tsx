@@ -3,6 +3,9 @@ import { Drawer, Form, Button, Col, Row, Input, Space, message } from "antd"
 import { EditOutlined } from "@ant-design/icons"
 import { useEditClientMutation } from "types"
 import LicensesSelectMany from "components/selects/LicensesSelectMany"
+import { observer } from "mobx-react"
+import useStore from "store/useStore"
+import { DEVELOPER_ROLE } from "helpers/roleHelper"
 
 type propTypes = {
     buttonSize?: "large" | "middle"
@@ -13,10 +16,12 @@ type propTypes = {
     licenseIds: number[]
 }
 
-const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, name, licenseIds, type }) => {
+const EditCustomer: React.FC<propTypes> = observer(({ buttonSize = "middle", reload, id, name, licenseIds, type }) => {
     const [visible, setVisible] = useState(false)
     const [form] = Form.useForm()
     const [query, { loading }] = useEditClientMutation()
+    const { authService } = useStore()
+    const userRole = authService.user?.profile.role
 
     const onFinish = (data: any) => {
         console.log(data)
@@ -68,15 +73,18 @@ const EditCustomer: React.FC<propTypes> = ({ buttonSize = "middle", reload, id, 
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row gutter={16}>
-                        <Col span={24}>
-                            <LicensesSelectMany initValues={licenseIds} />
-                        </Col>
-                    </Row>
+
+                    {userRole === DEVELOPER_ROLE && (
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <LicensesSelectMany initValues={licenseIds} />
+                            </Col>
+                        </Row>
+                    )}
                 </Form>
             </Drawer>
         </>
     )
-}
+})
 
 export default EditCustomer

@@ -256,7 +256,7 @@ const Cabinet: React.FC = observer(() => {
                         <span>
                             Представители заказчика{" "}
                             <Text $color="grey4" $large $bold>
-                                ({users.length}
+                                ({users.filter((u: any) => !u.isBanned).length}
                                 {"\u2009"}/{"\u2009"}
                                 {customerData?.maxUsers})
                             </Text>

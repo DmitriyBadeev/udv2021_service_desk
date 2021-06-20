@@ -24,15 +24,17 @@ const CardIcon = styled(ExclamationCircleOutlined)`
 `
 
 const PageContainer = styled.div`
-    margin: 50px 0 -40px -40px;
+    margin: 50px -40px -40px -40px;
+    background: ${(props) => props.theme.white};
 `
 
 const BoardContainer = styled.div`
     display: flex;
     width: 1750px;
     background: ${(props) => props.theme.white};
-    padding: 0 5px;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+    padding: 0 5px;
 `
 
 const ColumnWrapper = styled.div`

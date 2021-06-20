@@ -35,3 +35,6 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 src/ServiceDesk.Api/wwwroot/Files/
+
+Курсовая/
+Прочее/
